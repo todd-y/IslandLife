@@ -95,7 +95,7 @@ public static class D2TableMgr {
 
         Type _valueType = typeof(TValue);
         string tableName = _valueType.Name.Substring(3).ToLower();
-        RefBase ins = System.Activator.CreateInstance<TValue>();
+        //RefBase ins = System.Activator.CreateInstance<TValue>();
         bool hasreturn = false;
 
         foreach (Dictionary<string, string> line in tableInfo.Values) {

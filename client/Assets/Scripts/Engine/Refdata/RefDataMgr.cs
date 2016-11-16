@@ -9,6 +9,8 @@ public class RefDataMgr : BaseRefDataMgr<RefDataMgr> {
     /// 初始加载
     /// </summary>
     public IEnumerator Init () {
+        Debug.Log("RefDataMgr Init Start!!!");
+
         List<IEnumerator> co_list = new List<IEnumerator>() {
             Co_LoadGeneric(RefIcon.cacheMap),
         };

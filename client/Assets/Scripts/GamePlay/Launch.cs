@@ -6,19 +6,19 @@ using System.Collections;
 /// </summary>
 public class Launch : MonoBehaviour {
 
-    public static Launch inst = null;
+    public static Launch Instance = null;
 
     // build in 
     void Awake() {
         Debug.Log(" Launch Awake Begin......");
         // 保证只有一个， 重复创建的对象直接删掉
-        if (null != inst) {
+        if (null != Instance) {
             GameObject.DestroyImmediate(gameObject);
             Debug.Log(" Launch Already Awaked !!! ");
             return;
         }
 
-        inst = this;
+        Instance = this;
 
         CoDelegator.Instance = gameObject.AddMissingComponent<CoDelegator>();
         DontDestroyOnLoad(gameObject);
@@ -26,15 +26,46 @@ public class Launch : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        StartInit();
+        CoDelegator.Coroutine(InitClient());
+        CoDelegator.Coroutine(InitAsset());
 	}
-
-    public void StartInit(){
-        Game.Instance.Init();
-    }
 
     //预留接口
     public void DestoryInit(){
         Game.Instance.Clear();
+    }
+
+    IEnumerator InitClient() {
+        Debug.Log("Launch InitClient Begin......");
+        //Debug.Log(" Create Debug Start");
+        //CreateDebug();
+        
+        // 初始化配置表
+        RefDataMgr.Instance.InitBasic();
+
+        Debug.Log(" Create UI Start");
+        //CreateUI();
+        //Debug.Log(CommTime.GetNowTimeString() + " Create Audio Start");
+        //CreateAudio();
+        //Debug.Log(CommTime.GetNowTimeString() + " Create Sound Start");
+        //CreateSound();
+        //SoundManager.instance.PlayBgMusic("music_Launch", true);
+
+        WindowMgr.Instance.OpenWindow<LoadingWindow>();
+
+        Debug.LogWarning("Launch InitClient End......");
+        yield break;
+    }
+
+    IEnumerator InitAsset() {
+        // 配置加载
+        Debug.Log(" RefDataMgr Init Start");
+        yield return CoDelegator.Coroutine(RefDataMgr.Instance.Init());
+        Debug.Log(" RefDataMgr Init End");
+
+        Game.Instance.Init();
+
+        Debug.Log("Launch InitAsset End !!!");
+        yield break;
     }
 }

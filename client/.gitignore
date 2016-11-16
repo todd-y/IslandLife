@@ -5,6 +5,8 @@ library/*
 
 obj/*
 
+temp/*
+
 
 Assets/Atlas/*
 
@@ -17,5 +19,6 @@ Assets/Resources.meta
 Assembly-CSharp.csproj
 
 Assembly-CSharp-Editor.csproj
+Assembly-CSharp-firstpass.csproj
 client.sln
 client.v11.suo

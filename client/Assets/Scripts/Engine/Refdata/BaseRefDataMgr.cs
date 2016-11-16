@@ -64,14 +64,13 @@ public class BaseRefDataMgr<T> : Singleton<T> where T : ISingleton, new() {
         // 从D2TableManager 获取
         string tableName = _valueType.Name.Substring(3).ToLower();
 
-        //LocalAssetMgr.Instance.Load_RefData(tableName,
-        //        delegate(TextAsset asset) {
-        //            Dictionary<string, Dictionary<string, string>> tableInfo = D2TableMgr.LoadTable(asset);
-        //            if (D2TableMgr.LoadByTable(_table, tableInfo)) {
-        //                pendings -= 1;
-        //            }
-        //        },
-        //        fromLocal);
+        LocalAssetMgr.Instance.Load_RefData(tableName,
+                delegate(TextAsset asset) {
+                    Dictionary<string, Dictionary<string, string>> tableInfo = D2TableMgr.LoadTable(asset);
+                    if (D2TableMgr.LoadByTable(_table, tableInfo)) {
+                        pendings -= 1;
+                    }
+                });
 
         while (pendings > 0) {
             yield return null;

@@ -22,7 +22,7 @@ public class RefIcon : RefBase {
         SpriteName = GetString("SpriteName");
     }
 
-    public RefIcon GetRef(string _id) {
+    public static RefIcon GetRef(string _id) {
 
         RefIcon data = null;
         if ( cacheMap.TryGetValue(_id, out data) ) {
@@ -30,12 +30,12 @@ public class RefIcon : RefBase {
         }
 
         if (data == null) {
-            Debug.LogError("error skillinfo key:" + _id);
+            Debug.LogError("error RefIcon key:" + _id);
         }
         return data;
     }
 
-    public void SetSprite(Image image, string iconId) {
+    public static void SetSprite(Image image, string iconId) {
         if(image == null)
             return;
 

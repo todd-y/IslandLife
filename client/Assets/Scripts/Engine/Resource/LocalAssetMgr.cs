@@ -31,7 +31,7 @@ public class LocalAssetMgr : Singleton<LocalAssetMgr> {
     public GameObject Load_UI(string name) {
         GameObject prefab = null;
 
-        string path = basic_ui + name;
+        string path = basic_ui + "Win_" + name;
         prefab = Resources.Load(path) as GameObject;
         if (prefab == null) {
             Debug.LogError("Failed UIPrb_Local from " + path);
@@ -44,7 +44,7 @@ public class LocalAssetMgr : Singleton<LocalAssetMgr> {
         Sprite sprite = null;
 
         string path;
-        path = string.Format("Assets/Atlas/ui/Sprite/", pack, "/", name, ".png");
+        path = string.Format("Assets/Atlas/ui/Sprite/{0}/{1}.png", pack, name );
         sprite = AssetDatabase.LoadAssetAtPath<Sprite>(path);
         if (sprite == null) {
             Debug.LogError("Load_UISprite: sprite = " + path + ", failed!");
