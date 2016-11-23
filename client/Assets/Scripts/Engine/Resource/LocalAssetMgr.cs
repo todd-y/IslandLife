@@ -40,6 +40,17 @@ public class LocalAssetMgr : Singleton<LocalAssetMgr> {
         return prefab;
     }
 
+    public GameObject Load_UIPrefab(string name, bool fromLocal = false, bool logError = true) {
+        GameObject prefab = null;
+        string subPath = "Prefab/";
+        string path = basic_ui + subPath + name;
+        prefab = Resources.Load(path) as GameObject;
+        if (prefab == null) {
+            Debug.LogError("Failed Load_UIPrefab from " + path);
+        }
+        return prefab;
+    }
+
     public Sprite Load_UISprite(string pack, string name, bool fromLocal = false) {
         Sprite sprite = null;
 

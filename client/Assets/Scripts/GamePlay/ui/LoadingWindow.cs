@@ -2,23 +2,19 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class LoadingWindow : BaseWindow {
-    public Image imgTest;
-    public Button btnTest;
+public class LoadingWindow : BaseWindowWrapper<LoadingWindow> {
+    public Button btnStartGame;
 
-    public override void InitMsg() {
-        base.InitMsg();
-
-        btnTest.onClick.AddListener(OnClickTest);
+    protected override void InitMsg() {
+        btnStartGame.onClick.AddListener(StartGameClick);
     }
 
-    public override void ClearMsg() {
-        base.ClearMsg();
-
-        btnTest.onClick.RemoveAllListeners();
+    protected override void ClearMsg() {
+        btnStartGame.onClick.RemoveAllListeners();
     }
 
-    void OnClickTest() {
-        RefIcon.SetSprite(imgTest, "Icon1");
+    private void StartGameClick() {
+        BattleMgr.Instance.CreateBattle();
+        WindowMgr.Instance.CloseWindow<LoadingWindow>();
     }
 }

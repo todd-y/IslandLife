@@ -1,13 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class BaseWindow : MonoBehaviour {
+    private GameObject emptyClose;
+    private GameObject mask;
     private WindowInfo m_windowInfo = null;
+    protected bool hasOpen = false;
     public WindowInfo windowInfo {
         get { return m_windowInfo ?? (m_windowInfo = this.GetComponent<WindowInfo>()); }
     }
 
     protected void Awake() {
+        AddClose();
+        AddMask();
         InitCtrl();
     }
 
@@ -24,6 +30,9 @@ public class BaseWindow : MonoBehaviour {
     }
 
     public void DoOpen() {
+        if (hasOpen)
+            return;
+        hasOpen = true;
         OnPreOpen();
         InitMsg();
         this.gameObject.SetActive(true);
@@ -31,6 +40,9 @@ public class BaseWindow : MonoBehaviour {
     }
 
     public void DoClose(bool needPlay = true) {
+        if (!hasOpen)
+            return;
+        hasOpen = false;
         ClearMsg();
         OnPreClose();
         if (needPlay) {
@@ -41,31 +53,31 @@ public class BaseWindow : MonoBehaviour {
         }
     }
 
-    public virtual void OnPreOpen() {
+    protected virtual void OnPreOpen() {
 
     }
 
-    public virtual void OnOpen() {
+    protected virtual void OnOpen() {
 
     }
 
-    public virtual void OnPreClose() {
+    protected virtual void OnPreClose() {
 
     }
 
-    public virtual void OnClose() {
+    protected virtual void OnClose() {
+        this.gameObject.SetActive(false);
+    }
+
+    protected virtual void InitMsg() {
 
     }
 
-    public virtual void InitMsg() {
+    protected virtual void ClearMsg() {
 
     }
 
-    public virtual void ClearMsg() {
-
-    }
-
-    public void PlayOpenAnim() {
+    private void PlayOpenAnim() {
         iTween.Stop(gameObject);
         switch (windowInfo.animType) {
             case OpenAnimType.None:
@@ -89,7 +101,7 @@ public class BaseWindow : MonoBehaviour {
         }
     }
 
-    public void PlayCloseAnim() {
+    private void PlayCloseAnim() {
         iTween.Stop(gameObject);
         switch (windowInfo.animType) {
             case OpenAnimType.None:
@@ -111,5 +123,39 @@ public class BaseWindow : MonoBehaviour {
                 Debug.LogError("未实现");
                 break;
         }
+    }
+
+    private void AddMask() {
+        if (windowInfo.windowType != WindowType.Modal)
+            return;
+
+        if (mask == null) {
+            mask = Instantiate(LocalAssetMgr.Instance.Load_UIPrefab("WindowMask")) as GameObject;
+            mask.layer = this.gameObject.layer;
+            mask.name = "Mask";
+            mask.transform.SetParent(transform, false);
+            mask.transform.SetAsFirstSibling();
+        }
+    }
+
+    private void AddClose() {
+        if (windowInfo.closeOnEmpty == false)
+            return;
+
+        if (emptyClose == null) {
+            emptyClose = Instantiate(LocalAssetMgr.Instance.Load_UIPrefab("WindowClose")) as GameObject;
+            emptyClose.layer = this.gameObject.layer;
+            emptyClose.name = "EmptyClose";
+            emptyClose.transform.SetParent(transform, false);
+            emptyClose.transform.SetAsFirstSibling();
+
+            Button button = emptyClose.GetComponent<Button>();
+            button.onClick.RemoveAllListeners();
+            button.onClick.AddListener(CloseWindow);
+        }
+    }
+
+    public void CloseWindow() {
+        WindowMgr.Instance.CloseWindow(this.GetType().Name);
     }
 }

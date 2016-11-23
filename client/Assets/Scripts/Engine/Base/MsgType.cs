@@ -8,5 +8,10 @@ public delegate void BroadcastCallBack (params object[] _objs);
 /// 消息类型枚举 不可重复
 /// </summary>
 public enum SendType {
-    SecondChange = 1,
+    TimeUpdate = 1,
+    SecondChange,
+    DayChange,
+    GameStateChange,
+    ActionStateChange,
+    ActionUpdate,
 }

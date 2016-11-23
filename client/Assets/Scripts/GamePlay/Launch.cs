@@ -30,6 +30,10 @@ public class Launch : MonoBehaviour {
         CoDelegator.Coroutine(InitAsset());
 	}
 
+    void FixedUpdate() {
+        TimeMgr.Instance.FixUpdate();
+    }
+
     //预留接口
     public void DestoryInit(){
         Game.Instance.Clear();
@@ -51,8 +55,6 @@ public class Launch : MonoBehaviour {
         //CreateSound();
         //SoundManager.instance.PlayBgMusic("music_Launch", true);
 
-        WindowMgr.Instance.OpenWindow<LoadingWindow>();
-
         Debug.LogWarning("Launch InitClient End......");
         yield break;
     }
@@ -66,6 +68,10 @@ public class Launch : MonoBehaviour {
         Game.Instance.Init();
 
         Debug.Log("Launch InitAsset End !!!");
+
+        //WindowMgr.Instance.OpenWindow<LoadingWindow>();
+        BattleMgr.Instance.CreateBattle();
+
         yield break;
     }
 }

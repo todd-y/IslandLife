@@ -13,6 +13,10 @@ public class RefDataMgr : BaseRefDataMgr<RefDataMgr> {
 
         List<IEnumerator> co_list = new List<IEnumerator>() {
             Co_LoadGeneric(RefIcon.cacheMap),
+            Co_LoadGeneric(RefGeneral.cacheMap),
+            Co_LoadGeneric(RefEffect.cacheMap),
+            Co_LoadGeneric(RefAction.cacheMap),
+            Co_LoadGeneric(RefLanguage.cacheMap),
         };
         for (int index = 0, total = co_list.Count; index < total; index++) {
             yield return CoDelegator.Coroutine(co_list[index]);

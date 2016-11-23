@@ -39,6 +39,17 @@ public class WindowMgr : Singleton<WindowMgr> {
         window.DoClose();
     }
 
+    public void CloseWindow(string winName) {
+        BaseWindow window = GetWindow(winName);
+        if (window == null) {
+            Debug.LogError("open window fail window is null " + winName);
+            return;
+        }
+
+        openList.Remove(winName);
+        window.DoClose();
+    }
+
     public BaseWindow GetWindow(string name) {
         BaseWindow window = null;
         if (allList.ContainsKey(name)) {

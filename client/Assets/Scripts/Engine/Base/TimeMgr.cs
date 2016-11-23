@@ -5,6 +5,7 @@ using System.Collections;
 /// 时间模块
 /// </summary>
 public class TimeMgr : Singleton<TimeMgr> {
+    private float curTime = 0;
 	public void Init(){
 		
 	}
@@ -12,4 +13,9 @@ public class TimeMgr : Singleton<TimeMgr> {
 	public void Clear(){
 		
 	}
+
+    public void FixUpdate() {
+        curTime += Time.deltaTime;
+        Send.SendMsg(SendType.TimeUpdate);
+    }
 }
