@@ -14,4 +14,8 @@ public enum SendType {
     GameStateChange,
     ActionStateChange,
     ActionUpdate,
+    FoodChange,
+    PeopleNumChange,
+    LoyaltyChange,
+    ArmyChange,
 }

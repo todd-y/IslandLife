@@ -102,6 +102,7 @@ public class BattleMgr : Singleton<BattleMgr> {
         if (day != CurTime.Day) {
             AddOneDay();
         }
+        CheckTimedEvent();
     }
 
     private void UpdateAction(float dt) {
@@ -147,7 +148,7 @@ public class BattleMgr : Singleton<BattleMgr> {
         }
 
         if (CurTime.Day == monthFoodCost.Day) {
-            country.HarvestHandle();
+            country.MonthFoodCost();
         }
 
         if (CurTime.Month == chooseWife.Month && CurTime.Day == chooseWife.Day) {

@@ -13,8 +13,8 @@ public class SelectActorProxy : MonoBehaviour {
     public Text txtCachet;
     public Text txtAbility;
 
-    private Actor actor;
-    private Action<Actor> callBack;
+    public Actor actor;
+    private Action<SelectActorProxy> callBack;
 
     public void SetData(Actor _actor) {
         actor = _actor;
@@ -35,13 +35,13 @@ public class SelectActorProxy : MonoBehaviour {
         gameObject.SetActive(false);
     }
 
-    public void SetCallBack( Action<Actor> _callBack ) {
+    public void SetCallBack( Action<SelectActorProxy> _callBack ) {
         callBack = _callBack;
     }
 
     public void OnClickHandle() {
         if (callBack != null) {
-            callBack(actor);
+            callBack(this);
         }
         else {
             Debug.LogError("call back is null");

@@ -29,6 +29,7 @@ public class Country : BaseData {
         }
         set {
             remainFood = value;
+            Send.SendMsg(SendType.FoodChange);
         }
     }
 
@@ -199,9 +200,14 @@ public class Country : BaseData {
     /// 日常处理
     /// </summary>
     public void DailyUpdate() {
+        ReduceDailyCost();
         CountyUpdate();
         MinisterUpdate();
         ConcubineUpdate();
+    }
+
+    private void ReduceDailyCost() {
+        RemainFood -= 100;
     }
 
     private void CountyUpdate() {

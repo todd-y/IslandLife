@@ -12,10 +12,6 @@ Assets/Atlas/*
 
 
 Assets/Atlas.meta
-Assets/Resources/*
-
-
-Assets/Resources.meta
 Assembly-CSharp.csproj
 
 Assembly-CSharp-Editor.csproj

@@ -19,11 +19,19 @@ public class County : BaseData {
         get {
             return peopleNum;
         }
+        set {
+            peopleNum = value;
+            Send.SendMsg(SendType.FoodChange);
+        }
     }
 
     public float Loyalty {
         get {
             return loyalty;
+        }
+        set {
+            loyalty = value;
+            Send.SendMsg(SendType.LoyaltyChange);
         }
     }
 
@@ -31,11 +39,27 @@ public class County : BaseData {
         get {
             return armyNum;
         }
+        set {
+            armyNum = value;
+            Send.SendMsg(SendType.ArmyChange);
+        }
     }
 
     public float CorruptionRate {
         get{
             return corruptionRate;
+        }
+    }
+
+    public int RemainFood {
+        get {
+            return (int)remainFood;
+        }
+    }
+
+    public int AreaFactor {
+        get {
+            return (int)areaFactor;
         }
     }
 

@@ -4,9 +4,9 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 
 public class SelectActorWindow : BaseWindowWrapper<SelectActorWindow> {
-
     public ScrollRect svSelectActor;
     public GameObject prefabSelectActor;
+    public Image imgSelect;
     private List<SelectActorProxy> proxyList = new List<SelectActorProxy>();
     private List<BaseData> dataList = null;
     private System.Action<Actor> callBack;
@@ -16,6 +16,7 @@ public class SelectActorWindow : BaseWindowWrapper<SelectActorWindow> {
         dataList = list;
         callBack = _callBack;
         curSelectActor = null;
+        imgSelect.gameObject.SetActive(false);
         WindowMgr.Instance.OpenWindow<SelectActorWindow>();
     }
 
@@ -68,8 +69,10 @@ public class SelectActorWindow : BaseWindowWrapper<SelectActorWindow> {
         svSelectActor.content.localPosition = Vector3.zero;
     }
 
-    private void SelectActorHandle(Actor actor) {
-        curSelectActor = actor;
+    private void SelectActorHandle(SelectActorProxy actorProxy) {
+        curSelectActor = actorProxy.actor;
+        imgSelect.rectTransform.SetParent(actorProxy.gameObject.transform, false);
+        imgSelect.gameObject.SetActive(true);
     }
 
     public void ChooseHandle() {

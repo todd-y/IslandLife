@@ -43,4 +43,13 @@ static public class Util {
             text.text = string.Format("{0}-{1}-{2}", str.Year, str.Month, str.Day);
         }
     }
+
+    static public T GetChildControl<T>(this GameObject _obj, string _target) where T : Component {
+        Transform child = _obj.transform.Find(_target);
+        if (child != null) {
+            return child.GetComponent<T>();
+        }
+        //Debug.LogWarning("查找不到你所要找到" + _target + " 控件");
+        return null;
+    }
 }

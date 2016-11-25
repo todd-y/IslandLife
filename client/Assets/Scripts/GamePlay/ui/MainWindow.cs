@@ -22,6 +22,7 @@ public class MainWindow : BaseWindowWrapper<MainWindow> {
     public Button btnSercet;
     public Button btnPolicy;
     public Button btnDaily;
+    public Button btnMap;
     //actionList
     public ScrollRect svDoing;
     public ScrollRect svCanDo;
@@ -70,10 +71,15 @@ public class MainWindow : BaseWindowWrapper<MainWindow> {
         btnSercet.onClick.AddListener(OnSercetClick);
         btnPolicy.onClick.AddListener(OnPolicyClick);
         btnDaily.onClick.AddListener(OnDailyClick);
+        btnMap.onClick.AddListener(OnMapClick);
 
         Send.RegisterMsg(SendType.DayChange, OnDayChange);
         Send.RegisterMsg(SendType.GameStateChange, OnGameStateChange);
         Send.RegisterMsg(SendType.TimeUpdate, OnTimeUpdate);
+        Send.RegisterMsg(SendType.ArmyChange, OnArmyChange);
+        Send.RegisterMsg(SendType.PeopleNumChange, OnPeopleNumChange);
+        Send.RegisterMsg(SendType.FoodChange, OnFoodChange);
+        Send.RegisterMsg(SendType.LoyaltyChange, OnLoyaltyChange);
     }
 
     protected override void ClearMsg() {
@@ -94,12 +100,12 @@ public class MainWindow : BaseWindowWrapper<MainWindow> {
     }
 
     private void RefreshInfo() {
-        txtGold.setText(Country.RemainFood);
-        txtTaxRate.setText(Country.TaxRate);
-        txtRecruitmentRate.setText(Country.ArmyRate);
-        txtPeople.setText(Country.PeopleNum());
-        txtArmy.setText(Country.ArmyNum());
-        txtLoyalty.setText(Country.PeopleLoyalty());
+        txtGold.setText("RemainFood", (int)Country.RemainFood);
+        txtTaxRate.setText("TaxDesc", (int)Country.TaxRate);
+        txtRecruitmentRate.setText("ArmyRate", (int)Country.ArmyRate);
+        txtPeople.setText("PeopleNum", (int)Country.PeopleNum());
+        txtArmy.setText("ArmyNum", (int)Country.ArmyNum());
+        txtLoyalty.setText("LoyaltyDesc", Country.PeopleLoyalty());
         txtTime.setText(BattleMgr.Instance.CurTime);
         txtTimeState.setText(BattleMgr.Instance.GameState.ToString());
     }
@@ -132,6 +138,22 @@ public class MainWindow : BaseWindowWrapper<MainWindow> {
         RefreshDoing();
     }
 
+    private void OnArmyChange(object[] objs) {
+        txtArmy.setText(Country.ArmyNum());
+    }
+
+    private void OnPeopleNumChange(object[] objs) {
+        txtPeople.setText(Country.PeopleNum());
+    }
+
+    private void OnFoodChange(object[] objs) {
+        txtGold.setText(Country.RemainFood);
+    }
+
+    private void OnLoyaltyChange(object[] objs) {
+        txtLoyalty.setText(Country.PeopleLoyalty());
+    }
+
     private void OnCourtiersClick() {
         OnSelectClick(CurSelectType.Courtiers);
     }
@@ -150,6 +172,10 @@ public class MainWindow : BaseWindowWrapper<MainWindow> {
 
     private void OnDailyClick(){
         OnSelectClick(CurSelectType.Daily);
+    }
+
+    private void OnMapClick() {
+        WindowMgr.Instance.OpenWindow<MapWindow>();
     }
 
     private void OnSelectClick(CurSelectType type) {

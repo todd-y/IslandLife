@@ -1,0 +1,3 @@
+﻿图标ID	图集名字	图标名字
+ID	AtlasName	SpriteName
+Icon1	Icon	icon1

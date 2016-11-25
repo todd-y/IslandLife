@@ -5,7 +5,6 @@ using UnityEngine.UI;
 public class DoingPorxy : MonoBehaviour {
     public Text txtWhat;
     public Text txtWho;
-    public Button btnClick;
     public Slider sldProgress;
 
     public ActionInfo actionInfo;
