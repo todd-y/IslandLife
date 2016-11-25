@@ -20,6 +20,9 @@ public class RefLanguage : RefBase {
     }
 
     public static string GetValue(string _key){
+        if (string.IsNullOrEmpty(_key))
+            return "";
+
         RefLanguage data = null;
         if (cacheMap.TryGetValue(_key, out data)) {
             return data.Value;

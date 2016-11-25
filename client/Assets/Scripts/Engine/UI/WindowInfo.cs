@@ -10,4 +10,5 @@ public class WindowInfo : MonoBehaviour {
     public bool mask = false;
     public Vector3 defaultPos = Vector3.zero;
     public Vector3 openPos = Vector3.zero;
+    public int group = 0;
 }

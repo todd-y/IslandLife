@@ -17,6 +17,10 @@ public class RefDataMgr : BaseRefDataMgr<RefDataMgr> {
             Co_LoadGeneric(RefEffect.cacheMap),
             Co_LoadGeneric(RefAction.cacheMap),
             Co_LoadGeneric(RefLanguage.cacheMap),
+            Co_LoadGeneric(RefActor.cacheMap),
+            Co_LoadGeneric(RefCountry.cacheMap),
+            Co_LoadGeneric(RefCounty.cacheMap),
+            Co_LoadGeneric(RefName.cacheMap),
         };
         for (int index = 0, total = co_list.Count; index < total; index++) {
             yield return CoDelegator.Coroutine(co_list[index]);

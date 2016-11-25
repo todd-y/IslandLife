@@ -80,7 +80,7 @@ public class BattleMgr : Singleton<BattleMgr> {
         }
         gameState = GameState.Stop;
         country = new Country();
-        country.Init();
+        country.Init(1001);
         WindowMgr.Instance.OpenWindow<MainWindow>();
     }
 
@@ -189,8 +189,8 @@ public class BattleMgr : Singleton<BattleMgr> {
                     actorList.Add(country.king);
                     break;
                 case RoleType.Wife:
-                    for (int k = 0; k < country.concubineList.Count; k++ ) {
-                        actorList.Add(country.concubineList[k]);
+                    for (int k = 0; k < country.wifeList.Count; k++ ) {
+                        actorList.Add(country.wifeList[k]);
                     }
                     break;
                 case RoleType.Minister:
@@ -210,8 +210,8 @@ public class BattleMgr : Singleton<BattleMgr> {
                     actorList.Add(country);
                     break;
                 case RoleType.SecretAgent:
-                    for (int k = 0; k < country.secretAgent.Count; k++) {
-                        actorList.Add(country.secretAgent[k]);
+                    for (int k = 0; k < country.secretAgentList.Count; k++) {
+                        actorList.Add(country.secretAgentList[k]);
                     }
                     break;
                 case RoleType.TriggerActor:

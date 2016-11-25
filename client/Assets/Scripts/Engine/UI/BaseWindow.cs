@@ -6,7 +6,7 @@ public class BaseWindow : MonoBehaviour {
     private GameObject emptyClose;
     private GameObject mask;
     private WindowInfo m_windowInfo = null;
-    protected bool hasOpen = false;
+    public bool hasOpen = false;
     public WindowInfo windowInfo {
         get { return m_windowInfo ?? (m_windowInfo = this.GetComponent<WindowInfo>()); }
     }
@@ -155,7 +155,7 @@ public class BaseWindow : MonoBehaviour {
         }
     }
 
-    public void CloseWindow() {
+    public virtual void CloseWindow() {
         WindowMgr.Instance.CloseWindow(this.GetType().Name);
     }
 }

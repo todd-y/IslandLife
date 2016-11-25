@@ -26,6 +26,12 @@ static public class Util {
         }
     }
 
+    static public void setText(this Text text, string str1, int str2) {
+        if (text != null) {
+            text.text = RefLanguage.GetValue(str1) + str2;
+        }
+    }
+
     static public void setText(this Text text, float str) {
         if (text != null) {
             text.text = str.ToString();

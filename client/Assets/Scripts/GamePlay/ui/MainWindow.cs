@@ -25,14 +25,20 @@ public class MainWindow : BaseWindowWrapper<MainWindow> {
     //actionList
     public ScrollRect svDoing;
     public ScrollRect svCanDo;
+    public ScrollRect svActor;
     public GameObject prefebDoing;
     public GameObject prefabCanDo;
+    public GameObject prefabActor;
 
     private Button btnTimeState;
 
-    private List<DoingPorxy> doingPorxyList = new List<DoingPorxy>();
-    private List<CanDoProxy> canDoProxyList = new List<CanDoProxy>();
     private List<RefAction> canDoActionList = new List<RefAction>();
+    private List<CanDoProxy> canDoProxyList = new List<CanDoProxy>();
+
+    private List<DoingPorxy> doingPorxyList = new List<DoingPorxy>();
+
+    private List<Actor> selectActorList = new List<Actor>();
+    private List<ActorPorxy> actorProxyList = new List<ActorPorxy>();
 
     private CurSelectType selectType = CurSelectType.None;
 
@@ -126,13 +132,16 @@ public class MainWindow : BaseWindowWrapper<MainWindow> {
         RefreshDoing();
     }
 
-    private void OnCourtiersClick(){
+    private void OnCourtiersClick() {
+        OnSelectClick(CurSelectType.Courtiers);
     }
 
-    private void OnWifeClick(){
+    private void OnWifeClick() {
+        OnSelectClick(CurSelectType.Wife);
     }
 
     private void OnPolicyClick() {
+        OnSelectClick(CurSelectType.Policy);
     }
 
     private void OnSercetClick() {
@@ -150,28 +159,47 @@ public class MainWindow : BaseWindowWrapper<MainWindow> {
                 case CurSelectType.None:
                     break;
                 case CurSelectType.Courtiers:
+                    selectActorList = Country.ministerList;
+                    canDoActionList = new List<RefAction>();
                     break;
                 case CurSelectType.Wife:
+                    selectActorList = Country.wifeList;
+                    canDoActionList = new List<RefAction>();
                     break;
                 case CurSelectType.Sercet:
+                    selectActorList = new List<Actor>();
                     canDoActionList = RefAction.GetTypeList(ActionType.SecretAction);
                     break;
                 case CurSelectType.Policy:
+                    selectActorList = new List<Actor>();
+                    canDoActionList = RefAction.GetTypeList(ActionType.PolicyAction);
                     break;
                 case CurSelectType.Daily:
+                    selectActorList = new List<Actor>();
                     canDoActionList = RefAction.GetTypeList(ActionType.DailyAction);
                     break;
             }
         }
         else {
             canDoActionList = new List<RefAction>();
+            selectActorList = new List<Actor>();
             selectType = CurSelectType.None;
         }
 
         RefreshCanDo();
+        RefreshActor();
     }
 
     private void RefreshCanDo() {
+        svCanDo.gameObject.SetActive(canDoActionList.Count > 0);
+        if (canDoActionList.Count == 0) 
+            return;
+
+        svCanDo.StopMovement();
+        for (int index = canDoActionList.Count; index < canDoProxyList.Count; index++) {
+            canDoProxyList[index].ClearData();
+        }
+
         for (int index = 0; index < canDoActionList.Count; index++) {
             RefAction refAction = canDoActionList[index];
             CanDoProxy proxy;
@@ -191,12 +219,19 @@ public class MainWindow : BaseWindowWrapper<MainWindow> {
             proxy.SetData(refAction);
         }
 
-        for (int index = canDoActionList.Count; index < canDoProxyList.Count; index++ ) {
-            canDoProxyList[index].ClearData();
-        }
+        svCanDo.content.localPosition = Vector3.zero;
     }
 
     private void RefreshDoing() {
+        svDoing.gameObject.SetActive(BattleMgr.Instance.actionList.Count > 0);
+        if (BattleMgr.Instance.actionList.Count == 0)
+            return;
+
+        svDoing.StopMovement();
+        for (int index = BattleMgr.Instance.actionList.Count; index < doingPorxyList.Count; index++) {
+            doingPorxyList[index].ClearData();
+        }
+
         for (int index = 0; index < BattleMgr.Instance.actionList.Count; index++) {
             ActionInfo actionInfo = BattleMgr.Instance.actionList[index];
             DoingPorxy proxy;
@@ -216,11 +251,40 @@ public class MainWindow : BaseWindowWrapper<MainWindow> {
             proxy.SetData(actionInfo);
         }
 
-        for (int index = BattleMgr.Instance.actionList.Count; index < doingPorxyList.Count; index++) {
-            doingPorxyList[index].ClearData();
-        }
+        svDoing.content.localPosition = Vector3.zero;
     }
 
+    private void RefreshActor() {
+        svActor.gameObject.SetActive(selectActorList.Count > 0);
+        if (selectActorList.Count == 0)
+            return;
+
+        svActor.StopMovement();
+        for (int index = selectActorList.Count; index < actorProxyList.Count; index++) {
+            actorProxyList[index].ClearData();
+        }
+
+        for (int index = 0; index < selectActorList.Count; index++) {
+            Actor actor = selectActorList[index];
+            ActorPorxy proxy;
+            if (actorProxyList.Count > index) {
+                proxy = actorProxyList[index];
+            }
+            else {
+                GameObject actorGo = GameObject.Instantiate<GameObject>(prefabActor);
+                if (actorGo == null) {
+                    Debug.LogError("actorGo is null");
+                    return;
+                }
+                actorGo.transform.SetParent(svActor.content, false);
+                proxy = actorGo.GetComponent<ActorPorxy>();
+                actorProxyList.Add(proxy);
+            }
+            proxy.SetData(actor);
+        }
+
+        svActor.content.localPosition = Vector3.zero;
+    }
 
     public enum CurSelectType {
         None = 0,

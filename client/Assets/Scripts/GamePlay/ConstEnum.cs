@@ -5,6 +5,8 @@ public enum OfficialType {
     None = 0,
     King,
     Queen,
+    Concubine,
+    Hetaera,
     Prince,
     Princess,
     LPM,// 左丞相
@@ -21,7 +23,9 @@ public enum OfficialType {
     PenalSL,
     WorkSS,//工部
     WorkSL,
-    //to do 将领
+    Officer,
+    Manager,//总管
+    Secret,// 密探
 }
 
 /// <summary>
@@ -85,6 +89,15 @@ public enum Action{
     FindGoodOmen, //发现祥瑞
     FindBadOmen,//发现噩兆
     ForgeRumor,//伪造谣言
+    CountryTaxRate,//国家税率
+    CountryArmyRate,//国家征兵
+    CombatCorruption,//打击腐败
+    LifeStyle,//生活作风
+    CountyTaxRate,//地方税率
+    CountyArmyRate,//地方征兵
+    TryAddFood,//巧立名目
+    SelfRecommendation,//贤者自荐
+    BuildCounty,//地方建设
 }
 
 public enum ActionType {
@@ -92,6 +105,7 @@ public enum ActionType {
     FixedAction,
     TriggerAction,
     SecretAction,
+    PolicyAction,
 }
 
 public enum RoleType {
@@ -117,4 +131,11 @@ public enum EffectAttribute {
 public enum LangType {
     Title,
     Desc,
+}
+
+public enum NameType {
+    Country,
+    County,
+    FamilyName,
+    FirstName,
 }

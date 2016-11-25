@@ -21,7 +21,7 @@ public class County : BaseData {
         }
     }
 
-    public float PeopleLoyalty {
+    public float Loyalty {
         get {
             return loyalty;
         }
@@ -39,8 +39,17 @@ public class County : BaseData {
         }
     }
 
-    public County() {
+    public County( RefCounty _countyData, string _name, Country _country) {
         roleType = RoleType.County;
+        roleName = _name;
+        country = _country;
+        taxRate = 0;
+        peopleNum = ToolMgr.Instance.GetRandom(_countyData.PeopleNum);
+        loyalty = ToolMgr.Instance.GetRandom(_countyData.Loyalty);
+        remainFood = ToolMgr.Instance.GetRandom(_countyData.RemainFood);
+        armyNum = ToolMgr.Instance.GetRandom(_countyData.ArmyNum);
+        corruptionRate = ToolMgr.Instance.GetRandom(_countyData.CorruptionRate);
+        areaFactor = ToolMgr.Instance.GetRandom(_countyData.AreaFactor);
     }
 
     public void DailyUpdate() {

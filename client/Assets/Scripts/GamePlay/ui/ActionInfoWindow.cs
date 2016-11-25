@@ -24,7 +24,7 @@ public class ActionInfoWindow : BaseWindowWrapper<ActionInfoWindow> {
 
     public void OpenWindow(ActionInfo action) {
         if (actionInfo != null && actionInfo.actionID == action.actionID) {
-            OnLeaveClick();
+            CloseWindow();
             return;
         }
         actionInfo = action;
@@ -89,7 +89,7 @@ public class ActionInfoWindow : BaseWindowWrapper<ActionInfoWindow> {
         btnSelectActor.onClick.AddListener(OnSelectActor);
         btnSelectTarget.onClick.AddListener(OnSelectTarget);
         btnStart.onClick.AddListener(OnStartClick);
-        btnLeave.onClick.AddListener(OnLeaveClick);
+        btnLeave.onClick.AddListener(CloseWindow);
         btnFinish.onClick.AddListener(OnFinishClick);
 
         Send.RegisterMsg(SendType.ActionStateChange, OnActionStateChange);
@@ -100,7 +100,7 @@ public class ActionInfoWindow : BaseWindowWrapper<ActionInfoWindow> {
         btnSelectActor.onClick.RemoveListener(OnSelectActor);
         btnSelectTarget.onClick.RemoveListener(OnSelectTarget);
         btnStart.onClick.RemoveListener(OnStartClick);
-        btnLeave.onClick.RemoveListener(OnLeaveClick);
+        btnLeave.onClick.RemoveListener(CloseWindow);
         btnFinish.onClick.AddListener(OnFinishClick);
 
         Send.UnregisterMsg(SendType.ActionStateChange, OnActionStateChange);
@@ -117,7 +117,6 @@ public class ActionInfoWindow : BaseWindowWrapper<ActionInfoWindow> {
 
     private void OnStartClick() {
         if (BattleMgr.Instance.StartAction(actionInfo)) {
-            actionInfo = null;
             CloseWindow();
         }
         else {
@@ -125,14 +124,9 @@ public class ActionInfoWindow : BaseWindowWrapper<ActionInfoWindow> {
         }
     }
 
-    private void OnLeaveClick() {
-        actionInfo = null;
-        CloseWindow();
-    }
 
     private void OnFinishClick() {
         BattleMgr.Instance.CheckClearAction(actionInfo);
-        actionInfo = null;
         CloseWindow();
     }
 
@@ -195,5 +189,10 @@ public class ActionInfoWindow : BaseWindowWrapper<ActionInfoWindow> {
 
     private void RefreshProgress() {
         sldProgess.value = actionInfo.GetProgress();
+    }
+
+    public override void CloseWindow() {
+        actionInfo = null;
+        base.CloseWindow();
     }
 }

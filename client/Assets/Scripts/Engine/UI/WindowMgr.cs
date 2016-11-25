@@ -23,20 +23,30 @@ public class WindowMgr : Singleton<WindowMgr> {
             return;
         }
 
+        if (window.hasOpen)
+            return;
+
+        if (window.windowInfo.group != 0) {
+            CloseGroupWindow(window.windowInfo.group);
+        }
+
         openList.Add(winName);
         window.DoOpen();
     }
 
+    public void CloseGroupWindow(int group) {
+        List<string> tempList = new List<string>(openList);
+        for (int index = 0; index < tempList.Count; index++) {
+            string name = tempList[index];
+            if (allList[name].windowInfo.group == group) {
+                allList[name].CloseWindow();
+            }
+        }
+    }
+
     public void CloseWindow<T>() {
         string winName = typeof(T).Name;
-        BaseWindow window = GetWindow(winName);
-        if (window == null) {
-            Debug.LogError("open window fail window is null " + winName);
-            return;
-        }
-
-        openList.Remove(winName);
-        window.DoClose();
+        CloseWindow(winName);
     }
 
     public void CloseWindow(string winName) {
@@ -45,6 +55,9 @@ public class WindowMgr : Singleton<WindowMgr> {
             Debug.LogError("open window fail window is null " + winName);
             return;
         }
+
+        if (!window.hasOpen)
+            return;
 
         openList.Remove(winName);
         window.DoClose();
