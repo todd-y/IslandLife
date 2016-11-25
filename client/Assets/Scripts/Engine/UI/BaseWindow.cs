@@ -6,6 +6,7 @@ public class BaseWindow : MonoBehaviour {
     private GameObject emptyClose;
     private GameObject mask;
     private WindowInfo m_windowInfo = null;
+    [HideInInspector]
     public bool hasOpen = false;
     public WindowInfo windowInfo {
         get { return m_windowInfo ?? (m_windowInfo = this.GetComponent<WindowInfo>()); }

@@ -21,6 +21,8 @@ public class ActionInfoWindow : BaseWindowWrapper<ActionInfoWindow> {
     public Text txtResult;
 
     public ActionInfo actionInfo;
+    private List<BaseData> executorList;
+    private List<BaseData> targetList;
 
     public void OpenWindow(ActionInfo action) {
         if (actionInfo != null && actionInfo.actionID == action.actionID) {
@@ -108,11 +110,41 @@ public class ActionInfoWindow : BaseWindowWrapper<ActionInfoWindow> {
     }
 
     private void OnSelectActor() {
+        if (executorList == null || executorList.Count == 0 || executorList.Count == 1) {
+            //to do tip;
+        }
+        else {
+            if (executorList[0].roleType == RoleType.County) {
+                Debug.LogError("wait");
+            }
+            else {
+                SelectActorWindow.Instance.OpenWindow(executorList, SelectTargetHandle);
+            }
+        }
+    }
 
+    private void SelectExecutorHandle(BaseData executor) {
+        actionInfo.executor = executor;
+        txtActor.setText(actionInfo.executor.roleName);
     }
 
     private void OnSelectTarget() {
+        if (targetList == null || targetList.Count == 0 || targetList.Count == 1) {
+            //to do tip;
+        }
+        else {
+            if (targetList[0].roleType == RoleType.County) {
+                Debug.LogError("wait");
+            }
+            else {
+                SelectActorWindow.Instance.OpenWindow(targetList, SelectTargetHandle);
+            }
+        }
+    }
 
+    private void SelectTargetHandle(BaseData target) {
+        actionInfo.target = target;
+        txtTarget.setText(actionInfo.target.roleName);
     }
 
     private void OnStartClick() {
@@ -141,7 +173,7 @@ public class ActionInfoWindow : BaseWindowWrapper<ActionInfoWindow> {
             txtActor.setText(actionInfo.executor.roleName);
         }
         else {
-            List<BaseData> executorList = BattleMgr.Instance.GetActionActorList(actionInfo.action.ExecutorList);
+            executorList = BattleMgr.Instance.GetActionActorList(actionInfo.action.ExecutorList);
             if (executorList.Count == 0) {
                 txtActor.setText("NoCanChoose");
             }
@@ -158,7 +190,7 @@ public class ActionInfoWindow : BaseWindowWrapper<ActionInfoWindow> {
             txtTarget.setText(actionInfo.target.roleName);
         }
         else {
-            List<BaseData> targetList = BattleMgr.Instance.GetActionActorList(actionInfo.action.TargetList);
+            targetList = BattleMgr.Instance.GetActionActorList(actionInfo.action.TargetList);
             if (targetList.Count == 0) {
                 txtTarget.setText("NoCanChoose");
             }
