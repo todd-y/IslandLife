@@ -13,10 +13,24 @@ public class MapWindow : BaseWindowWrapper<MapWindow> {
     public Text txtAreaFactor;
     public Text txtOther;
     public Button btnClose;
+    public Button btnSelect;
 
     private Text[] txtMapList;
     private Outline[] outLineList;
-    private County curSelectCounty;
+    private County m_curSelectCounty;
+    private System.Action<County> callBack;
+    private MapWindowState state = MapWindowState.Normal;
+
+    public County CurSelectCounty {
+        get {
+            return m_curSelectCounty;
+        }
+        set {
+            ClearOutLine();
+            m_curSelectCounty = value;
+            ShowSelectOutLine();
+        }
+    }
 
     protected override void InitCtrl() {
         int length = btnMapList.Length;
@@ -36,13 +50,15 @@ public class MapWindow : BaseWindowWrapper<MapWindow> {
         }
     }
 
-    public void OpenWindow() {
-        ClearOutLine();
-        curSelectCounty = null;
+    public void OpenWindow(MapWindowState _mapState, County select = null, System.Action<County> _callBack = null) {
+        state = _mapState;
+        CurSelectCounty = select;
+        callBack = _callBack;
         WindowMgr.Instance.OpenWindow<MapWindow>();
     }
 
     protected override void OnPreOpen() {
+        RefreshButtonState();
         RrefreshMapInfo();
         RefreshInfo();
     }
@@ -52,21 +68,25 @@ public class MapWindow : BaseWindowWrapper<MapWindow> {
 
     protected override void InitMsg() {
         btnClose.onClick.AddListener(CloseWindow);
+        btnSelect.onClick.AddListener(SelectCounty);
 
         Send.RegisterMsg(SendType.DayChange, OnDayChange);
     }
 
     protected override void ClearMsg() {
         btnClose.onClick.RemoveListener(CloseWindow);
+        btnSelect.onClick.RemoveListener(SelectCounty);
 
         Send.UnregisterMsg(SendType.DayChange, OnDayChange);
     }
 
     private void SelectArea(int index) {
-        ClearOutLine();
-        outLineList[index].enabled = true;
-        curSelectCounty = BattleMgr.Instance.country.countyList[index];
+        CurSelectCounty = BattleMgr.Instance.country.countyList[index];
         RefreshInfo();
+    }
+
+    private void RefreshButtonState() {
+        btnSelect.gameObject.SetActive(state == MapWindowState.Select);
     }
 
     private void RrefreshMapInfo() {
@@ -76,23 +96,22 @@ public class MapWindow : BaseWindowWrapper<MapWindow> {
     }
 
     private void RefreshInfo() {
-        if (curSelectCounty == null) {
+        if (CurSelectCounty == null) {
             ClearInfo();
             return;
         }
 
-        txtName.setText(curSelectCounty.roleName);
-        txtPeople.setText("PeopleNum", (int)curSelectCounty.PeopleNum);
-        txtRemainFood.setText("RemainFood", curSelectCounty.RemainFood);
-        txtArmy.setText("ArmyNum", (int)curSelectCounty.ArmyNum);
-        txtLoyalty.setText("LoyaltyDesc", (int)curSelectCounty.Loyalty);
-        txtCorruptionRate.setText("CorruptionRate", (int)curSelectCounty.CorruptionRate);
-        txtAreaFactor.setText("AreaFactor", curSelectCounty.AreaFactor);
+        txtName.setText(CurSelectCounty.roleName);
+        txtPeople.setText("PeopleNum", (int)CurSelectCounty.PeopleNum);
+        txtRemainFood.setText("RemainFood", CurSelectCounty.RemainFood);
+        txtArmy.setText("ArmyNum", (int)CurSelectCounty.ArmyNum);
+        txtLoyalty.setText("LoyaltyDesc", (int)CurSelectCounty.Loyalty);
+        txtCorruptionRate.setText("CorruptionRate", (int)CurSelectCounty.CorruptionRate);
+        txtAreaFactor.setText("AreaFactor", CurSelectCounty.AreaFactor);
         txtOther.setText("Event");
     }
 
     private void ClearInfo() {
-        ClearOutLine();
         txtName.setText("");
         txtPeople.setText("");
         txtRemainFood.setText("");
@@ -109,7 +128,33 @@ public class MapWindow : BaseWindowWrapper<MapWindow> {
         }
     }
 
+    private void ShowSelectOutLine() {
+        if (m_curSelectCounty == null)
+            return;
+
+        int index = BattleMgr.Instance.country.countyList.IndexOf(m_curSelectCounty);
+        outLineList[index].enabled = true;
+    }
+
     private void OnDayChange(object[] objs) {
         RefreshInfo();
     }
+
+    private void SelectCounty() {
+        if (CurSelectCounty == null)
+            return;
+
+        if (callBack != null) {
+            callBack(CurSelectCounty);
+            CloseWindow();
+        }
+        else {
+            //to do tip
+        }
+    }
+}
+
+public enum MapWindowState {
+    Normal,
+    Select,
 }

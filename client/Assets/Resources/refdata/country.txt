@@ -1,6 +1,6 @@
 ﻿ID	RemainFood	TaxRate	ArmyRate	King	CountyNum	WifeNum	MinisterNum	SecretAgentNum
 ID	RemainFood	TaxRate	ArmyRate	King	CountyNum	WifeNum	MinisterNum	SecretAgentNum
-1001	10000	20	5	1001;1002	13	1	16	3
+1001	10000	20	5	1001;1002	6	1	16	3
 1002	10000	20	5	1001;1002	13	1	16	3
 1003	10000	20	5	1001;1002	13	1	16	3
 1004	10000	20	5	1001;1002	13	1	16	3

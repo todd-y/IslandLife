@@ -115,10 +115,10 @@ public class ActionInfoWindow : BaseWindowWrapper<ActionInfoWindow> {
         }
         else {
             if (executorList[0].roleType == RoleType.County) {
-                Debug.LogError("wait");
+                MapWindow.Instance.OpenWindow(MapWindowState.Select, (County)actionInfo.target, SelectTargetHandle);
             }
             else {
-                SelectActorWindow.Instance.OpenWindow(executorList, SelectTargetHandle);
+                SelectActorWindow.Instance.OpenWindow(executorList, SelectExecutorHandle);
             }
         }
     }
@@ -134,7 +134,7 @@ public class ActionInfoWindow : BaseWindowWrapper<ActionInfoWindow> {
         }
         else {
             if (targetList[0].roleType == RoleType.County) {
-                Debug.LogError("wait");
+                MapWindow.Instance.OpenWindow(MapWindowState.Select, (County)actionInfo.target, SelectTargetHandle);
             }
             else {
                 SelectActorWindow.Instance.OpenWindow(targetList, SelectTargetHandle);

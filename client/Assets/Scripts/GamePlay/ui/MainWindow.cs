@@ -139,19 +139,19 @@ public class MainWindow : BaseWindowWrapper<MainWindow> {
     }
 
     private void OnArmyChange(object[] objs) {
-        txtArmy.setText(Country.ArmyNum());
+        txtArmy.setText("ArmyNum", (int)Country.ArmyNum());
     }
 
     private void OnPeopleNumChange(object[] objs) {
-        txtPeople.setText(Country.PeopleNum());
+        txtPeople.setText("PeopleNum", (int)Country.PeopleNum());
     }
 
     private void OnFoodChange(object[] objs) {
-        txtGold.setText(Country.RemainFood);
+        txtGold.setText("RemainFood", (int)Country.RemainFood);
     }
 
     private void OnLoyaltyChange(object[] objs) {
-        txtLoyalty.setText(Country.PeopleLoyalty());
+        txtLoyalty.setText("LoyaltyDesc", Country.PeopleLoyalty());
     }
 
     private void OnCourtiersClick() {
@@ -175,7 +175,7 @@ public class MainWindow : BaseWindowWrapper<MainWindow> {
     }
 
     private void OnMapClick() {
-        WindowMgr.Instance.OpenWindow<MapWindow>();
+        MapWindow.Instance.OpenWindow(MapWindowState.Normal);
     }
 
     private void OnSelectClick(CurSelectType type) {

@@ -31,6 +31,7 @@ public class WindowMgr : Singleton<WindowMgr> {
         }
 
         openList.Add(winName);
+        window.transform.SetAsLastSibling();
         window.DoOpen();
     }
 
