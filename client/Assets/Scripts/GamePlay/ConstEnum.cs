@@ -116,12 +116,15 @@ public enum RoleType {
 
 public enum ResultType {
     None = 0,
-    Cachet,
-    Loyalty,
-    Ability,
     Food,
     PeopleNum,
     ArmyNum,
+    Meeting,
+    ChooseWife,
+    ChooseMinister,
+    Cachet,
+    Loyalty,
+    Ability,
     CorruptionRate,
     AreaFactor,
     TaxRate,

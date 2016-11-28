@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 /// <summary>
 /// 郡县
@@ -49,17 +50,26 @@ public class County : BaseData {
         get{
             return corruptionRate;
         }
+        set {
+            corruptionRate = value;
+        }
     }
 
     public int RemainFood {
         get {
             return (int)remainFood;
         }
+        set {
+            remainFood = value;
+        }
     }
 
     public int AreaFactor {
         get {
             return (int)areaFactor;
+        }
+        set {
+            areaFactor = value;
         }
     }
 
@@ -78,6 +88,13 @@ public class County : BaseData {
 
     public void DailyUpdate() {
         remainFood = remainFood - GetPeopleCost() - GetArmyCost();
+    }
+
+    public void UpdateDT(float dt) {
+        List<BuffObj> list = new List<BuffObj>(buffList);
+        for (int index = 0; index < list.Count; index++) {
+            list[index].Update(dt);
+        }
     }
 
     private float GetPeopleCost() {
@@ -99,5 +116,56 @@ public class County : BaseData {
 
     private float GetTaxRate() {
         return country.TaxRate + taxRate;
+    }
+
+    public override void AddBuff(ResultType resultType, int value, int durationTime) {
+        Debug.LogError("county addbuff");
+        switch (resultType) {
+            case ResultType.Food:
+                RemainFood += value;
+                return;//不加入buff
+            case ResultType.PeopleNum:
+                PeopleNum += value;
+                return;//不加入buff
+            case ResultType.ArmyNum:
+                ArmyNum += value;
+                return;//不加入buff
+            case ResultType.Loyalty:
+                Loyalty += value;
+                break;
+            case ResultType.CorruptionRate:
+                CorruptionRate += value;
+                break;
+            case ResultType.AreaFactor:
+                AreaFactor += value;
+                break;
+            default:
+                Debug.LogError("county resultType is no handle " + resultType);
+                return;//不加入buff
+        }
+
+        BuffObj buffObj = new BuffObj(this, resultType, value, durationTime);
+        buffList.Add(buffObj);
+    }
+
+    public override void RemoveBuff(BuffObj buffObj) {
+        Debug.LogError("county RemoveBuff  " + buffObj.resultType + "/" + buffObj.value);
+        int value = buffObj.value;
+        switch (buffObj.resultType) {
+            case ResultType.Loyalty:
+                Loyalty += value;
+                break;
+            case ResultType.CorruptionRate:
+                CorruptionRate += value;
+                break;
+            case ResultType.AreaFactor:
+                AreaFactor += value;
+                break;
+            default:
+                Debug.LogError("county RemoveBuff is no handle " + buffObj.resultType);
+                return;//不加入buff
+        }
+
+        buffList.Remove(buffObj);
     }
 }

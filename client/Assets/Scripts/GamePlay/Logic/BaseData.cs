@@ -7,9 +7,13 @@ public class BaseData {
     public RoleType roleType = RoleType.None;
     public string roleName = "";
 
-    List<BuffObj> buffList = new List<BuffObj>();
+    public List<BuffObj> buffList = new List<BuffObj>();
 
-    public virtual void AddBuff(ResultType resultType, int value) {
+    public virtual void AddBuff(ResultType resultType, int value, int durationTime) {
         
+    }
+
+    public virtual void RemoveBuff(BuffObj buffObj) {
+
     }
 }

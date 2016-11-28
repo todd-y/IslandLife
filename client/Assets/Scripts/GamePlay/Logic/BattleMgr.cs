@@ -98,11 +98,16 @@ public class BattleMgr : Singleton<BattleMgr> {
         float dt = Time.deltaTime;
         int day = CurTime.Day;
         CurTime = CurTime.AddDays(dt / GetCurDaySecond());
-        UpdateAction(dt);
+        UpdateDT(dt);
         if (day != CurTime.Day) {
             AddOneDay();
         }
         CheckTimedEvent();
+    }
+
+    private void UpdateDT(float dt) {
+        UpdateAction(dt);
+        country.UpdateDT(dt);
     }
 
     private void UpdateAction(float dt) {
@@ -284,10 +289,10 @@ public class BattleMgr : Singleton<BattleMgr> {
 
             for (int k = 0; k < targetList.Count; k++) {
                 BaseData curTarget = targetList[k];
-                curTarget.AddBuff(refResult.ResultType, value);
+                curTarget.AddBuff(refResult.ResultType, value, refResult.DurationTime);
             }
 
-            resultList.Add(new ResultObj(targetList, refResult.ResultType, value));
+            resultList.Add(new ResultObj(targetList, refResult.ResultType, value, refResult.DurationTime));
         }
 
         return resultList;

@@ -206,6 +206,22 @@ public class Country : BaseData {
         ConcubineUpdate();
     }
 
+    public void UpdateDT(float dt) {
+        for (int index = 0; index < countyList.Count; index++) {
+            County county = countyList[index];
+            county.UpdateDT(dt);
+        }
+
+        List<Actor> list = new List<Actor>();
+        list.AddRange(ministerList);
+        list.AddRange(secretAgentList);
+        list.AddRange(wifeList);
+        for (int index = 0; index < list.Count; index++) {
+            Actor actor = list[index];
+            actor.UpdateDT(dt);
+        }
+    }
+
     private void ReduceDailyCost() {
         RemainFood -= 100;
     }
@@ -242,8 +258,29 @@ public class Country : BaseData {
         List<Actor> list = new List<Actor>();
         list.AddRange(ministerList);
         list.AddRange(wifeList);
+        list.AddRange(secretAgentList);
         for (int index = 0; index < list.Count; index++ ) {
 
+        }
+    }
+
+    public override void AddBuff(ResultType resultType, int value, int durationTime) {
+        switch(resultType){
+            case ResultType.Food:
+                RemainFood += value;
+                break;
+            case ResultType.ChooseMinister:
+                Debug.LogError("to do choose minister");
+                break;
+            case ResultType.ChooseWife:
+                Debug.LogError("to do choose wife");
+                break;
+            case ResultType.Meeting:
+                Debug.LogError("to do meeting");
+                break;
+            default:
+                Debug.LogError("country resultType is no handle " + resultType);
+                break;
         }
     }
 }
