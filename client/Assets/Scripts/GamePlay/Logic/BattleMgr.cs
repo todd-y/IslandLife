@@ -185,45 +185,64 @@ public class BattleMgr : Singleton<BattleMgr> {
 
         for (int index = 0; index < roleList.Count; index++ ) {
             RoleType roleType = roleList[index];
-            switch(roleType){
-                case RoleType.King:
-                    actorList.Add(country.king);
-                    break;
-                case RoleType.Wife:
-                    for (int k = 0; k < country.wifeList.Count; k++ ) {
-                        actorList.Add(country.wifeList[k]);
-                    }
-                    break;
-                case RoleType.Minister:
-                    for (int k = 0; k < country.ministerList.Count; k++) {
-                        actorList.Add(country.ministerList[k]);
-                    }
-                    break;
-                case RoleType.Country:
-                    actorList.Add(country);
-                    break;
-                case RoleType.County:
-                    for (int k = 0; k < country.countyList.Count; k++) {
-                        actorList.Add(country.countyList[k]);
-                    }
-                    break;
-                case RoleType.Gov:
-                    actorList.Add(country);
-                    break;
-                case RoleType.SecretAgent:
-                    for (int k = 0; k < country.secretAgentList.Count; k++) {
-                        actorList.Add(country.secretAgentList[k]);
-                    }
-                    break;
-                case RoleType.TriggerActor:
-                    //TO DO
-                case RoleType.SelectActor:
-                    //TO DO
-                default:
-                    Debug.LogError("未处理的roletype:" + roleType);
-                    break;
-            }
+            actorList.AddRange(GetActionActorList(roleType));
         }
+        return actorList;
+    }
+
+    public List<BaseData> GetActionActorList(RoleType roleType, BaseData executor = null, BaseData target = null) {
+        List<BaseData> actorList = new List<BaseData>();
+        switch (roleType) {
+            case RoleType.King:
+                actorList.Add(country.king);
+                break;
+            case RoleType.Wife:
+                for (int k = 0; k < country.wifeList.Count; k++) {
+                    actorList.Add(country.wifeList[k]);
+                }
+                break;
+            case RoleType.Minister:
+                for (int k = 0; k < country.ministerList.Count; k++) {
+                    actorList.Add(country.ministerList[k]);
+                }
+                break;
+            case RoleType.Country:
+                actorList.Add(country);
+                break;
+            case RoleType.County:
+                for (int k = 0; k < country.countyList.Count; k++) {
+                    actorList.Add(country.countyList[k]);
+                }
+                break;
+            case RoleType.Gov:
+                actorList.Add(country);
+                break;
+            case RoleType.SecretAgent:
+                for (int k = 0; k < country.secretAgentList.Count; k++) {
+                    actorList.Add(country.secretAgentList[k]);
+                }
+                break;
+            case RoleType.TriggerActor:
+                if (executor != null) {
+                    actorList.Add(executor);
+                }
+                else {
+                    Debug.LogError("executor is null");
+                }
+                break;
+            case RoleType.SelectActor:
+                if (target != null) {
+                    actorList.Add(target);
+                }
+                else {
+                    Debug.LogError("target is null");
+                }
+                break;
+            default:
+                Debug.LogError("未处理的roletype:" + roleType);
+                break;
+        }
+
         return actorList;
     }
 
@@ -244,5 +263,33 @@ public class BattleMgr : Singleton<BattleMgr> {
         if (action.ActionState == ActionState.Finish) {
             actionList.Remove(action);
         }
+    }
+
+    public List<ResultObj> ResultListHandle(List<int> resultIDList, BaseData executor, BaseData target, int param) {
+        List<ResultObj> resultList = new List<ResultObj>();
+        for (int index = 0; index < resultIDList.Count; index++ ) {
+            int effectID = resultIDList[index];
+            RefResult refResult = RefResult.GetRef(effectID);
+            if(refResult == null)
+                continue;
+            List<BaseData> targetList = GetActionActorList(refResult.Target, executor, target);
+            if (targetList.Count == 0){
+                Debug.LogError("targetList count is 0");
+                continue;
+            }
+            int value = refResult.GetResultValue(param);
+            if (value == 0) {
+                Debug.LogError("value is 0");
+            }
+
+            for (int k = 0; k < targetList.Count; k++) {
+                BaseData curTarget = targetList[k];
+                curTarget.AddBuff(refResult.ResultType, value);
+            }
+
+            resultList.Add(new ResultObj(targetList, refResult.ResultType, value));
+        }
+
+        return resultList;
     }
 }

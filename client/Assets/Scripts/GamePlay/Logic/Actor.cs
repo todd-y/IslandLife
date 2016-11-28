@@ -21,12 +21,12 @@ public class Actor : BaseData {
 
     public Actor(RefActor refActor, string _name) {
         name = _name;
-        int randomAge = ToolMgr.Instance.GetRandom(refActor.Age);
+        int randomAge = ToolMgr.Instance.RandomRange(refActor.Age);
         birth = BattleMgr.Instance.CurTime.AddYears(-randomAge).AddDays( UnityEngine.Random.Range(0f,1f) * 365);
-        cachet = ToolMgr.Instance.GetRandom(refActor.Cachet);
-        loyalty = ToolMgr.Instance.GetRandom(refActor.Loyalty);
-        ability = ToolMgr.Instance.GetRandom(refActor.Ability);
-        remainFood = ToolMgr.Instance.GetRandom(refActor.RemainFood);
+        cachet = ToolMgr.Instance.RandomRange(refActor.Cachet);
+        loyalty = ToolMgr.Instance.RandomRange(refActor.Loyalty);
+        ability = ToolMgr.Instance.RandomRange(refActor.Ability);
+        remainFood = ToolMgr.Instance.RandomRange(refActor.RemainFood);
     }
 
     public float RemainFood {

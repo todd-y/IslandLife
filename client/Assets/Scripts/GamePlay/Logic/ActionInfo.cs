@@ -9,10 +9,14 @@ public class ActionInfo {
     public RefAction action = null;
     public BaseData executor = null;
     public BaseData target = null;
+    public int param = 100;
     private ActionState m_actionState;
     private DateTime startTime;
     private DateTime curTime;
     private DateTime endTime;
+
+    //result
+    private List<ResultObj> resultList = new List<ResultObj>();
 
     public ActionState ActionState {
         get {
@@ -69,6 +73,7 @@ public class ActionInfo {
 
     private void FinishHandle() {
         ActionState = ActionState.Finish;
+        resultList = BattleMgr.Instance.ResultListHandle(action.ResultIDList, executor, target, param);
     }
 
     public float GetProgress() {
@@ -79,7 +84,11 @@ public class ActionInfo {
     }
 
     public string GetResultDesc() {
-        return "result is dont work";
+        string desc = "";
+        for (int index = 0; index < resultList.Count; index++ ) {
+            desc += resultList[index].GetResultDesc();
+        }
+        return desc;
     }
 }
 

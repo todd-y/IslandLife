@@ -68,12 +68,12 @@ public class County : BaseData {
         roleName = _name;
         country = _country;
         taxRate = 0;
-        peopleNum = ToolMgr.Instance.GetRandom(_countyData.PeopleNum);
-        loyalty = ToolMgr.Instance.GetRandom(_countyData.Loyalty);
-        remainFood = ToolMgr.Instance.GetRandom(_countyData.RemainFood);
-        armyNum = ToolMgr.Instance.GetRandom(_countyData.ArmyNum);
-        corruptionRate = ToolMgr.Instance.GetRandom(_countyData.CorruptionRate);
-        areaFactor = ToolMgr.Instance.GetRandom(_countyData.AreaFactor);
+        peopleNum = ToolMgr.Instance.RandomRange(_countyData.PeopleNum);
+        loyalty = ToolMgr.Instance.RandomRange(_countyData.Loyalty);
+        remainFood = ToolMgr.Instance.RandomRange(_countyData.RemainFood);
+        armyNum = ToolMgr.Instance.RandomRange(_countyData.ArmyNum);
+        corruptionRate = ToolMgr.Instance.RandomRange(_countyData.CorruptionRate);
+        areaFactor = ToolMgr.Instance.RandomRange(_countyData.AreaFactor);
     }
 
     public void DailyUpdate() {

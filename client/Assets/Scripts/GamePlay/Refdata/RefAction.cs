@@ -9,10 +9,10 @@ public class RefAction : RefBase {
     public ActionType ActionType;
     public List<RoleType> ExecutorList;
     public List<RoleType> TargetList;
-    public float NeedTime;
-    public float NeedFood;
-    public float NeedCachet;
-    public List<int> EffectIDList;
+    public int NeedTime;
+    public int NeedFood;
+    public int NeedCachet;
+    public List<int> ResultIDList;
 
     public override string GetFirstKeyName() {
         return "Action";
@@ -24,10 +24,10 @@ public class RefAction : RefBase {
         ActionType = (ActionType)GetEnum("ActionType", typeof(ActionType));
         ExecutorList = GetList<RoleType>("ExecutorList", typeof(RoleType));
         TargetList = GetList<RoleType>("TargetList", typeof(RoleType));
-        NeedTime = GetFloat("NeedTime");
-        NeedFood = GetFloat("NeedFood");
-        NeedCachet = GetFloat("NeedCachet");
-        EffectIDList = GetList<int>("EffectIDList", typeof(int));
+        NeedTime = GetInt("NeedTime");
+        NeedFood = GetInt("NeedFood");
+        NeedCachet = GetInt("NeedCachet");
+        ResultIDList = GetList<int>("ResultIDList", typeof(int));
     }
 
     public string GetCostDesc() {

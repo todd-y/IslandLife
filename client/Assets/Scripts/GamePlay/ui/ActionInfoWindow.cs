@@ -60,7 +60,6 @@ public class ActionInfoWindow : BaseWindowWrapper<ActionInfoWindow> {
                 sldProgess.gameObject.SetActive(false);
                 btnFinish.gameObject.SetActive(false);
                 txtResult.gameObject.SetActive(false);
-                txtResult.setText(actionInfo.GetResultDesc());
                 break;
             case ActionState.Doing:
             case ActionState.NoExecutor:
@@ -77,6 +76,7 @@ public class ActionInfoWindow : BaseWindowWrapper<ActionInfoWindow> {
                 sldProgess.gameObject.SetActive(false);
                 btnFinish.gameObject.SetActive(true);
                 txtResult.gameObject.SetActive(true);
+                txtResult.setText(actionInfo.GetResultDesc());
                 break;
             default:
                 Debug.LogError("no handle type :" + actionInfo.ActionState);

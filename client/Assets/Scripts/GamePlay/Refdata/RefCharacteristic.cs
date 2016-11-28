@@ -2,14 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class RefEffect : RefBase {
+public class RefCharacteristic : RefBase {
 
-    public static Dictionary<int, RefEffect> cacheMap = new Dictionary<int, RefEffect>();
-
+    public static Dictionary<int, RefCharacteristic> cacheMap = new Dictionary<int, RefCharacteristic>();
     public int ID;
-    public RoleType Target;
-    public EffectAttribute Attribute;
-    public float Num;
+    public string Desc;
+    public List<int> ResultIDList;
 
     public override string GetFirstKeyName() {
         return "ID";
@@ -18,13 +16,12 @@ public class RefEffect : RefBase {
     public override void LoadByLine(Dictionary<string, string> _value, int _line) {
         base.LoadByLine(_value, _line);
         ID = GetInt("ID");
-        Target = (RoleType)GetEnum("Target", typeof(RoleType));
-        Attribute = (EffectAttribute)GetEnum("Attribute", typeof(EffectAttribute));
-        Num = GetFloat("Num");
+        Desc = GetString("Desc");
+        ResultIDList = GetList<int>("ResultIDList", typeof(int));
     }
 
-    public static RefEffect GetRef(int _id) {
-        RefEffect data = null;
+    public static RefCharacteristic GetRef(int _id) {
+        RefCharacteristic data = null;
         if (cacheMap.TryGetValue(_id, out data)) {
             return data;
         }

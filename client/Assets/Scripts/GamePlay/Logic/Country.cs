@@ -51,16 +51,16 @@ public class Country : BaseData {
         taxRate = refCountry.TaxRate;
         armyRate = refCountry.ArmyRate;
 
-        king = new Actor(RefActor.GetRef(ToolMgr.Instance.GetRandom(refCountry.King)), RefName.GetActorRandomName());
+        king = new Actor(RefActor.GetRef(ToolMgr.Instance.RandomRange(refCountry.King)), RefName.GetActorRandomName());
         king.Init(OfficialType.King, RoleType.King);
 		//create county
         List<int> countyIDList = new List<int>(RefCounty.cacheMap.Keys);
         List<string> countyNameList = RefName.GetTypeList(NameType.County);
         for (int index = 0; index < refCountry.CountyNum; index++ ) {
-            int countyID = ToolMgr.Instance.RandomAndRemove<int>(countyIDList);
+            int countyID = ToolMgr.Instance.RandomAndRemove(countyIDList);
             if (countyID == 0)
                 break;
-            string countyName = ToolMgr.Instance.RandomAndRemove<string>(countyNameList);
+            string countyName = ToolMgr.Instance.RandomAndRemove(countyNameList);
             RefCounty refCounty = RefCounty.GetRef(countyID);
             if (refCounty == null)
                 continue;

@@ -35,13 +35,6 @@ public enum TitleType {
     None = 0,
 }
 
-/// <summary>
-/// 特性枚举
-/// </summary>
-public enum CharacteristicType {
-    None = 0,
-}
-
 public enum GameState {
     Wait = 1,
     Prepare,
@@ -121,11 +114,28 @@ public enum RoleType {
     SelectActor,
 }
 
-public enum EffectAttribute {
+public enum ResultType {
     None = 0,
     Cachet,
     Loyalty,
+    Ability,
     Food,
+    PeopleNum,
+    ArmyNum,
+    CorruptionRate,
+    AreaFactor,
+    TaxRate,
+    ArmyRate,
+    Title,
+    Official,
+    Characteristic,
+}
+
+public enum ValueSource {
+    Fixed = 0,
+    RandomOne,//从中随机一个
+    RandomRange,//从范围中随机一个
+    Passed,
 }
 
 public enum LangType {
@@ -138,4 +148,8 @@ public enum NameType {
     County,
     FamilyName,
     FirstName,
+}
+
+public enum CharacterType {
+    None,
 }

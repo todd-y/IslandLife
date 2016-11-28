@@ -5,7 +5,7 @@ using System.Collections;
 /// 特性
 /// </summary>
 public class Characteristic {
-    public CharacteristicType type;
+    private RefCharacteristic data;
 
     public void AddValue() {
         

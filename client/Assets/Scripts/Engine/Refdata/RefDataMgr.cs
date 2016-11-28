@@ -14,7 +14,7 @@ public class RefDataMgr : BaseRefDataMgr<RefDataMgr> {
         List<IEnumerator> co_list = new List<IEnumerator>() {
             Co_LoadGeneric(RefIcon.cacheMap),
             Co_LoadGeneric(RefGeneral.cacheMap),
-            Co_LoadGeneric(RefEffect.cacheMap),
+            Co_LoadGeneric(RefResult.cacheMap),
             Co_LoadGeneric(RefAction.cacheMap),
             Co_LoadGeneric(RefLanguage.cacheMap),
             Co_LoadGeneric(RefActor.cacheMap),
