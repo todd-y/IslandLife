@@ -59,7 +59,7 @@ public class ToolMgr : Singleton<ToolMgr> {
         for (int index = 0; index < list.Count; index++ ) {
             int curWeight = weightList[index];
             curTotalWeight += curWeight;
-            if (curTotalWeight > totalWeight) {
+            if (curTotalWeight > randomWeight) {
                 return list[index];
             }
         }

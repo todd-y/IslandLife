@@ -20,7 +20,7 @@ public class Launch : MonoBehaviour {
 
         Instance = this;
 
-        CoDelegator.Instance = gameObject.AddMissingComponent<CoDelegator>();
+        gameObject.AddMissingComponent<CoDelegator>();
         DontDestroyOnLoad(gameObject);
     }
 
@@ -69,6 +69,7 @@ public class Launch : MonoBehaviour {
 
         Debug.Log("Launch InitAsset End !!!");
 
+        LocalAssetMgr.Instance.Load_Scene("Battle");
         //WindowMgr.Instance.OpenWindow<LoadingWindow>();
         yield break;
     }

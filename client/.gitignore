@@ -6,12 +6,6 @@ library/*
 obj/*
 
 temp/*
-
-
-Assets/Atlas/*
-
-
-Assets/Atlas.meta
 Assembly-CSharp.csproj
 
 Assembly-CSharp-Editor.csproj

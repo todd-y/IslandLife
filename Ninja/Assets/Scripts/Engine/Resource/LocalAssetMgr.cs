@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// 本地资源管理器
@@ -64,22 +65,11 @@ public class LocalAssetMgr : Singleton<LocalAssetMgr> {
         return sprite;
     }
 
-//    // 加载场景
-//    public IEnumerator Load_Scene (string name) {
-
-//        //if (!DebugAsset.UnloadSceneAB)
-//        //    yield break;
-
-//        Debug.LogWarning("Load_Scene : " + name);
-
-//        string[] infos = name.Split('_');
-//        if (infos.Length < 2) {
-//            yield break;
-//        }
-
-//        string shortUrl = string.Format("scene/{0}.unity3d", infos[0]);
-//        yield return CoDelegator.Coroutine(DownloadMgr.Instance.WaitShortUrl(shortUrl));
-//    }
+    // 加载场景
+    public void Load_Scene(string name) {
+        Debug.LogWarning("Load_Scene : " + name);
+        SceneManager.LoadScene(name);
+    }
 
 //    public void UnloadScene () {
 //        WWWDownloadUtilty.Instance.ClearAllByPre("scene");
