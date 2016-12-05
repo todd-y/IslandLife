@@ -12,12 +12,26 @@ public class UbhBullet : UbhMonoBehaviour
         private set;
     }
 
+    private UbhUtil.AXIS recordAxisMove;
+    private float recordAngle;
+
     void OnDisable ()
     {
         StopAllCoroutines();
         transform.ResetPosition();
         transform.ResetRotation();
         _Shooting = false;
+    }
+
+    public void ReturnBullet() {
+        if (recordAxisMove == UbhUtil.AXIS.X_AND_Z) {
+            // X and Z axis
+            transform.SetEulerAnglesY(-(recordAngle + 180));
+        }
+        else {
+            // X and Y axis
+            transform.SetEulerAnglesZ((recordAngle + 180));
+        }
     }
 
     /// <summary>
@@ -28,6 +42,8 @@ public class UbhBullet : UbhMonoBehaviour
                       bool wave, float waveSpeed, float waveRangeSize,
                       bool pauseAndResume, float pauseTime, float resumeTime, UbhUtil.AXIS axisMove)
     {
+        recordAngle = angle;
+        recordAxisMove = axisMove;
         if (_Shooting) {
             return;
         }

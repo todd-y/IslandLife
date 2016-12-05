@@ -6,8 +6,6 @@ library/*
 obj/*
 
 temp/*
-Assets/UniBulletHell*
-Assets/UniBulletHell.meta
 Assembly-CSharp.csproj
 
 Assembly-CSharp-Editor.csproj
