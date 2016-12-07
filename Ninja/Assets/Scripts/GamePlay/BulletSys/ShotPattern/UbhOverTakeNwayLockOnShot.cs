@@ -31,7 +31,7 @@ public class UbhOverTakeNwayLockOnShot : UbhOverTakeNwayShot
             return;
         }
 
-        _CenterAngle = UbhUtil.GetAngleFromTwoPosition(transform, _TargetTransform, ShotCtrl._AxisMove);
+        _CenterAngle = UbhUtil.GetAngleFromTwoPosition(transform, _TargetTransform, AxisMove);
 
         base.Shot();
     }

@@ -50,6 +50,9 @@ public class UbhNwayShot : UbhBaseShot
                 }
             }
 
+            if (_Shooting == false)
+                yield break;
+
             var bullet = GetBullet(transform.position, transform.rotation);
             if (bullet == null) {
                 break;

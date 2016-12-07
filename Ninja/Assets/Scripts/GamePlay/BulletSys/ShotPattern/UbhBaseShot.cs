@@ -36,6 +36,14 @@ public abstract class UbhBaseShot : UbhMonoBehaviour
     // "Set a name of callback method at using Call Back Receiver."
     public string _CallbackMethod;
 
+    protected UbhUtil.AXIS AxisMove {
+        get {
+            if (ShotCtrl == null)
+                return UbhUtil.AXIS.X_AND_Y;
+            return ShotCtrl._AxisMove;
+        }
+    }
+
     protected UbhShotCtrl ShotCtrl
     {
         get
@@ -49,6 +57,12 @@ public abstract class UbhBaseShot : UbhMonoBehaviour
     UbhShotCtrl _ShotCtrl;
 
     protected bool _Shooting;
+
+    public bool Shooting {
+        get {
+            return _Shooting;
+        }
+    }
 
     /// <summary>
     /// Call from override Awake method in inheriting classes.
@@ -95,7 +109,7 @@ public abstract class UbhBaseShot : UbhMonoBehaviour
     /// <summary>
     /// Finished shot.
     /// </summary>
-    protected void FinishedShot ()
+    public void FinishedShot ()
     {
         if (_CallbackReceiver != null && string.IsNullOrEmpty(_CallbackMethod) == false) {
             _CallbackReceiver.SendMessage(_CallbackMethod, SendMessageOptions.DontRequireReceiver);
@@ -142,7 +156,7 @@ public abstract class UbhBaseShot : UbhMonoBehaviour
                     homing, homingTarget, homingAngleSpeed,
                     wave, waveSpeed, waveRangeSize,
                     _UsePauseAndResume, _PauseTime, _ResumeTime,
-                    ShotCtrl != null ? ShotCtrl._AxisMove : UbhUtil.AXIS.X_AND_Y);
+                    AxisMove);
     }
 
     /// <summary>

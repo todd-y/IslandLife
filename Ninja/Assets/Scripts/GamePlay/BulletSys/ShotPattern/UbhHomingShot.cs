@@ -54,7 +54,7 @@ public class UbhHomingShot : UbhBaseShot
                 _TargetTransform = UbhUtil.GetTransformFromTagName(_TargetTagName);
             }
 
-            float angle = UbhUtil.GetAngleFromTwoPosition(transform, _TargetTransform, ShotCtrl._AxisMove);
+            float angle = UbhUtil.GetAngleFromTwoPosition(transform, _TargetTransform, AxisMove);
 
             ShotBullet(bullet, _BulletSpeed, angle, true, _TargetTransform, _HomingAngleSpeed);
 
