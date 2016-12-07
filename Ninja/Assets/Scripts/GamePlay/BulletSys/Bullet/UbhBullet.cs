@@ -4,44 +4,84 @@ using System.Collections;
 /// <summary>
 /// Ubh bullet.
 /// </summary>
-public class UbhBullet : UbhMonoBehaviour
-{
-    public bool _Shooting
-    {
+public class UbhBullet : UbhMonoBehaviour {
+    public bool _Shooting {
         get;
         private set;
     }
 
     private UbhUtil.AXIS recordAxisMove;
     private float recordAngle;
+    private GameObject normalSprite;
+    private GameObject backSprite;
 
-    void OnDisable ()
-    {
+    void Awake() {
+        Transform normalTransform = gameObject.GetChildControl<Transform>("NormalSprite");
+        if (normalTransform == null) {
+            Debug.LogError("normal transform is null:" + gameObject.name);
+        }
+        else{
+            normalSprite = normalTransform.gameObject;
+        }
+
+        Transform backTransform = gameObject.GetChildControl<Transform>("BackSprite");
+        if (backTransform == null) {
+            Debug.LogError("back transform is null:" + gameObject.name);
+        }
+        else {
+            backSprite = backTransform.gameObject;
+        }
+    }
+
+    void OnDisable() {
         StopAllCoroutines();
         transform.ResetPosition();
         transform.ResetRotation();
         _Shooting = false;
     }
 
+    void OnTriggerEnter2D(Collider2D c) {
+        HitCheck(c.transform);
+    }
+
+    private void HitCheck(Transform colTrans) {
+        int colLayer = colTrans.gameObject.layer;
+        if (colLayer == GeneralDefine.WallLayer) {
+            UbhObjectPool.Instance.ReleaseGameObject(gameObject);
+        }
+    }
+
+    public void SetDefault() {
+        gameObject.layer = GeneralDefine.EnemyBulletLayer;
+        if (normalSprite != null)
+            normalSprite.SetActive(true);
+        if (backSprite != null)
+            backSprite.SetActive(false);
+    }
+
     public void ReturnBullet() {
+        //return param
         if (recordAxisMove == UbhUtil.AXIS.X_AND_Z) {
-            // X and Z axis
             transform.SetEulerAnglesY(-(recordAngle + 180));
         }
         else {
-            // X and Y axis
             transform.SetEulerAnglesZ((recordAngle + 180));
         }
+
+        gameObject.layer = GeneralDefine.PlayerBulletLayer;
+        if (normalSprite != null)
+            normalSprite.SetActive(false);
+        if (backSprite != null)
+            backSprite.SetActive(true);
     }
 
     /// <summary>
     /// Bullet Shot
     /// </summary>
-    public void Shot (float speed, float angle, float accelSpeed, float accelTurn,
+    public void Shot(float speed, float angle, float accelSpeed, float accelTurn,
                       bool homing, Transform homingTarget, float homingAngleSpeed,
                       bool wave, float waveSpeed, float waveRangeSize,
-                      bool pauseAndResume, float pauseTime, float resumeTime, UbhUtil.AXIS axisMove)
-    {
+                      bool pauseAndResume, float pauseTime, float resumeTime, UbhUtil.AXIS axisMove) {
         recordAngle = angle;
         recordAxisMove = axisMove;
         if (_Shooting) {
@@ -55,15 +95,15 @@ public class UbhBullet : UbhMonoBehaviour
                                      pauseAndResume, pauseTime, resumeTime, axisMove));
     }
 
-    IEnumerator MoveCoroutine (float speed, float angle, float accelSpeed, float accelTurn,
+    IEnumerator MoveCoroutine(float speed, float angle, float accelSpeed, float accelTurn,
                                bool homing, Transform homingTarget, float homingAngleSpeed,
                                bool wave, float waveSpeed, float waveRangeSize,
-                               bool pauseAndResume, float pauseTime, float resumeTime, UbhUtil.AXIS axisMove)
-    {
+                               bool pauseAndResume, float pauseTime, float resumeTime, UbhUtil.AXIS axisMove) {
         if (axisMove == UbhUtil.AXIS.X_AND_Z) {
             // X and Z axis
             transform.SetEulerAnglesY(-angle);
-        } else {
+        }
+        else {
             // X and Y axis
             transform.SetEulerAnglesZ(angle);
         }
@@ -80,7 +120,8 @@ public class UbhBullet : UbhMonoBehaviour
                     if (axisMove == UbhUtil.AXIS.X_AND_Z) {
                         // X and Z axis
                         myAngle = -transform.eulerAngles.y;
-                    } else {
+                    }
+                    else {
                         // X and Y axis
                         myAngle = transform.eulerAngles.z;
                     }
@@ -90,13 +131,15 @@ public class UbhBullet : UbhMonoBehaviour
                     if (axisMove == UbhUtil.AXIS.X_AND_Z) {
                         // X and Z axis
                         transform.SetEulerAnglesY(-toAngle);
-                    } else {
+                    }
+                    else {
                         // X and Y axis
                         transform.SetEulerAnglesZ(toAngle);
                     }
                 }
 
-            } else if (wave) {
+            }
+            else if (wave) {
                 // acceleration turning.
                 angle += (accelTurn * UbhTimer.Instance.DeltaTime);
                 // wave.
@@ -105,20 +148,23 @@ public class UbhBullet : UbhMonoBehaviour
                     if (axisMove == UbhUtil.AXIS.X_AND_Z) {
                         // X and Z axis
                         transform.SetEulerAnglesY(-waveAngle);
-                    } else {
+                    }
+                    else {
                         // X and Y axis
                         transform.SetEulerAnglesZ(waveAngle);
                     }
                 }
                 selfFrameCnt++;
 
-            } else {
+            }
+            else {
                 // acceleration turning.
                 float addAngle = accelTurn * UbhTimer.Instance.DeltaTime;
                 if (axisMove == UbhUtil.AXIS.X_AND_Z) {
                     // X and Z axis
                     transform.AddEulerAnglesY(-addAngle);
-                } else {
+                }
+                else {
                     // X and Y axis
                     transform.AddEulerAnglesZ(addAngle);
                 }
@@ -131,7 +177,8 @@ public class UbhBullet : UbhMonoBehaviour
             if (axisMove == UbhUtil.AXIS.X_AND_Z) {
                 // X and Z axis
                 transform.position += transform.forward.normalized * speed * UbhTimer.Instance.DeltaTime;
-            } else {
+            }
+            else {
                 // X and Y axis
                 transform.position += transform.up.normalized * speed * UbhTimer.Instance.DeltaTime;
             }
