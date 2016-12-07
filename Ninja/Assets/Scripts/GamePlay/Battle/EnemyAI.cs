@@ -26,5 +26,14 @@ public class EnemyAI {
             enemy.Shot( Random.Range(0, enemy.shotList.Count) );
             curTime = 0;
         }
+
+        FaceTarget();
+    }
+
+    private void FaceTarget() {
+        if (enemy.target == null)
+            return;
+
+        enemy.transform.SetLocalScaleX(enemy.target.position.x - enemy.transform.position.x > 0 ? -1 : 1);
     }
 }
