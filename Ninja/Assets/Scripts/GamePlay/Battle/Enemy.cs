@@ -19,7 +19,7 @@ public class Enemy : Actor {
         base.BirthHandle();
         target = UbhUtil.GetTransformFromTagName("Player");
         ai = new EnemyAI(this);
-        ai.IsAwake(true);
+        //ai.IsAwake(true);
         hp = 10;
     }
 

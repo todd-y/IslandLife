@@ -8,7 +8,6 @@ public class Player : Actor {
     private const string AXIS_VERTICAL = "Vertical";
     private GameObject prefab;
 
-    private float speed = 5f;
     private float fireCD = 0.5f;
     private float lastFireTime = 0;
     private Vector2 tempVector2 = Vector2.zero;
@@ -49,14 +48,6 @@ public class Player : Actor {
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
         transform.SetLocalScaleX(mousePos.x - playerPos.x > 0 ? -1 : 1);
-    }
-
-    private void Move(Vector2 direction) {
-        Vector2 pos = transform.localPosition;
-
-        pos += direction * speed * Time.deltaTime;
-        transform.localPosition = pos;
-        animCtrl.PlayWalk();
     }
 
     private void Fire() {
