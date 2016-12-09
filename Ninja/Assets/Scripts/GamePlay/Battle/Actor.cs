@@ -64,8 +64,5 @@ public class Actor : MonoBehaviour {
             transform.localPosition = end;
             animCtrl.PlayWalk();
         }
-        else {
-            Debug.LogError(hit);
-        }
     }
 }
