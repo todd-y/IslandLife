@@ -329,6 +329,7 @@ namespace DunGen
 			var previousStatus = Status;
 			Status = status;
 
+            Send.SendMsg(SendType.GenerationStateChange, status);
 			if (previousStatus != status && OnGenerationStatusChanged != null)
 				OnGenerationStatusChanged(this, status);
 		}

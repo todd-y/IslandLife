@@ -27,6 +27,9 @@ namespace DunGen
         private readonly List<GameObject> doors = new List<GameObject>();
         private readonly List<DoorwayConnection> connections = new List<DoorwayConnection>();
 
+        void Start() {
+            BattleMgr.Instance.curDungeon = this;
+        }
 
         public Dungeon()
         {

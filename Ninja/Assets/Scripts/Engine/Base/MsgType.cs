@@ -12,10 +12,6 @@ public enum SendType {
     SecondChange,
     DayChange,
     GameStateChange,
-    ActionStateChange,
-    ActionUpdate,
-    FoodChange,
-    PeopleNumChange,
-    LoyaltyChange,
-    ArmyChange,
+    GenerationStateChange,
+    MonsterDead,
 }

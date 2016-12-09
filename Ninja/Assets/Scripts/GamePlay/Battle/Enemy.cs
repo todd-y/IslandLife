@@ -5,8 +5,16 @@ using System.Collections.Generic;
 public class Enemy : Actor {
     public Transform target;
     public List<UbhBaseShot> shotList = new List<UbhBaseShot>();
-    private EnemyAI ai;
     private UbhBaseShot curShot;
+
+    [HideInInspector]
+    public EnemyAI ai;
+    [HideInInspector]
+    public RoomInfo roomInfo;
+
+    public void Init(RoomInfo _roomInfo) {
+        roomInfo = _roomInfo;
+    }
 
     void Update() {
         if (ai == null)
@@ -19,7 +27,7 @@ public class Enemy : Actor {
         base.BirthHandle();
         target = UbhUtil.GetTransformFromTagName("Player");
         ai = new EnemyAI(this);
-        ai.IsAwake(true);
+        ai.IsAwake(false);
         hp = 10;
     }
 

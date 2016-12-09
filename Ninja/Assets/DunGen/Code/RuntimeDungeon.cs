@@ -15,6 +15,9 @@ namespace DunGen
 
         protected virtual void Start()
         {
+
+
+            //just for test
             if (GenerateOnStart)
                 Generator.Generate();
         }

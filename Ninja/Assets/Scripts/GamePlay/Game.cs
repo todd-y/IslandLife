@@ -10,11 +10,13 @@ public class Game : Singleton<Game> {
         WindowMgr.Instance.Init();
         ToolMgr.Instance.Init();
         TimeMgr.Instance.Init();
+        BattleMgr.Instance.Init();
     }
 
     public void Clear() {
         WindowMgr.Instance.Clear();
         ToolMgr.Instance.Clear();
         TimeMgr.Instance.Clear();
+        BattleMgr.Instance.Clear();
     }
 }
