@@ -19,6 +19,9 @@ public class RoomInfo : MonoBehaviour {
             enemyPosList.Add(enemyTransform[index].gameObject);
         }
 
+        if (door == null)
+            return;
+
         Transform[] doorTransform = door.GetComponentsInChildren<Transform>();
         for (int index = 0; index < doorTransform.Length; index++) {
             doorList.Add(doorTransform[index].gameObject);
