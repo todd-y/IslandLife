@@ -94,6 +94,8 @@ namespace DunGen
         private FlowNodeReference node;
         [SerializeField]
         private FlowLineReference line;
+        [HideInInspector]
+        public RoomInfo roomInfo;
 
 
         internal void AddTriggerVolume()

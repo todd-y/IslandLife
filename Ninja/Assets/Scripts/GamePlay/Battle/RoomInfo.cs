@@ -10,8 +10,7 @@ public class RoomInfo : MonoBehaviour {
     public List<GameObject> enemyPosList = new List<GameObject>();
     [HideInInspector]
     public RoomType roomType;
-    [HideInInspector]
-    public Tile tile;
+    private Tile tile;
 
     private List<GameObject> doorList = new List<GameObject>();
 
@@ -26,6 +25,11 @@ public class RoomInfo : MonoBehaviour {
         }
     }
 
+    void Start() {
+        tile = gameObject.GetComponent<Tile>();
+        tile.roomInfo = this;
+    }
+
     private void GetDoorList() {
         if (doorList.Count == 0) {
             for (int index = 0; index < tile.Placement.UsedDoorways.Count; index++) {
@@ -38,16 +42,13 @@ public class RoomInfo : MonoBehaviour {
 
     public void OpenDoor() {
         GetDoorList();
-        Debug.LogError("open");
         for (int index = 0; index < doorList.Count; index++) {
-            Debug.LogError(doorList[index].name);
             doorList[index].SetActive(false);
         }
     }
 
     public void CloseDoor() {
         GetDoorList();
-        Debug.LogError("close");
         for (int index = 0; index < doorList.Count; index++) {
             doorList[index].SetActive(true);
         }

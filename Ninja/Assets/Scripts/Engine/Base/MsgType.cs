@@ -14,4 +14,5 @@ public enum SendType {
     GameStateChange,
     GenerationStateChange,
     MonsterDead,
+    Transfer,
 }

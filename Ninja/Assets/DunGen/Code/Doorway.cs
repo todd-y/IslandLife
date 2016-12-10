@@ -12,6 +12,8 @@ namespace DunGen
     [AddComponentMenu("DunGen/Doorway")]
     public class Doorway : MonoBehaviour
     {
+        //self logic
+        public GameObject TransferPos;
         /// <summary>
         /// The socket group this doorway belongs to. Allows you to use different sized doorways and have them connect correctly
         /// </summary>

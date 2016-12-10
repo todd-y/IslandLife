@@ -6,6 +6,7 @@ using System.Collections.Generic;
 public class BattleMgr : Singleton<BattleMgr> {
 
     public Dungeon curDungeon;
+    public CameraCtrl curCameraCtrl;
 
     private Player player;
     private List<RoomInfo> roomList = new List<RoomInfo>();
@@ -15,11 +16,13 @@ public class BattleMgr : Singleton<BattleMgr> {
 	public void Init(){
 		Send.RegisterMsg(SendType.GenerationStateChange, OnGenerationStateChange);
         Send.RegisterMsg(SendType.MonsterDead, OnMonsterDead);
+        Send.RegisterMsg(SendType.Transfer, OnTransfer);
 	}
 	
 	public void Clear(){
 		Send.UnregisterMsg(SendType.GenerationStateChange, OnGenerationStateChange);
         Send.UnregisterMsg(SendType.MonsterDead, OnMonsterDead);
+        Send.UnregisterMsg(SendType.Transfer, OnTransfer);
 	}
 
     private void OnGenerationStateChange(object[] objs) {
@@ -35,8 +38,13 @@ public class BattleMgr : Singleton<BattleMgr> {
             Debug.LogError("enemy roominfo is null");
             return;
         }
-
+        enemyDic[enemy.roomInfo].Remove(enemy);
         CheckRoom(enemy.roomInfo);
+    }
+
+    private void OnTransfer(object[] objs) {
+        Doorway doorWay = (Doorway)objs[0];
+        EnterRoom(doorWay.ConnectedDoorway.Tile.roomInfo, doorWay.ConnectedDoorway.TransferPos.transform.position);
     }
 
     private void GenerationComplete() {
@@ -46,7 +54,7 @@ public class BattleMgr : Singleton<BattleMgr> {
 
         CreatPlayer();
         CteatEnemy();
-        EnterRoom(roomList[0]);
+        EnterRoom(roomList[0], roomList[0].playerPos.transform.position);
     }
 
     private void CreatPlayer() {
@@ -63,7 +71,6 @@ public class BattleMgr : Singleton<BattleMgr> {
         for (int index = 0; index < curDungeon.AllTiles.Count; index++ ) {
             Tile tile = curDungeon.AllTiles[index];
             RoomInfo roomInfo = tile.GetComponent<RoomInfo>();
-            roomInfo.tile = tile;
             roomList.Add(roomInfo);
 
             List<Enemy> enemyList = new List<Enemy>();
@@ -108,12 +115,16 @@ public class BattleMgr : Singleton<BattleMgr> {
         }
     }
 
-    public void EnterRoom(RoomInfo roomInfo) {
+    public void EnterRoom(RoomInfo roomInfo, Vector3 newPos) {
         CheckRoom(roomInfo);
         List<Enemy> list = enemyDic[roomInfo];
         for (int index = 0; index < list.Count; index++ ) {
             list[index].ai.IsAwake(true);
         }
+
+        player.transform.position = newPos;
+
+        curCameraCtrl.SetPos(roomInfo.transform.position);
     }
 
     public void CheckRoom(RoomInfo roomInfo) {

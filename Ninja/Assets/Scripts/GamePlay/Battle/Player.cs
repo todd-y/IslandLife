@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using DunGen;
 
 public class Player : Actor {
     public float fixY = 1;
@@ -20,7 +21,7 @@ public class Player : Actor {
     //self function
     protected override void BirthHandle() {
         base.BirthHandle();
-        hp = 3;
+        hp = 11111;
     }
 
     private void InputHandle() {
@@ -72,6 +73,15 @@ public class Player : Actor {
         if (colLayer == GeneralDefine.EnemyBulletLayer || colLayer == GeneralDefine.EnemyLayer) {
             UbhObjectPool.Instance.ReleaseGameObject(colTrans.gameObject);
             Injury();
+        }
+        if (colLayer == GeneralDefine.TransferLayer) {
+            Doorway doorway = colTrans.GetComponent<Transfer>().doorWay;
+            if (doorway != null) {
+                Send.SendMsg(SendType.Transfer, doorway);
+            }
+            else {
+                Debug.LogError("doorway is null");
+            }
         }
     }
 }

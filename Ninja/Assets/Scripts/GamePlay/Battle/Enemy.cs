@@ -43,6 +43,7 @@ public class Enemy : Actor {
         base.DeadHandle();
         ai.IsAwake(false);
         if (curShot != null) curShot.FinishedShot();
+        Send.SendMsg(SendType.MonsterDead, this);
     }
 
     public void Shot(int index) {
