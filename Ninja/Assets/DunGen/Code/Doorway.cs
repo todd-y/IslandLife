@@ -76,13 +76,13 @@ namespace DunGen
 			{
 				hideConditionalObjects = value;
 
-				foreach (var obj in AddWhenInUse)
-					if (obj != null)
-						obj.SetActive(!hideConditionalObjects);
+                //foreach (var obj in AddWhenInUse)
+                //    if (obj != null)
+                //        obj.SetActive(!hideConditionalObjects);
 
-				foreach (var obj in AddWhenNotInUse)
-					if (obj != null)
-						obj.SetActive(!hideConditionalObjects);
+                //foreach (var obj in AddWhenNotInUse)
+                //    if (obj != null)
+                //        obj.SetActive(!hideConditionalObjects);
 			}
 		}
 

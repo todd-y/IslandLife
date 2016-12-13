@@ -131,14 +131,14 @@ namespace DunGen
 
             foreach (var d in UsedDoorways)
                 foreach (var obj in d.AddWhenNotInUse)
-                    if(obj != null)
-                        UnityUtil.Destroy(obj);
+                    if (obj != null)
+                        obj.SetActive(false);
 
 			foreach (var d in UnusedDoorways)
 			{
 				foreach (var obj in d.AddWhenInUse)
-					if (obj != null)
-						UnityUtil.Destroy(obj);
+                    if (obj != null)
+                        obj.SetActive(false);
 
 				var blockerPrefabs = d.BlockerPrefabs.Where(x => x != null);
 
