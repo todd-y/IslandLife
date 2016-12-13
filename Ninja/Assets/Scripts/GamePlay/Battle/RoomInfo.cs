@@ -34,7 +34,7 @@ public class RoomInfo : MonoBehaviour {
         if (doorList.Count == 0) {
             for (int index = 0; index < tile.Placement.UsedDoorways.Count; index++) {
                 Doorway doorway = tile.Placement.UsedDoorways[index];
-                GameObject doorGo = doorway.gameObject.GetChildControl<Transform>("Door").gameObject;
+                GameObject doorGo = doorway.gameObject.GetChildControl<Transform>("GO/Door").gameObject;
                 doorList.Add(doorGo);
             }
         }

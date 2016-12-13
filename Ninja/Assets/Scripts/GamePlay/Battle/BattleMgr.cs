@@ -117,14 +117,19 @@ public class BattleMgr : Singleton<BattleMgr> {
 
     public void EnterRoom(RoomInfo roomInfo, Vector3 newPos) {
         CheckRoom(roomInfo);
+
+
+        player.transform.position = newPos;
+
+        curCameraCtrl.SetPos(roomInfo.transform.position, () => AwakeMonster(roomInfo));
+    }
+
+
+    public void AwakeMonster(RoomInfo roomInfo) {
         List<Enemy> list = enemyDic[roomInfo];
         for (int index = 0; index < list.Count; index++ ) {
             list[index].ai.IsAwake(true);
         }
-
-        player.transform.position = newPos;
-
-        curCameraCtrl.SetPos(roomInfo.transform.position);
     }
 
     public void CheckRoom(RoomInfo roomInfo) {
