@@ -69,7 +69,7 @@ public class Launch : MonoBehaviour {
 
         Debug.Log("Launch InitAsset End !!!");
 
-        LocalAssetMgr.Instance.Load_Scene("Battle");
+        BattleMgr.Instance.StartBattle();
         //WindowMgr.Instance.OpenWindow<LoadingWindow>();
         yield break;
     }

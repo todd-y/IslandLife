@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine.SceneManagement;
 
 /// <summary>
@@ -68,7 +67,8 @@ public class LocalAssetMgr : Singleton<LocalAssetMgr> {
 
         string path;
         path = string.Format("Assets/Atlas/ui/Sprite/{0}/{1}.png", pack, name );
-        sprite = AssetDatabase.LoadAssetAtPath<Sprite>(path);
+        //to do 
+        //sprite = Resources.LoadAssetAtPath<Sprite>(path);
         if (sprite == null) {
             Debug.LogError("Load_UISprite: sprite = " + path + ", failed!");
         }

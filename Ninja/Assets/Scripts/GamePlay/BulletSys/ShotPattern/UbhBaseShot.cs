@@ -123,6 +123,9 @@ public abstract class UbhBaseShot : UbhMonoBehaviour
     protected UbhBullet GetBullet (Vector3 position, Quaternion rotation, bool forceInstantiate = false)
     {
         if (_BulletPrefab == null) {
+            _BulletPrefab = LocalAssetMgr.Instance.Load_Prefab("EnemyBullet");
+        }
+        if (_BulletPrefab == null) {
             Debug.LogWarning("Cannot generate a bullet because BulletPrefab is not set.");
             return null;
         }

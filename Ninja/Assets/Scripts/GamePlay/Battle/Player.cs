@@ -156,6 +156,10 @@ public class Player : Actor {
                 Debug.LogError("doorway is null");
             }
         }
+
+        if (colLayer == GeneralDefine.EndGameLayer) {
+            WindowMgr.Instance.OpenWindow<ResultWindow>();
+        }
     }
 
     private void MpRecoveryHandle() {
@@ -169,5 +173,7 @@ public class Player : Actor {
         base.DeadHandle();
         isRightClick = false;
         RightRelease();
+
+        WindowMgr.Instance.OpenWindow<ResultWindow>();
     }
 }

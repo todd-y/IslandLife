@@ -25,6 +25,14 @@ public class BattleMgr : Singleton<BattleMgr> {
         Send.UnregisterMsg(SendType.Transfer, OnTransfer);
 	}
 
+    public void StartBattle() {
+        enemyDic.Clear();
+        roomList.Clear();
+        cachePrefabList.Clear();
+
+        LocalAssetMgr.Instance.Load_Scene("Battle");
+    }
+
     private void OnGenerationStateChange(object[] objs) {
         GenerationStatus status = (GenerationStatus)objs[0];
         if (status == GenerationStatus.Complete) {
@@ -66,7 +74,6 @@ public class BattleMgr : Singleton<BattleMgr> {
     }
 
     private void CteatEnemy() {
-        enemyDic.Clear();
         string prefabName = "EnemySkeleton";
         for (int index = 0; index < curDungeon.AllTiles.Count; index++ ) {
             Tile tile = curDungeon.AllTiles[index];
@@ -118,7 +125,6 @@ public class BattleMgr : Singleton<BattleMgr> {
     public void EnterRoom(RoomInfo roomInfo, Vector3 newPos) {
         CheckRoom(roomInfo);
 
-
         player.transform.position = newPos;
 
         curCameraCtrl.SetPos(roomInfo.transform.position, () => AwakeMonster(roomInfo));
@@ -136,6 +142,10 @@ public class BattleMgr : Singleton<BattleMgr> {
         List<Enemy> list = enemyDic[roomInfo];
         if (list.Count == 0) {
             roomInfo.OpenDoor();
+            if (roomInfo.roomType == RoomType.End) {
+                GameObject endGo = GameObject.Instantiate( LocalAssetMgr.Instance.Load_Prefab("EndGame") );
+                endGo.transform.SetParent(roomInfo.transform, false);
+            }
         }
         else {
             roomInfo.CloseDoor();

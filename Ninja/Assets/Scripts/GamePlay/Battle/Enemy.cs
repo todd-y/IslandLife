@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class Enemy : Actor {
     public Transform target;
+    [HideInInspector]
     public List<UbhBaseShot> shotList = new List<UbhBaseShot>();
     private UbhBaseShot curShot;
 
@@ -29,6 +30,8 @@ public class Enemy : Actor {
 
     protected override void BirthHandle() {
         base.BirthHandle();
+        UbhBaseShot[] arrayShot = GetComponentsInChildren<UbhBaseShot>();
+        shotList = new List<UbhBaseShot>(arrayShot);
         target = UbhUtil.GetTransformFromTagName("Player");
         ai = new EnemyAI(this);
         ai.IsAwake(false);
