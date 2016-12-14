@@ -48,7 +48,7 @@ public class UbhEnemy : UbhMonoBehaviour
 
             UbhObjectPool.Instance.ReleaseGameObject(c.transform.parent.gameObject);
 
-            _Hp = _Hp - bullet._Power;
+            _Hp = _Hp - 1;
 
             if (_Hp <= 0) {
                 FindObjectOfType<UbhScore>().AddPoint(_Point);

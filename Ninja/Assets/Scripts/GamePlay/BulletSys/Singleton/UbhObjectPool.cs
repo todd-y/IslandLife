@@ -48,7 +48,6 @@ public class UbhObjectPool : UbhSingletonMonoBehavior<UbhObjectPool> {
                     goTransform.position = position;
                     goTransform.rotation = rotation;
                     go.SetActive(true);
-                    BulletHandle(go);
                     return go;
                 }
             }
@@ -58,15 +57,7 @@ public class UbhObjectPool : UbhSingletonMonoBehavior<UbhObjectPool> {
         go = (GameObject)Instantiate(prefab, position, rotation);
         go.transform.parent = _Transform;
         goList.Add(go);
-        BulletHandle(go);
         return go;
-    }
-
-    private void BulletHandle(GameObject go) {
-        UbhBullet bullet = go.GetComponent<UbhBullet>();
-        if (bullet != null) {
-            bullet.SetDefault();
-        }
     }
 
     /// <summary>

@@ -2,15 +2,52 @@
 using System.Collections;
 
 public class Actor : MonoBehaviour {
-    private Collider2D collider;
-    private float speed = 5f;
     protected AnimCtrl animCtrl;
-    protected int hp;
+    private Collider2D collider;
+
+    private float speed = 10f;
+    public RoleType roleType;
+    private float curHp = 100;
+    public float CurHp {
+        get { return curHp; }
+        set {
+            curHp = Mathf.Clamp(value, 0, MaxHp);
+            if (roleType == RoleType.Player) {
+                Send.SendMsg(SendType.PlayerHpChange, curHp, MaxHp);
+            }
+            if (curHp <= 0) {
+                DeadHandle();
+            }
+        }
+    }
+
+    private float maxHp = 100;
+    public float MaxHp {
+        get { return maxHp; }
+        set { maxHp = value; }
+    }
 
     protected bool alive = true;
 
+    private float curMp = 100;
+    public float CurMp {
+        get { return curMp; }
+        set {
+            curMp = Mathf.Clamp(value, 0, MaxMp);
+            Send.SendMsg(SendType.PlayerMpChange, curMp, MaxMp);
+        }
+    }
+
+    private float maxMp = 100;
+    public float MaxMp {
+        get { return maxMp; }
+        set {
+            maxHp = value;
+        }
+    }
+
     void Start() {
-        Init();
+        InitComponent();
         BirthHandle();
     }
 
@@ -18,7 +55,7 @@ public class Actor : MonoBehaviour {
         HitCheck(c.transform);
     }
 
-    private void Init(){
+    private void InitComponent(){
         Animator animator = gameObject.GetComponent<Animator>();
         if (animator != null) {
             animCtrl = new AnimCtrl(animator);
@@ -35,12 +72,9 @@ public class Actor : MonoBehaviour {
     }
 
     protected void Injury(int damageValue = 1) {
-        hp -= damageValue;
-        if (hp > 0) {
+        CurHp -= damageValue;
+        if (CurHp > 0) {
             if (animCtrl != null) animCtrl.PlayHit();
-        }
-        else {
-            DeadHandle();
         }
     }
 
@@ -64,5 +98,13 @@ public class Actor : MonoBehaviour {
             transform.localPosition = end;
             animCtrl.PlayWalk();
         }
+    }
+
+    public void SetBasicInfo(float hpValue, float mpValue = 100) {
+        MaxHp = hpValue;
+        CurHp = hpValue;
+
+        MaxMp = mpValue;
+        CurMp = mpValue;
     }
 }

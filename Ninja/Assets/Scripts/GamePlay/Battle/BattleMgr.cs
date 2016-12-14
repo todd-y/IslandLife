@@ -51,7 +51,7 @@ public class BattleMgr : Singleton<BattleMgr> {
         if (curDungeon == null) {
             Debug.LogError("curdungeon is null");
         }
-
+        WindowMgr.Instance.OpenWindow<BattleWindow>();
         CreatPlayer();
         CteatEnemy();
         EnterRoom(roomList[0], roomList[0].playerPos.transform.position);

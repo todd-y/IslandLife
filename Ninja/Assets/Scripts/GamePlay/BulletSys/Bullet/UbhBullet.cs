@@ -12,26 +12,6 @@ public class UbhBullet : UbhMonoBehaviour {
 
     private UbhUtil.AXIS recordAxisMove;
     private float recordAngle;
-    private GameObject normalSprite;
-    private GameObject backSprite;
-
-    void Awake() {
-        Transform normalTransform = gameObject.GetChildControl<Transform>("NormalSprite");
-        if (normalTransform == null) {
-            Debug.LogError("normal transform is null:" + gameObject.name);
-        }
-        else{
-            normalSprite = normalTransform.gameObject;
-        }
-
-        Transform backTransform = gameObject.GetChildControl<Transform>("BackSprite");
-        if (backTransform == null) {
-            Debug.LogError("back transform is null:" + gameObject.name);
-        }
-        else {
-            backSprite = backTransform.gameObject;
-        }
-    }
 
     void OnDisable() {
         StopAllCoroutines();
@@ -49,30 +29,6 @@ public class UbhBullet : UbhMonoBehaviour {
         if (colLayer == GeneralDefine.WallLayer) {
             UbhObjectPool.Instance.ReleaseGameObject(gameObject);
         }
-    }
-
-    public void SetDefault() {
-        gameObject.layer = GeneralDefine.EnemyBulletLayer;
-        if (normalSprite != null)
-            normalSprite.SetActive(true);
-        if (backSprite != null)
-            backSprite.SetActive(false);
-    }
-
-    public void ReturnBullet() {
-        //return param
-        if (recordAxisMove == UbhUtil.AXIS.X_AND_Z) {
-            transform.SetEulerAnglesY(-(recordAngle + 180));
-        }
-        else {
-            transform.SetEulerAnglesZ((recordAngle + 180));
-        }
-
-        gameObject.layer = GeneralDefine.PlayerBulletLayer;
-        if (normalSprite != null)
-            normalSprite.SetActive(false);
-        if (backSprite != null)
-            backSprite.SetActive(true);
     }
 
     /// <summary>

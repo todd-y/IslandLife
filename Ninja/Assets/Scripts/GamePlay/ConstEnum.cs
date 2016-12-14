@@ -3,3 +3,9 @@
     Start,
     End,
 }
+
+public enum RoleType {
+    None,
+    Player,
+    Monster,
+}

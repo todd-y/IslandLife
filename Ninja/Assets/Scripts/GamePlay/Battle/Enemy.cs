@@ -12,6 +12,10 @@ public class Enemy : Actor {
     [HideInInspector]
     public RoomInfo roomInfo;
 
+    public Enemy() {
+        roleType = RoleType.Monster;
+    }
+
     public void Init(RoomInfo _roomInfo) {
         roomInfo = _roomInfo;
     }
@@ -28,7 +32,7 @@ public class Enemy : Actor {
         target = UbhUtil.GetTransformFromTagName("Player");
         ai = new EnemyAI(this);
         ai.IsAwake(false);
-        hp = 10;
+        SetBasicInfo(10);
     }
 
     protected override void HitCheck(Transform colTrans) {

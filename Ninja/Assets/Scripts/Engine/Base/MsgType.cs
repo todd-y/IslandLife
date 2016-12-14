@@ -15,4 +15,6 @@ public enum SendType {
     GenerationStateChange,
     MonsterDead,
     Transfer,
+    PlayerHpChange,
+    PlayerMpChange,
 }
