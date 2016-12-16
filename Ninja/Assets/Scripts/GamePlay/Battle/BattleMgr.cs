@@ -6,6 +6,7 @@ using System.Collections.Generic;
 public class BattleMgr : Singleton<BattleMgr> {
 
     public Dungeon curDungeon;
+    public RoomInfo curRoom;
     public CameraCtrl curCameraCtrl;
 
     private Player player;
@@ -68,7 +69,7 @@ public class BattleMgr : Singleton<BattleMgr> {
     private void CreatPlayer() {
         Tile firstTile = curDungeon.MainPathTiles[0];
         RoomInfo roomInfo = firstTile.GetComponent<RoomInfo>();
-        GameObject playerGo = UbhObjectPool.Instance.GetGameObject(LocalAssetMgr.Instance.Load_Prefab("PlayerNinja"), 
+        GameObject playerGo = UbhObjectPool.Instance.GetGameObject(LocalAssetMgr.Instance.Load_Prefab("PlayerMage"), 
                                     roomInfo.playerPos.transform.position, roomInfo.playerPos.transform.rotation);
         player = playerGo.GetComponent<Player>();
     }
@@ -124,7 +125,7 @@ public class BattleMgr : Singleton<BattleMgr> {
 
     public void EnterRoom(RoomInfo roomInfo, Vector3 newPos) {
         CheckRoom(roomInfo);
-
+        curRoom = roomInfo;
         player.transform.position = newPos;
 
         curCameraCtrl.SetPos(roomInfo.transform.position, () => AwakeMonster(roomInfo));

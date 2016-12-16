@@ -92,7 +92,7 @@ public class Actor : MonoBehaviour {
     protected void Move(Vector2 direction) {
         Vector2 start = transform.position;
         Vector2 end = start + direction * speed * Time.deltaTime;
-        RaycastHit2D hit = Physics2D.BoxCast(start + collider.offset, collider.bounds.size, 0, direction, 
+        RaycastHit2D hit = Physics2D.BoxCast(start + collider.offset, collider.bounds.size, 0, direction,
                                         Vector2.Distance(end, start), GeneralDefine.CannotMoveMask);
         if (hit.transform == null) {
             transform.localPosition = end;
