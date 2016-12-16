@@ -4,15 +4,13 @@ using DunGen;
 
 public class Player : Actor {
     public float fixY = 1;
+    public UbhBaseShot curShot;
 
     private const string AXIS_HORIZONTAL = "Horizontal";
     private const string AXIS_VERTICAL = "Vertical";
-    private GameObject leftClickPrefab;
     private GameObject rightClickPrefab;
     private GameObject rightClickGo;
 
-    private float fireCD = 0.5f;
-    private float lastFireTime = 0;
     private Vector2 tempVector2 = Vector2.zero;
     private bool isRightClick = false;
 
@@ -20,6 +18,7 @@ public class Player : Actor {
     private float mpRecovery = 20;
     private float minRightTime = 1;
     private float rightClickTime = 0;
+    private Weapeon curWeapeon;
 
     public Player() {
         roleType = RoleType.Player;
@@ -35,6 +34,13 @@ public class Player : Actor {
     protected override void BirthHandle() {
         base.BirthHandle();
         SetBasicInfo(100);
+        LoadWeapeon();
+    }
+
+    private void LoadWeapeon() {
+        GameObject go = GameObject.Instantiate( LocalAssetMgr.Instance.Load_Prefab("LinerGun") );
+        go.transform.SetParent(transform, false);        
+        curWeapeon = go.GetComponent<Weapeon>();
     }
 
     private void InputHandle() {
@@ -49,7 +55,7 @@ public class Player : Actor {
         else {
             Move(tempVector2.normalized);
         }
-        if (Input.GetMouseButtonDown(0)) {
+        if (Input.GetMouseButton(0)) {
             LeftFire();
         }
 
@@ -95,20 +101,22 @@ public class Player : Actor {
     }
 
     private void LeftFire() {
-        if (leftClickPrefab == null) {
-            leftClickPrefab = LocalAssetMgr.Instance.Load_Prefab("PlayerBaseAttack");
-        }
-        if (Time.time > (lastFireTime + fireCD) ) {
-            lastFireTime = Time.time;
-            Vector2 playerPos = gameObject.transform.position;
-            playerPos.y = playerPos.y + fixY;
-            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            float angle = Vector2.Angle(Vector2.right, mousePos - playerPos);
-            angle = mousePos.y > playerPos.y ? angle : -angle;
-            UbhObjectPool.Instance.GetGameObject(leftClickPrefab, new Vector3(playerPos.x, playerPos.y, 0),
-                                                                            Quaternion.Euler(0, 0, angle));
-            animCtrl.PlayAttack();
-        }
+        curWeapeon.Shot();
+        //if (leftClickPrefab == null) {
+        //    leftClickPrefab = LocalAssetMgr.Instance.Load_Prefab("PlayerBaseAttack");
+        //}
+        //if (Time.time > (lastFireTime + fireCD) ) {
+        //    lastFireTime = Time.time;
+        //    Vector2 playerPos = gameObject.transform.position;
+        //    playerPos.y = playerPos.y + fixY;
+        //    Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        //    float angle = Vector2.Angle(Vector2.right, mousePos - playerPos);
+        //    angle = mousePos.y > playerPos.y ? angle : -angle;
+        //    //UbhObjectPool.Instance.GetGameObject(leftClickPrefab, new Vector3(playerPos.x, playerPos.y, 0),
+        //    //                                                                Quaternion.Euler(0, 0, angle));
+        //    curShot.Shot();
+        //    animCtrl.PlayAttack();
+        //}
     }
 
     private void RightHold() {
