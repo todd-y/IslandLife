@@ -4,6 +4,7 @@ using System.Collections;
 public class Weapeon : UbhBaseShot {
 
     public float fireDelay = 0.1f;
+    public float betweenDelay = 0.1f;
     public Transform gunGo;
     private float lastFireTime = 0;
     private float angle = 10;
@@ -31,20 +32,28 @@ public class Weapeon : UbhBaseShot {
             return;
         lastFireTime = Time.time;
         canShoot = false;
-        ShotCoroutine();
+        ShotHandle();
     }
 
-    private void ShotCoroutine() {
+    protected virtual void ShotHandle() {
+        StartCoroutine(ShotCoroutine());
+    }
+
+    IEnumerator ShotCoroutine() {
         if (_BulletNum <= 0 || _BulletSpeed <= 0f) {
             Debug.LogWarning("Cannot shot because BulletNum or BulletSpeed is not set.");
-            return;
+            yield break;
         }
         if (_Shooting) {
-            return;
+            yield break;
         }
         _Shooting = true;
 
         for (int i = 0; i < _BulletNum; i++) {
+            if (0 < i && 0f < betweenDelay) {
+                yield return StartCoroutine(UbhUtil.WaitForSeconds(betweenDelay));
+            }
+
             var bullet = GetBullet(GunPoint, transform.rotation);
             if (bullet == null) {
                 break;

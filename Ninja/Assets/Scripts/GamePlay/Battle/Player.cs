@@ -18,7 +18,8 @@ public class Player : Actor {
     private float mpRecovery = 20;
     private float minRightTime = 1;
     private float rightClickTime = 0;
-    private Weapeon curWeapeon;
+    private Weapeon leftWeapeon;
+    private Weapeon injuryWeapon; 
 
     public Player() {
         roleType = RoleType.Player;
@@ -38,9 +39,14 @@ public class Player : Actor {
     }
 
     private void LoadWeapeon() {
-        GameObject go = GameObject.Instantiate( LocalAssetMgr.Instance.Load_Prefab("LinerGun") );
-        go.transform.SetParent(transform, false);        
-        curWeapeon = go.GetComponent<Weapeon>();
+        GameObject leftGo = GameObject.Instantiate(LocalAssetMgr.Instance.Load_Prefab("GunLiner"));
+        leftGo.transform.SetParent(transform, false);        
+        leftWeapeon = leftGo.GetComponent<Weapeon>();
+
+
+        GameObject injuryGo = GameObject.Instantiate(LocalAssetMgr.Instance.Load_Prefab("GunCircle"));
+        injuryGo.transform.SetParent(transform, false);
+        injuryWeapon = injuryGo.GetComponent<Weapeon>();
     }
 
     private void InputHandle() {
@@ -101,7 +107,7 @@ public class Player : Actor {
     }
 
     private void LeftFire() {
-        curWeapeon.Shot();
+        leftWeapeon.Shot();
         //if (leftClickPrefab == null) {
         //    leftClickPrefab = LocalAssetMgr.Instance.Load_Prefab("PlayerBaseAttack");
         //}
@@ -183,5 +189,10 @@ public class Player : Actor {
         RightRelease();
 
         WindowMgr.Instance.OpenWindow<ResultWindow>();
+    }
+
+    protected override void Injury(int damageValue = 1) {
+        base.Injury(damageValue);
+        injuryWeapon.Shot();
     }
 }

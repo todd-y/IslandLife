@@ -71,7 +71,7 @@ public class Actor : MonoBehaviour {
     protected virtual void HitCheck(Transform colTrans) {
     }
 
-    protected void Injury(int damageValue = 1) {
+    protected virtual void Injury(int damageValue = 1) {
         CurHp -= damageValue;
         if (CurHp > 0) {
             if (animCtrl != null) animCtrl.PlayHit();
