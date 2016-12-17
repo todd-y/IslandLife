@@ -41,7 +41,7 @@ public class Enemy : Actor {
     protected override void HitCheck(Transform colTrans) {
         int colLayer = colTrans.gameObject.layer;
         if (colLayer == GeneralDefine.PlayerBulletLayer) {
-            UbhObjectPool.Instance.ReleaseGameObject(colTrans.gameObject);
+            //UbhObjectPool.Instance.ReleaseGameObject(colTrans.gameObject);
             Injury();
         }
     }

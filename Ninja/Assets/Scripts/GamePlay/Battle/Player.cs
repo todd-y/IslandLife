@@ -157,8 +157,8 @@ public class Player : Actor {
 
     protected override void HitCheck(Transform colTrans) {
         int colLayer = colTrans.gameObject.layer;
-        if (colLayer == GeneralDefine.EnemyBulletLayer || colLayer == GeneralDefine.EnemyLayer) {
-            UbhObjectPool.Instance.ReleaseGameObject(colTrans.gameObject);
+        if (colLayer == GeneralDefine.EnemyBulletLayer) {
+            //UbhObjectPool.Instance.ReleaseGameObject(colTrans.gameObject);
             Injury();
         }
         if (colLayer == GeneralDefine.TransferLayer) {

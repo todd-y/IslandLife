@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Actor : MonoBehaviour {
+public class Actor : UbhMonoBehaviour {
     protected AnimCtrl animCtrl;
-    private Collider2D collider;
+    private CircleCollider2D collider;
 
     private float speed = 10f;
     public RoleType roleType;
@@ -64,7 +64,7 @@ public class Actor : MonoBehaviour {
             Debug.LogError("animator is null :" + gameObject.name);
         }
 
-        collider = gameObject.GetComponent<Collider2D>();
+        collider = gameObject.GetComponent<CircleCollider2D>();
         collider.enabled = true;
     }
 
@@ -92,12 +92,12 @@ public class Actor : MonoBehaviour {
     protected void Move(Vector2 direction) {
         Vector2 start = transform.position;
         Vector2 end = start + direction * speed * Time.deltaTime;
-        RaycastHit2D hit = Physics2D.BoxCast(start + collider.offset, collider.bounds.size, 0, direction,
-                                        Vector2.Distance(end, start), GeneralDefine.CannotMoveMask);
-        if (hit.transform == null) {
-            transform.localPosition = end;
-            animCtrl.PlayWalk();
-        }
+        //RaycastHit2D hit = Physics2D.BoxCast(start + collider.offset, collider.bounds.size, 0, direction,
+        //                                Vector2.Distance(end, start), GeneralDefine.CannotMoveMask);
+        //if (hit.transform == null) {
+        rigidbody2D.MovePosition(end);
+        animCtrl.PlayWalk();
+        //}
     }
 
     public void SetBasicInfo(float hpValue, float mpValue = 100) {
