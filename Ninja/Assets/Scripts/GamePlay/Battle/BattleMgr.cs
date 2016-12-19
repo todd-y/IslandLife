@@ -10,7 +10,7 @@ public class BattleMgr : Singleton<BattleMgr> {
     public CameraCtrl curCameraCtrl;
 
     private Player player;
-    private List<RoomInfo> roomList = new List<RoomInfo>();
+    public List<RoomInfo> roomList = new List<RoomInfo>();
     private Dictionary<RoomInfo, List<Enemy>> enemyDic = new Dictionary<RoomInfo, List<Enemy>>();
     private Dictionary<string, GameObject> cachePrefabList = new Dictionary<string, GameObject>();
 
@@ -63,6 +63,8 @@ public class BattleMgr : Singleton<BattleMgr> {
         WindowMgr.Instance.OpenWindow<BattleWindow>();
         CreatPlayer();
         CteatEnemy();
+        BattleWindow.Instance.RefreshMap();
+
         EnterRoom(roomList[0], roomList[0].playerPos.transform.position);
     }
 
@@ -129,6 +131,8 @@ public class BattleMgr : Singleton<BattleMgr> {
         player.transform.position = newPos;
 
         curCameraCtrl.SetPos(roomInfo.transform.position, () => AwakeMonster(roomInfo));
+
+        Send.SendMsg(SendType.EnterRoom, roomInfo);
     }
 
 

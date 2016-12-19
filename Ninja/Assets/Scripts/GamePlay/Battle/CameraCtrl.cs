@@ -8,7 +8,14 @@ public class CameraCtrl : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         BattleMgr.Instance.curCameraCtrl = this;
-	}
+        Send.RegisterMsg(SendType.EnterRoom, OnEnterRoom);
+        Send.RegisterMsg(SendType.PlayerPosChange, OnPlayerPosChange);
+    }
+
+    void Destroy() {
+        Send.UnregisterMsg(SendType.EnterRoom, OnEnterRoom);
+        Send.UnregisterMsg(SendType.PlayerPosChange, OnPlayerPosChange);
+    }
 
     public void SetPos(Vector3 newPos, System.Action _callBack) {
         moveEndCallBack = _callBack;
@@ -20,5 +27,12 @@ public class CameraCtrl : MonoBehaviour {
         if (moveEndCallBack != null) {
             moveEndCallBack();
         }
+    }
+
+    private void OnEnterRoom(object[] objs) {
+    }
+
+    private void OnPlayerPosChange(object[] objs) {
+
     }
 }

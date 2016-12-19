@@ -53,4 +53,8 @@ public class RoomInfo : MonoBehaviour {
             doorList[index].SetActive(true);
         }
     }
+
+    public List<Doorway> GetUseDoorwayList() {
+        return tile.Placement.UsedDoorways;
+    }
 }
