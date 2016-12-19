@@ -14,6 +14,6 @@ public class GeneralDefine : Singleton<GeneralDefine> {
 
     public float roomSizeWidth = 46;
     public float roomSizeHeight = 26;
-    public float defaultSceenWidth = 1920;
-    public float defaultSceenHeight = 1080;
+    public int defaultSceenWidth = 1920;
+    public int defaultSceenHeight = 1080;
 }

@@ -7,9 +7,9 @@ public class  Post : AssetPostprocessor
 {
 
     void OnPostprocessTexture(Texture2D texture) {
-        //if (assetPath.Contains("Sprite/Map")) {
-        //    return;
-        //}
+        if (assetPath.Contains("Branches/")) {
+            return;
+        }
         string AtlasName = new DirectoryInfo(Path.GetDirectoryName(assetPath)).Name;
         TextureImporter textureImporter = assetImporter as TextureImporter;
         textureImporter.textureType = TextureImporterType.Sprite;
