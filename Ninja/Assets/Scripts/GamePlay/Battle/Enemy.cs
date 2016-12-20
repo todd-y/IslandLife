@@ -31,17 +31,24 @@ public class Enemy : Actor {
     protected override void BirthHandle() {
         base.BirthHandle();
         UbhBaseShot[] arrayShot = GetComponentsInChildren<UbhBaseShot>();
+        for (int index = 0; index < arrayShot.Length; index++ ) {
+            arrayShot[index]._BulletPrefab.GetComponent<UbhBullet>().SetColor(Color.red);
+        }
         shotList = new List<UbhBaseShot>(arrayShot);
         target = UbhUtil.GetTransformFromTagName("Player");
         ai = new EnemyAI(this);
         ai.IsAwake(false);
-        SetBasicInfo(10);
+        SetBasicInfo(50);
+
+        SetBodyColor(Color.red);
+        SetTargetColor(Color.green);
     }
 
     protected override void HitCheck(Transform colTrans) {
         int colLayer = colTrans.gameObject.layer;
         if (colLayer == GeneralDefine.PlayerBulletLayer) {
-            //UbhObjectPool.Instance.ReleaseGameObject(colTrans.gameObject);
+            BattleMgr.Instance.curRoom.Draw(colTrans.localPosition, "branch3");
+            UbhObjectPool.Instance.ReleaseGameObject(colTrans.gameObject);
             Injury();
         }
     }
@@ -59,7 +66,7 @@ public class Enemy : Actor {
         }
         curShot = shotList[index];
         curShot.Shot();
-        animCtrl.PlayAttack();
+        //animCtrl.PlayAttack();
     }
 
     public bool CanShot() {

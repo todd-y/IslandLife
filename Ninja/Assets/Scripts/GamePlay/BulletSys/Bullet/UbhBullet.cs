@@ -10,14 +10,36 @@ public class UbhBullet : UbhMonoBehaviour {
         private set;
     }
 
+    [HideInInspector]
+    public SpriteRenderer spriteRenderer;
     private UbhUtil.AXIS recordAxisMove;
     private float recordAngle;
+
+    public void SetColor(Color color) {
+        if (spriteRenderer == null) {
+            spriteRenderer = GetComponentInChildren<SpriteRenderer>(true);
+        }
+        if (spriteRenderer == null) {
+            Debug.Log("spriterenderer is null");
+            return;
+        }
+        spriteRenderer.color = color;
+    }
 
     void OnDisable() {
         StopAllCoroutines();
         transform.ResetPosition();
         transform.ResetRotation();
         _Shooting = false;
+    }
+
+    void Update() {
+        if (spriteRenderer.color == Color.green) {
+            BattleMgr.Instance.curRoom.Draw(transform.localPosition, "branch31", false);
+        }
+        else {
+            BattleMgr.Instance.curRoom.Draw(transform.localPosition, "branch41", false);
+        }
     }
 
     void OnTriggerEnter2D(Collider2D c) {
@@ -27,6 +49,12 @@ public class UbhBullet : UbhMonoBehaviour {
     private void HitCheck(Transform colTrans) {
         int colLayer = colTrans.gameObject.layer;
         if (colLayer == GeneralDefine.WallLayer) {
+            if (spriteRenderer.color == Color.green) {
+                BattleMgr.Instance.curRoom.Draw(transform.localPosition, "branch3");
+            }
+            else{
+                BattleMgr.Instance.curRoom.Draw(transform.localPosition, "branch4");
+            }
             UbhObjectPool.Instance.ReleaseGameObject(gameObject);
         }
     }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Draw : MonoBehaviour {
 
@@ -12,6 +13,7 @@ public class Draw : MonoBehaviour {
     private int texHeight = 1080;
     private byte[] pixels; // byte array for texture painting, this is the image that we paint into.
 
+    private Dictionary<string, byte[]> dicBrush = new Dictionary<string, byte[]>();
     private byte[] customBrushBytes;
     private int customBrushWidth;
     private int customBrushHeight;
@@ -62,15 +64,15 @@ public class Draw : MonoBehaviour {
     }
 
     private void CreateFullScreenQuad() {
-        float halfCamWidth = GeneralDefine.Instance.roomSizeWidth / 2 - 1.5f;
-        float halfCamHeight = GeneralDefine.Instance.roomSizeHeight / 2 - 1;
+        float halfRoomWidth = GeneralDefine.Instance.roomSizeWidth / 2;
+        float halfRoomHeight = GeneralDefine.Instance.roomSizeHeight / 2;
         Mesh go_Mesh = GetComponent<MeshFilter>().mesh;
         go_Mesh.Clear();
         go_Mesh.vertices = new[] {
-				new Vector3(-halfCamWidth, -halfCamHeight, 0),
-				new Vector3(-halfCamWidth, halfCamHeight, 0),
-				new Vector3(halfCamWidth, halfCamHeight, 0),
-				new Vector3(halfCamWidth, -halfCamHeight, 0),
+				new Vector3(-halfRoomWidth, -halfRoomHeight, 0),
+				new Vector3(-halfRoomWidth, halfRoomHeight, 0),
+				new Vector3(halfRoomWidth, halfRoomHeight, 0),
+				new Vector3(halfRoomWidth, -halfRoomHeight, 0),
 			};
         go_Mesh.uv = new[] { new Vector2(0, 0), new Vector2(0, 1), new Vector2(1, 1), new Vector2(1, 0) };
         go_Mesh.triangles = new[] { 0, 1, 2, 0, 2, 3 };
@@ -78,31 +80,58 @@ public class Draw : MonoBehaviour {
         go_Mesh.tangents = new[] { new Vector4(1.0f, 0.0f, 0.0f, -1.0f), new Vector4(1.0f, 0.0f, 0.0f, -1.0f), new Vector4(1.0f, 0.0f, 0.0f, -1.0f), new Vector4(1.0f, 0.0f, 0.0f, -1.0f) };
     }
 
+    public void DrawTexture(Vector3 _pos, Texture2D _tex) {
+        if (_tex == null) {
+            Debug.LogError("tex is null");
+            return;
+        }
+        SetBrush(_tex);
+        DrawBrush(1920 / 2 + _pos.x * 1920 / 46, 1080 / 2 +_pos.y * 1080 / 26);
+    }
+
+    public void DrawTexture(Vector3 _pos, string _name) {
+        SetBrush(_name);
+        DrawBrush(1920 / 2 + _pos.x * 1920 / 46, 1080 / 2 + _pos.y * 1080 / 26);
+    }
+
     public void SetBrush(string spriteName) {
         Sprite sprite = LocalAssetMgr.Instance.Load_UISprite("Branches", spriteName);
-        customBrush = sprite.texture;
+        SetBrush(sprite.texture);
+    }
 
+    public void SetBrush(Texture2D _tex) {
+        string brushName = _tex.name;
+        customBrush = _tex;
         customBrushWidth = customBrush.width;
         customBrushHeight = customBrush.height;
-        customBrushBytes = new byte[customBrushWidth * customBrushHeight * 4];
 
-        int pixel = 0;
-        for (int y = 0; y < customBrushHeight; y++) {
-            for (int x = 0; x < customBrushWidth; x++) {
-                Color brushPixel = customBrush.GetPixel(x, y);
-                customBrushBytes[pixel] = (byte)(brushPixel.r * 255);
-                customBrushBytes[pixel + 1] = (byte)(brushPixel.g * 255);
-                customBrushBytes[pixel + 2] = (byte)(brushPixel.b * 255);
-                customBrushBytes[pixel + 3] = (byte)(brushPixel.a * 255);
-                pixel += 4;
-            }
+        if (dicBrush.ContainsKey(brushName)) {
+            customBrushBytes = dicBrush[brushName];
         }
+        else {
+            customBrushBytes = new byte[customBrushWidth * customBrushHeight * 4];
+
+            int pixel = 0;
+            for (int y = 0; y < customBrushHeight; y++) {
+                for (int x = 0; x < customBrushWidth; x++) {
+                    Color brushPixel = customBrush.GetPixel(x, y);
+                    customBrushBytes[pixel] = (byte)(brushPixel.r * 255);
+                    customBrushBytes[pixel + 1] = (byte)(brushPixel.g * 255);
+                    customBrushBytes[pixel + 2] = (byte)(brushPixel.b * 255);
+                    customBrushBytes[pixel + 3] = (byte)(brushPixel.a * 255);
+                    pixel += 4;
+                }
+            }
+
+            dicBrush.Add(brushName, customBrushBytes);
+        }
+
         customBrushWidthHalf = (int)(customBrushWidth * 0.5f);
         texWidthMinusCustomBrushWidth = texWidth - customBrushWidth;
         texHeightMinusCustomBrushHeight = texHeight - customBrushHeight;
     }
 
-    public void DrawBrush(int px, int py) {
+    public void DrawBrush(float px, float py) {
         textureNeedsUpdate = true;
         int startX = (int)(px - customBrushWidthHalf);
         int startY = (int)(py - customBrushWidthHalf);

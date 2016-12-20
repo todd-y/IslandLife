@@ -71,13 +71,13 @@ public class BattleMgr : Singleton<BattleMgr> {
     private void CreatPlayer() {
         Tile firstTile = curDungeon.MainPathTiles[0];
         RoomInfo roomInfo = firstTile.GetComponent<RoomInfo>();
-        GameObject playerGo = UbhObjectPool.Instance.GetGameObject(LocalAssetMgr.Instance.Load_Prefab("PlayerMage"), 
+        GameObject playerGo = UbhObjectPool.Instance.GetGameObject(LocalAssetMgr.Instance.Load_Prefab("PlayerAir"), 
                                     roomInfo.playerPos.transform.position, roomInfo.playerPos.transform.rotation);
         player = playerGo.GetComponent<Player>();
     }
 
     private void CteatEnemy() {
-        string prefabName = "EnemySkeleton";
+        string prefabName = "EnemyAir";
         for (int index = 0; index < curDungeon.AllTiles.Count; index++ ) {
             Tile tile = curDungeon.AllTiles[index];
             RoomInfo roomInfo = tile.GetComponent<RoomInfo>();

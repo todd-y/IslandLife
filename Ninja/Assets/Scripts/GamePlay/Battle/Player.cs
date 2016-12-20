@@ -8,7 +8,6 @@ public class Player : Actor {
 
     private const string AXIS_HORIZONTAL = "Horizontal";
     private const string AXIS_VERTICAL = "Vertical";
-    private GameObject rightClickPrefab;
     private GameObject rightClickGo;
 
     private Vector2 tempVector2 = Vector2.zero;
@@ -36,17 +35,25 @@ public class Player : Actor {
         base.BirthHandle();
         SetBasicInfo(100);
         LoadWeapeon();
+
+
+        SetBodyColor(Color.green);
+        SetTargetColor(Color.red);
     }
 
     private void LoadWeapeon() {
         GameObject leftGo = GameObject.Instantiate(LocalAssetMgr.Instance.Load_Prefab("GunLiner"));
         leftGo.transform.SetParent(transform, false);        
         leftWeapeon = leftGo.GetComponent<Weapeon>();
-
+        leftWeapeon._BulletPrefab.GetComponent<UbhBullet>().SetColor(Color.green);
 
         GameObject injuryGo = GameObject.Instantiate(LocalAssetMgr.Instance.Load_Prefab("GunCircle"));
         injuryGo.transform.SetParent(transform, false);
         injuryWeapon = injuryGo.GetComponent<Weapeon>();
+        injuryWeapon._BulletPrefab.GetComponent<UbhBullet>().SetColor(Color.green);
+
+        rightClickGo = UbhObjectPool.Instance.GetGameObject(LocalAssetMgr.Instance.Load_Prefab("PlayerHold"), Vector3.zero, Quaternion.identity );
+        rightClickGo.GetComponent<BackAttack>().SetColor(Color.green);
     }
 
     private void InputHandle() {
@@ -56,7 +63,7 @@ public class Player : Actor {
         tempVector2.y = Input.GetAxisRaw(AXIS_VERTICAL);
         
         if (tempVector2 == Vector2.zero) {
-            animCtrl.StopWalk();
+            //animCtrl.StopWalk();
         }
         else {
             Move(tempVector2.normalized);
@@ -95,7 +102,7 @@ public class Player : Actor {
             RightRelease();
         }
 
-        FaceHandle();
+        //FaceHandle();
     }
 
     private void FaceHandle() {
@@ -126,11 +133,6 @@ public class Player : Actor {
     }
 
     private void RightHold() {
-        if (rightClickPrefab == null) {
-            rightClickPrefab = LocalAssetMgr.Instance.Load_Prefab("PlayerHold");
-            rightClickGo = UbhObjectPool.Instance.GetGameObject(rightClickPrefab, Vector3.zero, Quaternion.identity);
-        }
-
         if (rightClickGo == null) {
             Debug.LogError("right go is null");
             return;
@@ -142,6 +144,7 @@ public class Player : Actor {
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         float angle = Vector2.Angle(Vector2.right, mousePos - playerPos);
         angle = mousePos.y > playerPos.y ? angle : -angle;
+        angle -= 90;
 
         rightClickGo.transform.position = new Vector3(playerPos.x, playerPos.y, 0);
         rightClickGo.transform.rotation = Quaternion.Euler(0, 0, angle);
@@ -158,7 +161,8 @@ public class Player : Actor {
     protected override void HitCheck(Transform colTrans) {
         int colLayer = colTrans.gameObject.layer;
         if (colLayer == GeneralDefine.EnemyBulletLayer) {
-            //UbhObjectPool.Instance.ReleaseGameObject(colTrans.gameObject);
+            BattleMgr.Instance.curRoom.Draw(colTrans.localPosition, "branch4");
+            UbhObjectPool.Instance.ReleaseGameObject(colTrans.gameObject);
             Injury();
         }
         if (colLayer == GeneralDefine.TransferLayer) {
@@ -194,5 +198,10 @@ public class Player : Actor {
     protected override void Injury(int damageValue = 1) {
         base.Injury(damageValue);
         injuryWeapon.Shot();
+    }
+
+    protected override void ChangeColor() {
+        float per = 0.55f + CurHp / MaxHp * 0.25f;
+        colorFX.Desintegration = per;
     }
 }

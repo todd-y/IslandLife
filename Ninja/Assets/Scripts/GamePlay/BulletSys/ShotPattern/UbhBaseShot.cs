@@ -70,6 +70,10 @@ public abstract class UbhBaseShot : UbhMonoBehaviour
     /// </summary>
     protected virtual void Awake ()
     {
+        if (_BulletPrefab == null) {
+            _BulletPrefab = LocalAssetMgr.Instance.Load_Prefab("EnemyBullet");
+        }
+
         if (_InitialPooling) {
             var goBulletList = new List<GameObject>();
             for (int i = 0; i < _BulletNum; i++) {
@@ -122,9 +126,6 @@ public abstract class UbhBaseShot : UbhMonoBehaviour
     /// </summary>
     protected UbhBullet GetBullet (Vector3 position, Quaternion rotation, bool forceInstantiate = false)
     {
-        if (_BulletPrefab == null) {
-            _BulletPrefab = LocalAssetMgr.Instance.Load_Prefab("EnemyBullet");
-        }
         if (_BulletPrefab == null) {
             Debug.LogWarning("Cannot generate a bullet because BulletPrefab is not set.");
             return null;
