@@ -18,7 +18,10 @@ public class Player : Actor {
     private float minRightTime = 1;
     private float rightClickTime = 0;
     private Weapeon leftWeapeon;
-    private Weapeon injuryWeapon; 
+    private Weapeon injuryWeapon;
+    private BackAttack rightWeapeon;
+    private Thruster leftThruster;
+    private Thruster rightThruster;
 
     public Player() {
         roleType = RoleType.Player;
@@ -53,56 +56,46 @@ public class Player : Actor {
         injuryWeapon._BulletPrefab.GetComponent<UbhBullet>().SetColor(Color.green);
 
         rightClickGo = UbhObjectPool.Instance.GetGameObject(LocalAssetMgr.Instance.Load_Prefab("PlayerHold"), Vector3.zero, Quaternion.identity );
-        rightClickGo.GetComponent<BackAttack>().SetColor(Color.green);
+        rightWeapeon = rightClickGo.GetComponent<BackAttack>();
+        rightWeapeon.SetColor(Color.green, transform);
+
+        leftThruster = gameObject.GetChildControl<Thruster>("LeftThruster");
+        rightThruster = gameObject.GetChildControl<Thruster>("RightThruster");
     }
 
     private void InputHandle() {
         if (alive == false)
             return;
-        tempVector2.x = Input.GetAxisRaw(AXIS_HORIZONTAL);
-        tempVector2.y = Input.GetAxisRaw(AXIS_VERTICAL);
-        
-        if (tempVector2 == Vector2.zero) {
-            //animCtrl.StopWalk();
-        }
-        else {
-            Move(tempVector2.normalized);
-        }
-        if (Input.GetMouseButton(0)) {
-            LeftFire();
+
+        PlayerMove();
+        PlayerHold();
+    }
+
+    private void PlayerMove() {
+        if (leftThruster != null) {
+            leftThruster.Throttle = 1f + 0.5f * Input.GetAxisRaw("Vertical") + Input.GetAxisRaw("Horizontal") * 0.5f;
         }
 
-        if (Input.GetMouseButton(1)) {
-            bool needRecordTime = !isRightClick;
-            if (isRightClick && CurMp > 0) {
-               isRightClick = true;
-            }
-            else if(CurMp >= rightCost) {
-                isRightClick = true;
-            }
-            else {
-                isRightClick = false;
-            }
+        if (rightThruster != null) {
+            rightThruster.Throttle = 1f + 0.5f * Input.GetAxisRaw("Vertical") - Input.GetAxisRaw("Horizontal") * 0.5f;
+        }
+    }
 
-            if (isRightClick && needRecordTime) {
-                rightClickTime = Time.time;
-            }
-        }
-        else {
-            if (isRightClick && (Time.time - rightClickTime) > minRightTime || CurMp <= 0) {
-                isRightClick = false;
-                RightRelease();
-            }
-        }
-
-        if (isRightClick) {
-            RightHold();
-        }
-        else {
-            RightRelease();
-        }
-
-        //FaceHandle();
+    private void PlayerHold() {
+        float horizontalValue = Input.GetAxisRaw("FireHorizontal");
+        float angle = rightWeapeon.Angle - horizontalValue * 180 * Time.deltaTime;
+        rightWeapeon.Angle = angle;
+        //if (verticalValue != 0) {
+        //    angle = (verticalValue > 0 ? 0 : 180) + horizontalValue * (verticalValue > 0 ? -45 : 45);
+        //    RightHold(angle);
+        //}
+        //else if(horizontalValue != 0) {
+        //    angle = horizontalValue > 0 ? -90 : 90;
+        //    RightHold(angle);
+        //}
+        //else {
+        //    //RightRelease();
+        //}
     }
 
     private void FaceHandle() {
@@ -132,7 +125,7 @@ public class Player : Actor {
         //}
     }
 
-    private void RightHold() {
+    private void RightHold(float _angle) {
         if (rightClickGo == null) {
             Debug.LogError("right go is null");
             return;
@@ -142,12 +135,12 @@ public class Player : Actor {
         Vector2 playerPos = gameObject.transform.position;
         playerPos.y = playerPos.y + fixY;
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        float angle = Vector2.Angle(Vector2.right, mousePos - playerPos);
-        angle = mousePos.y > playerPos.y ? angle : -angle;
-        angle -= 90;
+        //float angle = Vector2.Angle(Vector2.right, mousePos - playerPos);
+        //angle = mousePos.y > playerPos.y ? angle : -angle;
+        //angle -= 90;
 
         rightClickGo.transform.position = new Vector3(playerPos.x, playerPos.y, 0);
-        rightClickGo.transform.rotation = Quaternion.Euler(0, 0, angle);
+        rightClickGo.transform.rotation = Quaternion.Euler(0, 0, _angle);
 
         CurMp -= rightCost * Time.deltaTime;
     }
@@ -177,6 +170,18 @@ public class Player : Actor {
 
         if (colLayer == GeneralDefine.EndGameLayer) {
             WindowMgr.Instance.OpenWindow<ResultWindow>();
+        }
+
+        if (colLayer == GeneralDefine.WallLayer) {
+            transform.position = BattleMgr.Instance.curRoom.transform.position;
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D c) {
+        int colLayer = c.gameObject.layer;
+
+        if (colLayer == GeneralDefine.WallLayer) {
+            rigidbody2D.AddForceAtPosition( -transform.up * 500, transform.position, ForceMode2D.Force);
         }
     }
 

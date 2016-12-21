@@ -4,6 +4,16 @@ using System.Collections;
 public class BackAttack : BaseAttack {
     public GameObject prefab;
     private SpriteRenderer spriteRenderer;
+    private Transform follow;
+    private float angle = 0;
+    public float Angle {
+        get {
+            return angle;
+        }
+        set {
+            angle = value;
+        }
+    }
 
     protected override void HitCheck(Transform colTrans) {
         if (colTrans.gameObject.layer == GeneralDefine.EnemyBulletLayer) {
@@ -21,7 +31,7 @@ public class BackAttack : BaseAttack {
             UbhObjectPool.Instance.ReleaseGameObject(colTrans.gameObject);
         }
     }
-    public void SetColor(Color color) {
+    public void SetColor(Color color, Transform _follow) {
         if (spriteRenderer == null) {
             spriteRenderer = GetComponentInChildren<SpriteRenderer>(true);
         }
@@ -31,6 +41,15 @@ public class BackAttack : BaseAttack {
         }
         spriteRenderer.color = color;
         prefab.GetComponent<UbhSimpleBullet>().SetColor(spriteRenderer.color);
+
+        follow = _follow;
+    }
+
+    void Update() {
+        if (follow == null)
+            return;
+        transform.position = follow.position;
+        transform.eulerAngles = follow.eulerAngles + new Vector3(0, 0, angle);
     }
 
     protected void AutoReleaseBulletGameObject(GameObject goBullet) {

@@ -74,4 +74,15 @@ public class ToolMgr : Singleton<ToolMgr> {
         }
         return result;
     }
+
+    public static float Dampen(float current, float target, float dampening, float elapsed, float minStep = 0.0f) {
+        var factor = DampenFactor(dampening, elapsed);
+        var maxDelta = Mathf.Abs(target - current) * factor + minStep * elapsed;
+
+        return Mathf.MoveTowards(current, target, maxDelta);
+    }
+
+    public static float DampenFactor(float dampening, float elapsed) {
+        return 1.0f - Mathf.Pow((float)System.Math.E, -dampening * elapsed);
+    }
 }
