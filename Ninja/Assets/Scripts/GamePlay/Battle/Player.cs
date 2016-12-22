@@ -100,14 +100,6 @@ public class Player : Actor {
         }
     }
 
-    void OnCollisionEnter2D(Collision2D c) {
-        int colLayer = c.gameObject.layer;
-
-        if (colLayer == GeneralDefine.WallLayer) {
-            rigidbody2D.AddForceAtPosition( -transform.up * 500, transform.position, ForceMode2D.Force);
-        }
-    }
-
     private void MpRecoveryHandle() {
         CurMp += mpRecovery * Time.deltaTime;
     }
@@ -122,4 +114,13 @@ public class Player : Actor {
         base.Injury(damageValue);
         injuryWeapon.Shot();
     }
+
+    void OnCollisionEnter2D(Collision2D c) {
+        int colLayer = c.gameObject.layer;
+
+        if (colLayer == GeneralDefine.WallLayer) {
+            rigidbody2D.AddForceAtPosition(-transform.up * 500, transform.position, ForceMode2D.Force);
+        }
+    }
+
 }

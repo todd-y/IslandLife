@@ -45,6 +45,8 @@ public class Enemy : Actor {
         int colLayer = colTrans.gameObject.layer;
         if (colLayer == GeneralDefine.PlayerBulletLayer) {
             BattleMgr.Instance.curRoom.Draw(colTrans.localPosition, "branch3");
+            rigidbody2D.AddForceAtPosition(colTrans.up * 10, colTrans.position, ForceMode2D.Force);
+
             UbhObjectPool.Instance.ReleaseGameObject(colTrans.gameObject);
             Injury();
         }
