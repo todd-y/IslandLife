@@ -21,6 +21,7 @@ public class Launch : MonoBehaviour {
         Instance = this;
 
         gameObject.AddMissingComponent<CoDelegator>();
+        gameObject.AddMissingComponent<SoundManager>();
         DontDestroyOnLoad(gameObject);
     }
 
@@ -69,6 +70,7 @@ public class Launch : MonoBehaviour {
 
         Debug.Log("Launch InitAsset End !!!");
 
+        SoundManager.Instance.PlayMusic("bg");
         BattleMgr.Instance.StartBattle();
         //WindowMgr.Instance.OpenWindow<LoadingWindow>();
         yield break;

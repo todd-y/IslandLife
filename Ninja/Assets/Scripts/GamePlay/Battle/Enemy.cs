@@ -21,9 +21,8 @@ public class Enemy : Actor {
     private float startAlphaValue = 0;
     private float targetAlphaValue = 0;
 
-    public Enemy() {
-        roleType = RoleType.Monster;
-    }
+    private float lastMoveTime = 0;
+    private float moveTimeDelay;
 
     public void Init(RoomInfo _roomInfo) {
         roomInfo = _roomInfo;
@@ -34,10 +33,10 @@ public class Enemy : Actor {
             AlphaHandle();
             return;
         }
-        if (ai == null)
-            return;
-
-        ai.Update();
+        MoveHandle();
+        if (ai != null) {
+            ai.Update();
+        }
     }
 
     private void AlphaHandle() {
@@ -97,6 +96,7 @@ public class Enemy : Actor {
             BattleMgr.Instance.curCameraCtrl.SetShake(0.2f);
             UbhObjectPool.Instance.ReleaseGameObject(colTrans.gameObject);
             Injury();
+            SoundManager.Instance.PlaySound("hit");
         }
     }
 
@@ -124,5 +124,18 @@ public class Enemy : Actor {
             return true;
 
         return !curShot.Shooting;
+    }
+
+    public void MoveHandle() {
+        if (roleType == RoleType.Battlery)
+            return;
+        if (Time.time - lastMoveTime > moveTimeDelay) {
+            lastMoveTime = Time.time;
+            float minforce = -200;
+            float maxforce = 200;
+            rigidbody2D.AddForceAtPosition(new Vector3(Random.Range(minforce, maxforce), Random.Range(minforce, maxforce), 0),
+                                            transform.position, ForceMode2D.Force);
+            moveTimeDelay = Random.Range(1f, 3f);
+        }
     }
 }

@@ -8,6 +8,7 @@ public enum RoleType {
     None,
     Player,
     Monster,
+    Battlery,
 }
 
 public enum GoalType {

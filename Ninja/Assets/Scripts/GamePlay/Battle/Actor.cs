@@ -124,7 +124,6 @@ public class Actor : UbhMonoBehaviour {
         while(curTime <= totalTime){
             float newA = Mathf.Lerp(startAlpha, endAlpha, 
                 curTime <= halfTime ? curTime / halfTime : (totalTime - curTime) / halfTime);
-            if(roleType == RoleType.Monster)
             flashColor.a = newA;
             flashRenderer.color = flashColor;
             curTime += Time.deltaTime;

@@ -12,6 +12,7 @@ using UnityEditor;
 public class LocalAssetMgr : Singleton<LocalAssetMgr> {
     private const string basic_ui = "ui/";
     private const string basic_refdata = "refdata/";
+    private const string basic_music = "Sound/";
 
     /// <summary>
     /// refdata
@@ -80,6 +81,18 @@ public class LocalAssetMgr : Singleton<LocalAssetMgr> {
     public void Load_Scene(string name) {
         Debug.LogWarning("Load_Scene : " + name);
         SceneManager.LoadScene(name);
+    }
+
+    public AudioClip Load_Music(string name) {
+        AudioClip clip = null;
+        string path = "";
+        path = basic_music + name;
+        clip = Resources.Load(path) as AudioClip;
+        if (null == clip) {
+            Debug.LogError("Failed Load_Music from " + path + "." + name);
+        }
+
+        return clip;
     }
 
 //    public void UnloadScene () {

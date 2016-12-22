@@ -118,7 +118,8 @@ public class Player : Actor {
 
         base.Injury(damageValue);
         injuryWeapon.Shot();
-        BattleMgr.Instance.curCameraCtrl.SetShake(1);
+        BattleMgr.Instance.curCameraCtrl.SetShake(1f);
+        SoundManager.Instance.PlaySound("hit2");
     }
 
     void OnCollisionEnter2D(Collision2D c) {
