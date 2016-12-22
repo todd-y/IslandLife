@@ -41,7 +41,7 @@ public class YSorter : MonoBehaviour {
 	private void AutoSort() {
 		int sortingOffset = GetSortingOffset( myTr.position.y );
 		foreach(SpriteRenderer sRen in originalSortingOrder.Keys) {
-			sRen.sortingOrder = originalSortingOrder[sRen] + sortingOffset;
+            sRen.sortingOrder = originalSortingOrder[sRen] + sortingOffset;
 		}
 	}
 

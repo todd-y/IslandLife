@@ -27,8 +27,11 @@ public class BackAttack : BaseAttack {
             }
             Quaternion newBulletRotation = Quaternion.Euler( transform.rotation.eulerAngles.x,
                 transform.rotation.eulerAngles.y, transform.rotation.eulerAngles.z);
-            UbhObjectPool.Instance.GetGameObject(prefab, colTrans.position, newBulletRotation );
+            GameObject newBulletGo = UbhObjectPool.Instance.GetGameObject(prefab, colTrans.position, newBulletRotation );
             UbhObjectPool.Instance.ReleaseGameObject(colTrans.gameObject);
+
+            UbhBullet newBullet = newBulletGo.GetComponent<UbhBullet>();
+            newBullet.Shot(10f, transform.rotation.eulerAngles.z);
         }
     }
     public void SetColor(Color color, Transform _follow) {
@@ -40,7 +43,7 @@ public class BackAttack : BaseAttack {
             return;
         }
         spriteRenderer.color = color;
-        prefab.GetComponent<UbhSimpleBullet>().SetColor(spriteRenderer.color);
+        prefab.GetComponent<UbhBullet>().SetColor(spriteRenderer.color);
 
         follow = _follow;
     }

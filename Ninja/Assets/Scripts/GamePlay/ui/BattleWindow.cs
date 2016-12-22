@@ -7,6 +7,8 @@ public class BattleWindow : BaseWindowWrapper<BattleWindow> {
 
     public Slider sldHP;
     public Slider sldMP;
+    public Slider sldProgress;
+    public Text txtRoomDesc;
     public MiniMapProxy miniMapProxy;
 
     protected override void InitCtrl() {
@@ -26,12 +28,14 @@ public class BattleWindow : BaseWindowWrapper<BattleWindow> {
     protected override void InitMsg() {
         Send.RegisterMsg(SendType.PlayerHpChange, OnHpChange);
         Send.RegisterMsg(SendType.PlayerMpChange, OnMpChange);
+        Send.RegisterMsg(SendType.RoomProgressChange, OnProgressChange);
         Send.RegisterMsg(SendType.EnterRoom, OnEnterRoom);
     }
 
     protected override void ClearMsg() {
         Send.UnregisterMsg(SendType.PlayerHpChange, OnHpChange);
         Send.UnregisterMsg(SendType.PlayerMpChange, OnMpChange);
+        Send.UnregisterMsg(SendType.RoomProgressChange, OnProgressChange);
         Send.UnregisterMsg(SendType.EnterRoom, OnEnterRoom);
     }
 
@@ -54,6 +58,12 @@ public class BattleWindow : BaseWindowWrapper<BattleWindow> {
         sldMP.value = cur / max;
     }
 
+    private void OnProgressChange(object[] objs) {
+        float cur = (float)objs[0];
+
+        sldProgress.value = cur;
+    }
+
     public void RefreshMap() {
         miniMapProxy.RefreshMap();
     }
@@ -61,5 +71,6 @@ public class BattleWindow : BaseWindowWrapper<BattleWindow> {
     public void OnEnterRoom(object[] objs) {
         RoomInfo _roomInfo = (RoomInfo)objs[0];
         miniMapProxy.EnterRoom(_roomInfo);
+        sldProgress.value = _roomInfo.Progress;
     }
 }

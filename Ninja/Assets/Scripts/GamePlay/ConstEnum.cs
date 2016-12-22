@@ -9,3 +9,14 @@ public enum RoleType {
     Player,
     Monster,
 }
+
+public enum GoalType {
+    Collect,
+    Time,
+    Special,
+}
+
+public enum RoomState {
+    Wait,
+    Complete,
+}

@@ -17,6 +17,7 @@ public enum SendType {
     Transfer,
     PlayerHpChange,
     PlayerMpChange,
+    RoomProgressChange,
     EnterRoom,
     PlayerPosChange,
 }

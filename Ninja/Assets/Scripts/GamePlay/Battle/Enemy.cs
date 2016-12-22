@@ -39,9 +39,6 @@ public class Enemy : Actor {
         ai = new EnemyAI(this);
         ai.IsAwake(false);
         SetBasicInfo(50);
-
-        SetBodyColor(Color.red);
-        SetTargetColor(Color.green);
     }
 
     protected override void HitCheck(Transform colTrans) {
@@ -66,12 +63,15 @@ public class Enemy : Actor {
         }
         curShot = shotList[index];
         curShot.Shot();
-        //animCtrl.PlayAttack();
     }
 
     public bool CanShot() {
+        if (shotList.Count == 0)
+            return false;
+
         if(curShot == null)
             return true;
+
         return !curShot.Shooting;
     }
 }

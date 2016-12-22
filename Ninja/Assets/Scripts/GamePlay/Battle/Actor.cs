@@ -3,10 +3,7 @@ using System.Collections;
 
 public class Actor : UbhMonoBehaviour {
     //protected AnimCtrl animCtrl;
-    private CircleCollider2D collider;
-    private SpriteRenderer bodyRenderer;
-    private SpriteRenderer colorRenderer;
-    protected _2dxFX_DesintegrationFX colorFX;
+    private Collider2D collider;
     private SpriteRenderer flashRenderer;
 
     private float speed = 10f;
@@ -60,32 +57,10 @@ public class Actor : UbhMonoBehaviour {
     }
 
     private void InitComponent(){
-        //Animator animator = gameObject.GetComponent<Animator>();
-        //if (animator != null) {
-        //    animCtrl = new AnimCtrl(animator);
-        //}
-        //else {
-        //    Debug.LogError("animator is null :" + gameObject.name);
-        //}
-
-        bodyRenderer = gameObject.GetChildControl<SpriteRenderer>("Body");
-        colorRenderer = gameObject.GetChildControl<SpriteRenderer>("ColorChange");
-        colorFX = colorRenderer.GetComponent<_2dxFX_DesintegrationFX>();
-        colorFX.Desintegration = 1;
-        colorFX.Seed = Random.Range(0, 1f);
         flashRenderer = gameObject.GetChildControl<SpriteRenderer>("HighLight");
 
         collider = gameObject.GetComponent<CircleCollider2D>();
-        collider.enabled = true;
-    }
-
-    protected void SetBodyColor(Color color) {
-        bodyRenderer.color = color;
-    }
-
-    protected void SetTargetColor(Color color) {
-        colorFX._Color = color;
-        colorRenderer.color = color;
+        SetColliderState(true);
     }
 
     protected virtual void HitCheck(Transform colTrans) {
@@ -93,33 +68,30 @@ public class Actor : UbhMonoBehaviour {
 
     protected virtual void Injury(int damageValue = 1) {
         CurHp -= damageValue;
-        //if (CurHp > 0) {
-        //    if (animCtrl != null) animCtrl.PlayHit();
-        //}
         FlashAnim();
-        ChangeColor();
     }
 
     protected virtual void BirthHandle() {
-        collider.enabled = true;
+        SetColliderState(true);
         alive = true;
     }
 
     protected virtual void DeadHandle() {
-        //if (animCtrl != null) animCtrl.PlayDeath();
-        collider.enabled = false;
+        SetColliderState(false);
         alive = false;
+    }
+
+    private void SetColliderState(bool _state) {
+        if (collider == null)
+            return;
+
+        collider.enabled = _state;
     }
 
     protected void Move(Vector2 direction) {
         Vector2 start = transform.position;
         Vector2 end = start + direction * speed * Time.deltaTime;
-        //RaycastHit2D hit = Physics2D.BoxCast(start + collider.offset, collider.bounds.size, 0, direction,
-        //                                Vector2.Distance(end, start), GeneralDefine.CannotMoveMask);
-        //if (hit.transform == null) {
         rigidbody2D.MovePosition(end);
-        //animCtrl.PlayWalk();
-        //}
     }
 
     public void SetBasicInfo(float hpValue, float mpValue = 100) {
@@ -127,29 +99,29 @@ public class Actor : UbhMonoBehaviour {
         CurHp = hpValue;
 
         MaxMp = mpValue;
-        CurMp = mpValue;
+        CurMp = 0;
     }
 
     public void FlashAnim() {
-        StopCoroutine(CO_FlashAnim());
         StartCoroutine(CO_FlashAnim());
     }
 
     private IEnumerator CO_FlashAnim() {
+        int index = Random.Range(100, 1000);
         Color flashColor = Color.white;
         float startAlpha = 0;
         float endAlpha = 200;
         flashColor.a = startAlpha;
         flashRenderer.color = flashColor;
 
-        float totalTime = 0.1f;
-        float halfTime = 0.05f;
+        float totalTime = 0.2f;
+        float halfTime = totalTime / 2;
         float curTime = 0f;
 
         while(curTime <= totalTime){
             float newA = Mathf.Lerp(startAlpha, endAlpha, 
                 curTime <= halfTime ? curTime / halfTime : (totalTime - curTime) / halfTime);
-
+            if(roleType == RoleType.Monster)
             flashColor.a = newA;
             flashRenderer.color = flashColor;
             curTime += Time.deltaTime;
@@ -158,10 +130,5 @@ public class Actor : UbhMonoBehaviour {
 
         flashColor.a = startAlpha;
         flashRenderer.color = flashColor;
-    }
-
-    protected virtual void ChangeColor() {
-        float per = 0.2f + CurHp / MaxHp * 0.5f;
-        colorFX.Desintegration = per;
     }
 }

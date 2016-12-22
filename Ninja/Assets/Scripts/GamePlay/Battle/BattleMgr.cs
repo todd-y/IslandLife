@@ -12,6 +12,7 @@ public class BattleMgr : Singleton<BattleMgr> {
     private Player player;
     public List<RoomInfo> roomList = new List<RoomInfo>();
     private Dictionary<RoomInfo, List<Enemy>> enemyDic = new Dictionary<RoomInfo, List<Enemy>>();
+    private List<Enemy> enemyAirList = new List<Enemy>();
     private Dictionary<string, GameObject> cachePrefabList = new Dictionary<string, GameObject>();
 
 	public void Init(){
@@ -65,19 +66,19 @@ public class BattleMgr : Singleton<BattleMgr> {
         CteatEnemy();
         BattleWindow.Instance.RefreshMap();
 
-        EnterRoom(roomList[0], roomList[0].playerPos.transform.position);
+        EnterRoom(roomList[0], roomList[0].transform.position);
     }
 
     private void CreatPlayer() {
         Tile firstTile = curDungeon.MainPathTiles[0];
         RoomInfo roomInfo = firstTile.GetComponent<RoomInfo>();
         GameObject playerGo = UbhObjectPool.Instance.GetGameObject(LocalAssetMgr.Instance.Load_Prefab("PlayerAir"), 
-                                    roomInfo.playerPos.transform.position, roomInfo.playerPos.transform.rotation);
+                                    roomInfo.transform.position, Quaternion.identity);
         player = playerGo.GetComponent<Player>();
     }
 
     private void CteatEnemy() {
-        string prefabName = "EnemyAir";
+        string prefabName = "EnemyBattery";
         for (int index = 0; index < curDungeon.AllTiles.Count; index++ ) {
             Tile tile = curDungeon.AllTiles[index];
             RoomInfo roomInfo = tile.GetComponent<RoomInfo>();
@@ -88,6 +89,7 @@ public class BattleMgr : Singleton<BattleMgr> {
 
             if (tile.Placement.IsOnMainPath && tile.Placement.NormalizedDepth == 0) {
                 roomInfo.roomType = RoomType.Start;
+                roomInfo.SetGoalType(GoalType.Special);
             }
             else if (tile.Placement.IsOnMainPath && tile.Placement.NormalizedDepth == 1) {
                 roomInfo.roomType = RoomType.End;
@@ -133,27 +135,67 @@ public class BattleMgr : Singleton<BattleMgr> {
         curCameraCtrl.SetPos(roomInfo.transform.position, () => AwakeMonster(roomInfo));
 
         Send.SendMsg(SendType.EnterRoom, roomInfo);
+
+        if (roomInfo.roomState != RoomState.Complete) {
+            curRoom.StartCoroutine(CreatEnemyAir());
+        }
     }
 
 
     public void AwakeMonster(RoomInfo roomInfo) {
         List<Enemy> list = enemyDic[roomInfo];
         for (int index = 0; index < list.Count; index++ ) {
-            list[index].ai.IsAwake(true);
+            list[index].ai.IsAwake(roomInfo.roomState != RoomState.Complete);
         }
     }
 
     public void CheckRoom(RoomInfo roomInfo) {
-        List<Enemy> list = enemyDic[roomInfo];
-        if (list.Count == 0) {
+        if (roomInfo.roomState == RoomState.Complete) {
             roomInfo.OpenDoor();
             if (roomInfo.roomType == RoomType.End) {
                 GameObject endGo = GameObject.Instantiate( LocalAssetMgr.Instance.Load_Prefab("EndGame") );
                 endGo.transform.SetParent(roomInfo.transform, false);
             }
+            roomInfo.StopAllCoroutines();
         }
         else {
             roomInfo.CloseDoor();
+        }
+    }
+
+    private IEnumerator CreatEnemyAir() {
+        yield return new WaitForSeconds(1f);
+        while (curRoom.roomState != RoomState.Complete) {
+            CreatEnemyAir(curRoom.CreatAirNum());
+            yield return new WaitForSeconds(curRoom.CreatAirDelay());
+        }
+
+        yield break;
+    }
+
+    private void CreatEnemyAir(int num) {
+        float limitWidth = GeneralDefine.Instance.roomSizeWidth / 2 - 4;
+        float limitHeight = GeneralDefine.Instance.roomSizeHeight / 2 - 4;
+        for (int index = 0; index < num; index++ ) {
+            Vector3 pos = curRoom.transform.position + new Vector3(Random.Range(-limitWidth, limitWidth), Random.Range(-limitHeight, limitHeight), 0);
+            string prefabName = "EnemyAir";
+            GameObject prefab = null;
+            if (cachePrefabList.ContainsKey(prefabName)) {
+                prefab = cachePrefabList[prefabName];
+            }
+            else {
+                prefab = LocalAssetMgr.Instance.Load_Prefab(prefabName);
+                cachePrefabList.Add(prefabName, prefab);
+            }
+
+            GameObject enemyGo = UbhObjectPool.Instance.GetGameObject(prefab, pos, Quaternion.identity);
+            Enemy enemyProxy = enemyGo.GetComponent<Enemy>();
+            if (enemyProxy == null) {
+                Debug.LogError("enemy proxy is null");
+                return;
+            }
+            enemyProxy.roomInfo = curRoom;
+            enemyAirList.Add(enemyProxy);
         }
     }
 }

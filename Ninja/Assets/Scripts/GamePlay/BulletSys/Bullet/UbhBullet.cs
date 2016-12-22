@@ -59,6 +59,13 @@ public class UbhBullet : UbhMonoBehaviour {
         }
     }
 
+    public void Shot(float speed, float angle) {
+        Shot(speed, angle, 0, 0, 
+            false, null, 0,
+            false, 0, 0,
+            false, 0, 0, UbhUtil.AXIS.X_AND_Y);
+    }
+
     /// <summary>
     /// Bullet Shot
     /// </summary>
