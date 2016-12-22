@@ -3,7 +3,7 @@ using System.Collections;
 
 public class CameraCtrl : MonoBehaviour {
     // Global shake amount that gets reduced every frame
-    public static float Shake;
+    private float Shake = 0f;
     // The amount this camera shakes relative to the Shake value
     public float ShakeScale = 1.0f;
     // The speed at which the Shake value gets reduced
@@ -53,8 +53,13 @@ public class CameraCtrl : MonoBehaviour {
     }
 
     void LateUpdate() {
-        Shake = ToolMgr.Dampen(Shake, 0.0f, ShakeDampening, Time.deltaTime);
+        if (Shake == 0)
+            return;
 
+        Shake = ToolMgr.Dampen(Shake, 0.0f, ShakeDampening, Time.deltaTime);
+        if (Shake < 0.0001) {
+            Shake = 0;
+        }
         var shakeStrength = Shake * ShakeScale;
         var shakeTime = Time.time * ShakeSpeed;
         var offset = Vector3.zero;
@@ -64,5 +69,11 @@ public class CameraCtrl : MonoBehaviour {
         offset.z = transform.position.z;
 
         transform.localPosition = basePos + offset;
+    }
+
+    public void SetShake(float value) {
+        if (Shake >= value)
+            return;
+        Shake = value;
     }
 }

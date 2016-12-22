@@ -13,6 +13,8 @@ public class Player : Actor {
     private BackAttack rightWeapeon;
     private Thruster leftThruster;
     private Thruster rightThruster;
+    private bool inInjuryAnim = false;
+    private float injuryAnimTime = 3f;
 
     public Player() {
         roleType = RoleType.Player;
@@ -27,7 +29,7 @@ public class Player : Actor {
     //self function
     protected override void BirthHandle() {
         base.BirthHandle();
-        SetBasicInfo(100);
+        SetBasicInfo(10);
         LoadWeapeon();
     }
 
@@ -111,8 +113,12 @@ public class Player : Actor {
     }
 
     protected override void Injury(int damageValue = 1) {
+        if (inInjuryAnim)
+            return;
+
         base.Injury(damageValue);
         injuryWeapon.Shot();
+        BattleMgr.Instance.curCameraCtrl.SetShake(1);
     }
 
     void OnCollisionEnter2D(Collision2D c) {
@@ -123,4 +129,31 @@ public class Player : Actor {
         }
     }
 
+    protected override void FlashAnim() {
+        if (alive == false)
+            return;
+
+        StopAllCoroutines();
+        StartCoroutine(CO_InjuryAnim());
+    }
+
+    private IEnumerator CO_InjuryAnim() {
+        inInjuryAnim = true;
+
+        Color bodyColor = bodyRenderer.color;
+        Color flashColor = bodyRenderer.color;
+        flashColor.a = 0;
+
+        int count = 10;
+        float onceTime = injuryAnimTime / 2 / count;
+        for (int index = 0; index < count; index++ ) {
+            bodyRenderer.color = flashColor;
+            yield return new WaitForSeconds(onceTime);
+            bodyRenderer.color = bodyColor;
+            yield return new WaitForSeconds(onceTime);
+        }
+
+        inInjuryAnim = false;
+        yield break;
+    }
 }

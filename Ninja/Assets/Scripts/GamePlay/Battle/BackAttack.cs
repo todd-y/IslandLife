@@ -17,6 +17,8 @@ public class BackAttack : BaseAttack {
 
     protected override void HitCheck(Transform colTrans) {
         if (colTrans.gameObject.layer == GeneralDefine.EnemyBulletLayer) {
+            BattleMgr.Instance.curCameraCtrl.SetShake(0.1f);
+
             UbhBullet ubhBullet = colTrans.GetComponent<UbhBullet>();
             if (ubhBullet == null) {
                 ubhBullet = colTrans.parent.GetComponent<UbhBullet>();

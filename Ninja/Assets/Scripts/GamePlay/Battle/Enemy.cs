@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Enemy : Actor {
+    public float birthAnimTime = 1.5f;
+    public float deadAnimTime = 1f;
     public Transform target;
     [HideInInspector]
     public List<UbhBaseShot> shotList = new List<UbhBaseShot>();
@@ -13,6 +15,12 @@ public class Enemy : Actor {
     [HideInInspector]
     public RoomInfo roomInfo;
 
+    private bool inAlpha = false;
+    private float needAlphaTime = 0;
+    private float curAlphaTime = 0;
+    private float startAlphaValue = 0;
+    private float targetAlphaValue = 0;
+
     public Enemy() {
         roleType = RoleType.Monster;
     }
@@ -22,10 +30,34 @@ public class Enemy : Actor {
     }
 
     void Update() {
+        if (inAlpha) {
+            AlphaHandle();
+            return;
+        }
         if (ai == null)
             return;
 
         ai.Update();
+    }
+
+    private void AlphaHandle() {
+        curAlphaTime += Time.deltaTime;
+        float curValue = Mathf.Lerp(startAlphaValue, targetAlphaValue, curAlphaTime / needAlphaTime);
+        Color curColor = bodyRenderer.color;
+        curColor.a = curValue;
+        bodyRenderer.color = curColor;
+        if (curAlphaTime >= needAlphaTime) {
+            inAlpha = false;
+            curColor.a = targetAlphaValue;
+            bodyRenderer.color = curColor;
+
+            if (targetAlphaValue == 1) {
+                SetColliderState(true);
+            }
+            else {
+                UbhObjectPool.Instance.ReleaseGameObject(gameObject);
+            }
+        }
     }
 
     protected override void BirthHandle() {
@@ -38,7 +70,23 @@ public class Enemy : Actor {
         target = UbhUtil.GetTransformFromTagName("Player");
         ai = new EnemyAI(this);
         ai.IsAwake(false);
-        SetBasicInfo(50);
+        SetBasicInfo(5);
+
+        StartAlpha(birthAnimTime, 0, 1);
+    }
+
+    private void StartAlpha(float _time, float _startValue, float _targetValue) {
+        if (_time == 0 || bodyRenderer == null)
+            return;
+        SetColliderState(false);
+        Color nowColor = bodyRenderer.color;
+        nowColor.a = _startValue;
+        bodyRenderer.color = nowColor;
+        inAlpha = true;
+        curAlphaTime = 0;
+        needAlphaTime = _time;
+        startAlphaValue = _startValue;
+        targetAlphaValue = _targetValue;
     }
 
     protected override void HitCheck(Transform colTrans) {
@@ -46,7 +94,7 @@ public class Enemy : Actor {
         if (colLayer == GeneralDefine.PlayerBulletLayer) {
             BattleMgr.Instance.curRoom.Draw(colTrans.localPosition, "branch3");
             rigidbody2D.AddForceAtPosition(colTrans.up * 10, colTrans.position, ForceMode2D.Force);
-
+            BattleMgr.Instance.curCameraCtrl.SetShake(0.2f);
             UbhObjectPool.Instance.ReleaseGameObject(colTrans.gameObject);
             Injury();
         }
@@ -57,6 +105,7 @@ public class Enemy : Actor {
         ai.IsAwake(false);
         if (curShot != null) curShot.FinishedShot();
         Send.SendMsg(SendType.MonsterDead, this);
+        StartAlpha(deadAnimTime, 1, 0);
     }
 
     public void Shot(int index) {

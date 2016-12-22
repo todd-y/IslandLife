@@ -4,6 +4,7 @@ using System.Collections;
 public class Actor : UbhMonoBehaviour {
     //protected AnimCtrl animCtrl;
     private Collider2D collider;
+    protected SpriteRenderer bodyRenderer;
     private SpriteRenderer flashRenderer;
 
     private float speed = 10f;
@@ -57,6 +58,7 @@ public class Actor : UbhMonoBehaviour {
     }
 
     private void InitComponent(){
+        bodyRenderer = gameObject.GetChildControl<SpriteRenderer>("Body");
         flashRenderer = gameObject.GetChildControl<SpriteRenderer>("HighLight");
 
         collider = gameObject.GetComponent<CircleCollider2D>();
@@ -81,7 +83,7 @@ public class Actor : UbhMonoBehaviour {
         alive = false;
     }
 
-    private void SetColliderState(bool _state) {
+    protected void SetColliderState(bool _state) {
         if (collider == null)
             return;
 
@@ -102,7 +104,7 @@ public class Actor : UbhMonoBehaviour {
         CurMp = 0;
     }
 
-    public void FlashAnim() {
+    protected virtual void FlashAnim() {
         StartCoroutine(CO_FlashAnim());
     }
 
@@ -111,7 +113,7 @@ public class Actor : UbhMonoBehaviour {
             yield break;
         Color flashColor = Color.white;
         float startAlpha = 0;
-        float endAlpha = 200;
+        float endAlpha = 0.8f;
         flashColor.a = startAlpha;
         flashRenderer.color = flashColor;
 
