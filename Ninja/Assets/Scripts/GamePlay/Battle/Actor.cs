@@ -107,7 +107,8 @@ public class Actor : UbhMonoBehaviour {
     }
 
     private IEnumerator CO_FlashAnim() {
-        int index = Random.Range(100, 1000);
+        if (flashRenderer == null)
+            yield break;
         Color flashColor = Color.white;
         float startAlpha = 0;
         float endAlpha = 200;
