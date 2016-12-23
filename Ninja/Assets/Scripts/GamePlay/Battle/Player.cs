@@ -30,6 +30,7 @@ public class Player : Actor {
     protected override void BirthHandle() {
         base.BirthHandle();
         SetBasicInfo(10);
+        CurMp = 50;
         LoadWeapeon();
     }
 
@@ -55,9 +56,17 @@ public class Player : Actor {
     private void InputHandle() {
         if (alive == false)
             return;
-
+        PlayerFire();
         PlayerMove();
         PlayerHold();
+    }
+
+    private void PlayerFire() {
+        if (Input.GetKey(KeyCode.Space)) {
+            if (leftWeapeon.TryShot(CurMp)) {
+                CurMp -= leftWeapeon.mpCost;
+            }
+        }
     }
 
     private void PlayerMove() {
@@ -127,6 +136,16 @@ public class Player : Actor {
 
         if (colLayer == GeneralDefine.WallLayer) {
             rigidbody2D.AddForceAtPosition(-transform.up * 500, transform.position, ForceMode2D.Force);
+        }
+
+        if (colLayer == GeneralDefine.EnemyLayer) {
+            rigidbody2D.AddForceAtPosition(-transform.up * 500, transform.position, ForceMode2D.Force);
+            Injury();
+
+            Rigidbody2D enemyBody = c.gameObject.GetComponent<Rigidbody2D>();
+            if (enemyBody) {
+                enemyBody.AddForceAtPosition(transform.up * 100, transform.position, ForceMode2D.Force);
+            }
         }
     }
 

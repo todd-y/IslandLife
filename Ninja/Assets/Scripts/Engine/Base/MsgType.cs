@@ -20,4 +20,6 @@ public enum SendType {
     RoomProgressChange,
     EnterRoom,
     PlayerPosChange,
+    MonsterInjury,
+    BackBullet,
 }

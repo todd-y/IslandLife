@@ -19,12 +19,16 @@ public class BattleMgr : Singleton<BattleMgr> {
 		Send.RegisterMsg(SendType.GenerationStateChange, OnGenerationStateChange);
         Send.RegisterMsg(SendType.MonsterDead, OnMonsterDead);
         Send.RegisterMsg(SendType.Transfer, OnTransfer);
+        Send.RegisterMsg(SendType.BackBullet, OnBackBullet);
+        Send.RegisterMsg(SendType.RoomProgressChange, OnRoomProgressChange);
 	}
 	
 	public void Clear(){
 		Send.UnregisterMsg(SendType.GenerationStateChange, OnGenerationStateChange);
         Send.UnregisterMsg(SendType.MonsterDead, OnMonsterDead);
         Send.UnregisterMsg(SendType.Transfer, OnTransfer);
+        Send.UnregisterMsg(SendType.BackBullet, OnBackBullet);
+        Send.UnregisterMsg(SendType.RoomProgressChange, OnRoomProgressChange);
 	}
 
     public void StartBattle() {
@@ -48,8 +52,9 @@ public class BattleMgr : Singleton<BattleMgr> {
             Debug.LogError("enemy roominfo is null");
             return;
         }
-        enemyDic[enemy.roomInfo].Remove(enemy);
-        CheckRoom(enemy.roomInfo);
+        enemyAirList.Remove(enemy);
+
+        curRoom.Progress += 0.1f;
     }
 
     private void OnTransfer(object[] objs) {
@@ -157,6 +162,7 @@ public class BattleMgr : Singleton<BattleMgr> {
                 endGo.transform.SetParent(roomInfo.transform, false);
             }
             roomInfo.StopAllCoroutines();
+            AwakeMonster(roomInfo);
         }
         else {
             roomInfo.CloseDoor();
@@ -197,5 +203,17 @@ public class BattleMgr : Singleton<BattleMgr> {
             enemyProxy.roomInfo = curRoom;
             enemyAirList.Add(enemyProxy);
         }
+    }
+
+    private void OnBackBullet(object[] objs) {
+        player.CurMp += 0.5f;
+    }
+
+    private void OnRoomProgressChange(object[] objs) {
+        if (curRoom == null)
+            return;
+
+        if (curRoom.roomState == RoomState.Complete)
+            CheckRoom(curRoom);
     }
 }

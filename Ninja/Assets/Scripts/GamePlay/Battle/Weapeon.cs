@@ -6,8 +6,8 @@ public class Weapeon : UbhBaseShot {
     public float fireDelay = 0.1f;
     public float betweenDelay = 0.1f;
     public Transform gunGo;
+    public float mpCost = 5;
     private float lastFireTime = 0;
-    private float angle = 10;
     private bool canShoot = false;
 
     private Vector3 GunPoint {
@@ -18,13 +18,19 @@ public class Weapeon : UbhBaseShot {
 
     void FixedUpdate() {
         if (Time.time > (lastFireTime + fireDelay)) {
-            Vector2 gunPos = gameObject.transform.position;
-            Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            angle = Vector2.Angle(Vector2.right, mousePos - gunPos);
-            angle = mousePos.y > gunPos.y ? angle : -angle;
-            angle -= 90;
             canShoot = true;
         }
+    }
+
+    public bool TryShot(float curMp) {
+        if (curMp < mpCost)
+            return false;
+
+        if (canShoot == false)
+            return false;
+
+        Shot();
+        return true;
     }
     
     public override void Shot() {
@@ -36,6 +42,7 @@ public class Weapeon : UbhBaseShot {
     }
 
     protected virtual void ShotHandle() {
+        SoundManager.Instance.PlaySound("shot");
         StartCoroutine(ShotCoroutine());
     }
 
@@ -59,7 +66,7 @@ public class Weapeon : UbhBaseShot {
                 break;
             }
 
-            ShotBullet(bullet, _BulletSpeed, angle);
+            ShotBullet(bullet, _BulletSpeed, transform.rotation.eulerAngles.z);
 
             AutoReleaseBulletGameObject(bullet.gameObject);
         }

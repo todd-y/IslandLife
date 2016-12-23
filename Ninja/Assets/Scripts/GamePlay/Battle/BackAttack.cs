@@ -18,6 +18,7 @@ public class BackAttack : BaseAttack {
     protected override void HitCheck(Transform colTrans) {
         if (colTrans.gameObject.layer == GeneralDefine.EnemyBulletLayer) {
             SoundManager.Instance.PlaySound("shot");
+            Send.SendMsg(SendType.BackBullet);
 
             UbhBullet ubhBullet = colTrans.GetComponent<UbhBullet>();
             if (ubhBullet == null) {
