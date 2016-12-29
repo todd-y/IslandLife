@@ -71,7 +71,7 @@ public class Launch : MonoBehaviour {
         Debug.Log("Launch InitAsset End !!!");
 
         //SoundManager.Instance.PlayMusic("bg");
-        WindowMgr.Instance.OpenWindow<LoadingWindow>();
+        WindowMgr.Instance.OpenWindow<BattleWindow>();
         yield break;
     }
 }
