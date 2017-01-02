@@ -9,17 +9,5 @@ public delegate void BroadcastCallBack (params object[] _objs);
 /// </summary>
 public enum SendType {
     TimeUpdate = 1,
-    SecondChange,
-    DayChange,
-    GameStateChange,
-    GenerationStateChange,
-    MonsterDead,
-    Transfer,
-    PlayerHpChange,
-    PlayerMpChange,
-    RoomProgressChange,
-    EnterRoom,
-    PlayerPosChange,
-    MonsterInjury,
-    BackBullet,
+    PlayerHit,
 }
