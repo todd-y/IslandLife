@@ -18,7 +18,7 @@ public class PlayerCtrl : MonoBehaviour {
     }
 
     void FixedUpdate() {
-        //PositionUpdate();
+        PositionUpdate();
     }
 
     void Update() {
@@ -82,7 +82,6 @@ public class PlayerCtrl : MonoBehaviour {
             xIndex = Mathf.Min(BattleGridCtrl.xCount - 1, xIndex + 1);
         }
         if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.Space)) {
-            Send.SendMsg(SendType.PlayerHit, xIndex);
         }
         //skill
         if (Input.GetKeyDown(KeyCode.Q)) {

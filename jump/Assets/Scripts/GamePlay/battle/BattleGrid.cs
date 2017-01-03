@@ -4,8 +4,8 @@ using System.Collections;
 public class BattleGrid : MonoBehaviour {
     private float posX;
     private float posY;
-    private float speedX = 800;
-    private float speedY = 800;
+    private float speedX = 500;
+    private float speedY = 500;
     public int xIndex;
     public int yIndex;
 

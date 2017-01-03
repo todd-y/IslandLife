@@ -50,6 +50,10 @@ public class BattleGridCtrl : MonoBehaviour {
             arrGrid[xIndex][index] = null;
             grid.SetTargetPos(xIndex, index - 1);
         }
+
+        BattleGrid newGrid = GetOneGrid();
+        arrGrid[xIndex][yCount - 1] = newGrid;
+        newGrid.SetPos(xIndex, yCount - 1);
     }
 
     private BattleGrid GetOneGrid() {
