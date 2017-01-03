@@ -7,6 +7,7 @@ public class BattleWindow : BaseWindowWrapper<BattleWindow> {
     private PlayerInfoProxy playerInfoProxy;
     private PlayerCtrl playerCtrl;
     private BattleGridCtrl battleGridCtrl;
+    private BattleProgress battleProgress;
 
     protected override void InitCtrl() {
         playerInfoProxy = gameObject.GetChildControl<Transform>("CvsLeftUI").gameObject.AddMissingComponent<PlayerInfoProxy>();
@@ -15,6 +16,8 @@ public class BattleWindow : BaseWindowWrapper<BattleWindow> {
         battleGridCtrl.gridPrefab = gameObject.GetChildControl<Transform>("CvsGrid/Grid").gameObject;
         battleGridCtrl.gridPrefab.AddMissingComponent<BattleGrid>();
         battleGridCtrl.CreatGrid();
+
+        battleProgress = gameObject.GetChildControl<Transform>("CvsRightUI/imgProgressBg").gameObject.AddMissingComponent<BattleProgress>();
     }
 
     protected override void OnPreOpen() {

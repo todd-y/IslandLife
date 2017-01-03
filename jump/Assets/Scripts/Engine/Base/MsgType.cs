@@ -19,4 +19,5 @@ public enum SendType {
     SkillChange,
     ItemChange,
     EquipChange,
+    ProgressChange,
 }
