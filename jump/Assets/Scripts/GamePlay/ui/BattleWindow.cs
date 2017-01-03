@@ -4,10 +4,12 @@ using UnityEngine.UI;
 
 public class BattleWindow : BaseWindowWrapper<BattleWindow> {
 
+    private PlayerInfoProxy playerInfoProxy;
     private PlayerCtrl playerCtrl;
     private BattleGridCtrl battleGridCtrl;
 
     protected override void InitCtrl() {
+        playerInfoProxy = gameObject.GetChildControl<Transform>("CvsLeftUI").gameObject.AddMissingComponent<PlayerInfoProxy>();
         playerCtrl = gameObject.GetChildControl<Transform>("Player").gameObject.AddMissingComponent<PlayerCtrl>();
         battleGridCtrl = gameObject.GetChildControl<Transform>("CvsGrid").gameObject.AddMissingComponent<BattleGridCtrl>();
         battleGridCtrl.gridPrefab = gameObject.GetChildControl<Transform>("CvsGrid/Grid").gameObject;
@@ -30,6 +32,7 @@ public class BattleWindow : BaseWindowWrapper<BattleWindow> {
     }
 
     private void OnPlayerHit(object[] objs) {
-        battleGridCtrl.RemoveLine();
+        int xIndex = (int)objs[0];
+        battleGridCtrl.RemoveGrid(xIndex, 0);
     }
 }

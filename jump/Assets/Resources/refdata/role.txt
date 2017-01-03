@@ -1,0 +1,3 @@
+﻿RoleType	Hp	DefaultMp	MaxMp	Atk	Skill	Item
+RoleType	Hp	DefaultMp	MaxMp	Atk	Skill	Item
+Warrior	100	50	50	15	1000	

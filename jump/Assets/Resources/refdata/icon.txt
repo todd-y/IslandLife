@@ -1,3 +1,11 @@
 ﻿图标ID	图集名字	图标名字
 ID	AtlasName	SpriteName
-Icon1	Icon	icon1
+Skill1000	Skill	Skill1000
+Skill1001	Skill	Skill1001
+Skill1002	Skill	Skill1002
+Skill1003	Skill	Skill1003
+Skill1004	Skill	Skill1004
+Skill1005	Skill	Skill1005
+Skill1006	Skill	Skill1006
+Skill1007	Skill	Skill1007
+Skill1008	Skill	Skill1008

@@ -28,9 +28,9 @@ public class RefLanguage : RefBase {
             return data.Value;
         }
 
-        if (data == null) {
-            Debug.Log("error RefLanguage key:" + _key);
-        }
+        //if (data == null) {
+        //    Debug.Log("error RefLanguage key:" + _key);
+        //}
         return _key;
     }
 

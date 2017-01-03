@@ -10,4 +10,13 @@ public delegate void BroadcastCallBack (params object[] _objs);
 public enum SendType {
     TimeUpdate = 1,
     PlayerHit,
+    LvChange,
+    ExpChange,
+    HpChange,
+    MpChange,
+    AtkChange,
+    GoldChange,
+    SkillChange,
+    ItemChange,
+    EquipChange,
 }

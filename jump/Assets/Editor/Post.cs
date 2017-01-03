@@ -3,17 +3,14 @@ using System.Collections;
 using UnityEditor;
 using System.IO;
 
-public class  Post : AssetPostprocessor 
-{
-
+public class  Post : AssetPostprocessor {
     void OnPostprocessTexture(Texture2D texture) {
-        if (assetPath.Contains("Sprites/")) {
+        if (assetPath.Contains("Atlas/")) {
             string AtlasName = new DirectoryInfo(Path.GetDirectoryName(assetPath)).Name;
             TextureImporter textureImporter = assetImporter as TextureImporter;
             textureImporter.textureType = TextureImporterType.Sprite;
-            textureImporter.spritePackingTag = "Sprites";
+            textureImporter.spritePackingTag = AtlasName;
             textureImporter.mipmapEnabled = false;
         }
 	}
- 
 }

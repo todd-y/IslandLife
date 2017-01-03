@@ -20,25 +20,25 @@ static public class Util {
         return result;
     }
 
-    static public void setText (this Text text, string str)  {
+    static public void SetText (this Text text, string str)  {
         if (text != null) {
             text.text = RefLanguage.GetValue(str);
         }
     }
 
-    static public void setText(this Text text, string str1, int str2) {
+    static public void SetText(this Text text, string str1, int str2) {
         if (text != null) {
             text.text = RefLanguage.GetValue(str1) + str2;
         }
     }
 
-    static public void setText(this Text text, float str) {
+    static public void SetText(this Text text, float str) {
         if (text != null) {
             text.text = str.ToString();
         }
     }
 
-    static public void setText(this Text text, DateTime str) {
+    static public void SetText(this Text text, DateTime str) {
         if (text != null) {
             text.text = string.Format("{0}-{1}-{2}", str.Year, str.Month, str.Day);
         }

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using UnityEditor;
 
 /// <summary>
 /// 本地资源管理器
@@ -67,8 +68,8 @@ public class LocalAssetMgr : Singleton<LocalAssetMgr> {
         Sprite sprite = null;
 
         string path;
-        path = string.Format("Assets/Atlas/{0}/{1}.png", pack, name );
-        sprite = Resources.Load(path) as Sprite;
+        path = string.Format("Atlas/{0}/{1}", pack, name );
+        sprite = Resources.Load(path, typeof(Sprite)) as Sprite;
         if (sprite == null) {
             Debug.LogError("Load_UISprite: sprite = " + path + ", failed!");
         }

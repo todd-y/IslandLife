@@ -2,6 +2,7 @@
 using System.Collections;
 
 public class BattleMgr : Singleton<BattleMgr> {
+    public PlayerInfo playerInfo;
 
 	public void Init(){
 		
@@ -10,4 +11,11 @@ public class BattleMgr : Singleton<BattleMgr> {
 	public void Clear(){
 		
 	}
+
+    public void StartBattle() {
+        playerInfo = new PlayerInfo();
+        playerInfo.SetData(RoleType.Warrior);
+
+        WindowMgr.Instance.OpenWindow<BattleWindow>();
+    }
 }
