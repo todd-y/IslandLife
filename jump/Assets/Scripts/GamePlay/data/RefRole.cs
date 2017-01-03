@@ -12,6 +12,7 @@ public class RefRole : RefBase {
     public int Atk;
     public int Skill;
     public int Item;
+    public int ItemNum;
 
     public override string GetFirstKeyName() {
         return "RoleType";
@@ -26,6 +27,7 @@ public class RefRole : RefBase {
         Atk = GetInt("Atk");
         Skill = GetInt("Skill");
         Item = GetInt("Item");
+        ItemNum = GetInt("ItemNum");
     }
 
     public static RefRole GetRef(RoleType _id) {

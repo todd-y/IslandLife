@@ -32,10 +32,14 @@ public class SkillGrid : MonoBehaviour {
 
     public void SetData(int _skillId) {
         skillId = _skillId;
+        if (skillId == 0) {
+            Clear();
+            return;
+        }
 
         imgIcon.gameObject.SetActive(true);
         imgUnknow.gameObject.SetActive(false);
-        
+
         RefSkill refSkill = RefSkill.GetRef(skillId);
         RefIcon.SetSprite(imgIcon, refSkill.Icon);
         txtCost.SetText(refSkill.Cost);

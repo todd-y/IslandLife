@@ -1,0 +1,6 @@
+﻿Id	Icon	MaxNum
+Id	Icon	MaxNum
+1000	Item1000	99
+1001	Item1001	99
+1002	Item1002	99
+1003	Item1003	99

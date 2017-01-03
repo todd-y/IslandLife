@@ -9,3 +9,7 @@ Skill1005	Skill	Skill1005
 Skill1006	Skill	Skill1006
 Skill1007	Skill	Skill1007
 Skill1008	Skill	Skill1008
+Item1000	Item	Item1000
+Item1001	Item	Item1001
+Item1002	Item	Item1002
+Item1003	Item	Item1003

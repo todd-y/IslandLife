@@ -59,12 +59,14 @@ public class PlayerInfoProxy : MonoBehaviour {
         for (int i = 1; i <= itemNum; i++) {
             ItemGrid itemGrid = gameObject.GetChildControl<Transform>("Item/ImgItemBg" + i).gameObject.AddMissingComponent<ItemGrid>();
             arrItem[i - 1] = itemGrid;
+            itemGrid.Init(i - 1);
         }
 
         arrEquip = new EquipGrid[equipNum];
         for (int i = 1; i <= equipNum; i++) {
             EquipGrid equipGrid = gameObject.GetChildControl<Transform>("Equip/imgEquipBg" + i).gameObject.AddMissingComponent<EquipGrid>();
             arrEquip[i - 1] = equipGrid;
+            equipGrid.Init(i - 1);
         }
     }
 
@@ -136,16 +138,23 @@ public class PlayerInfoProxy : MonoBehaviour {
         }
     }
     private void OnItemChange(params object[] objs) {
-        //int length = Mathf.Min(playerInfo.itemList.Count, itemNum);
-        //for (int i = 0; i < length; i++) {
-        //    arrItem[i].SetData(playerInfo.itemList[i]);
-        //}
+        int length = Mathf.Min(playerInfo.itemList.Count, itemNum);
+        for (int i = 0; i < length; i++) {
+            arrItem[i].SetData(playerInfo.itemList[i]);
+        }
 
-        //for (int i = length; i < itemNum; i++) {
-        //    arrItem[i].Clear();
-        //}
+        for (int i = length; i < itemNum; i++) {
+            arrItem[i].Clear();
+        }
     }
     private void OnEquipChange(params object[] objs) {
+        int length = Mathf.Min(playerInfo.arrEquip.Length, equipNum);
+        for (int i = 0; i < length; i++) {
+            arrEquip[i].SetData(playerInfo.arrEquip[i]);
+        }
 
+        for (int i = length; i < equipNum; i++) {
+            arrEquip[i].Clear();
+        }
     }
 }

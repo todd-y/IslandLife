@@ -1,0 +1,17 @@
+﻿Id	position	type	quality	attributeList	valueList
+Id	position	type	quality	attributeList	valueList
+1000	Weapon	Sword	White	Atk	5
+1001	Weapon	Sword	Green	Atk	7
+1002	Weapon	Sword	Blue	Atk	9
+1003	Weapon	Sword	Purple	Atk	11
+1004	Weapon	Sword	Orange	Atk	15
+2000	Armor	Armor	White	Hp	5
+2001	Armor	Armor	Green	Hp	7
+2002	Armor	Armor	Blue	Hp	9
+2003	Armor	Armor	Purple	Hp	11
+2004	Armor	Armor	Orange	Hp	15
+3000	Jewelry	Ring	White	Mp	5
+3001	Jewelry	Ring	Green	Mp	7
+3002	Jewelry	Ring	Blue	Mp	9
+3003	Jewelry	Ring	Purple	Mp	11
+3004	Jewelry	Ring	Orange	Mp	15

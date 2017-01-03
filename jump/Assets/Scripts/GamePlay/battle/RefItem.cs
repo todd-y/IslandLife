@@ -2,12 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class RefSkill : RefBase {
-    public static Dictionary<int, RefSkill> cacheMap = new Dictionary<int, RefSkill>();
+public class RefItem : RefBase {
+    public static Dictionary<int, RefItem> cacheMap = new Dictionary<int, RefItem>();
 
     public int Id;
     public string Icon;
-    public int Cost;
+    public int MaxNum;
 
     public override string GetFirstKeyName() {
         return "Id";
@@ -17,17 +17,17 @@ public class RefSkill : RefBase {
         base.LoadByLine(_value, _line);
         Id = GetInt("Id");
         Icon = GetString("Icon");
-        Cost = GetInt("Cost");
+        MaxNum = GetInt("MaxNum");
     }
 
-    public static RefSkill GetRef(int _id) {
-        RefSkill data = null;
+    public static RefItem GetRef(int _id) {
+        RefItem data = null;
         if (cacheMap.TryGetValue(_id, out data)) {
             return data;
         }
 
         if (data == null) {
-            Debug.LogError("error RefSkill key:" + _id);
+            Debug.LogError("error RefItem key:" + _id);
         }
         return data;
     }

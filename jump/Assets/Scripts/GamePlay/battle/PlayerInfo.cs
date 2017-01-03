@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class PlayerInfo {
+    private const int skillNum = 4;
+    private const int itemNum = 5;
+    private const int equipNum = 3;
+
     private RoleType roleType = RoleType.Warrior;
     private int m_lv;
     private int m_exp;
@@ -15,7 +19,8 @@ public class PlayerInfo {
     private int m_gold;
 
     public List<int> skillList = new List<int>();
-    public List<int> itemList = new List<int>();
+    public List<ItemData> itemList = new List<ItemData>();
+    public EquipData[] arrEquip = new EquipData[equipNum];
 
     public int Lv {
         get { return m_lv; }
@@ -85,6 +90,66 @@ public class PlayerInfo {
         Atk = refRole.Atk;
         Gold = 0;
         skillList.Clear();
-        skillList.Add(refRole.Skill);
+        if (refRole.Skill != 0)
+            AddSkill(refRole.Skill);
+
+        if (refRole.Item != 0)
+            AddItem(refRole.Item, refRole.ItemNum);
+    }
+
+    public void AddSkill(int _SkillId) {
+        if (!RefSkill.HasKey(_SkillId)) {
+            Debug.LogError("skillId is not find:" + _SkillId);
+            return;
+        }
+        skillList.Add(_SkillId);
+
+        Send.SendMsg(SendType.SkillChange, skillList);
+    }
+
+    public void AddItem(int _id, int _num ) {
+        if (!RefItem.HasKey(_id)) {
+            Debug.LogError("RefItem is not find:" + _id);
+            return;
+        }
+        for (int index = 0; index < itemList.Count; index++ ) {
+            ItemData data = itemList[index];
+            if (data.data.Id == _id) {
+                int remain = data.remainNum();
+                if (_num <= remain) {
+                    data.Num += _num;
+                    _num = 0;
+                    break;
+                }
+                else {
+                    data.Num += remain;
+                    _num -= remain;
+                }
+            }
+        }
+
+        if (_num != 0) {
+            ItemData data = new ItemData();
+            data.Init(_id, _num);
+            itemList.Add(data);
+        }
+
+        Send.SendMsg(SendType.ItemChange, itemList);
+    }
+
+    public void UseItem(ItemData item) {
+        item.Num--;
+        if (item.Num == 0) {
+            itemList.Remove(item);
+        }
+
+        Send.SendMsg(SendType.ItemChange, itemList);
+    }
+
+    public void Equip(EquipData equipData) {
+        int index = (int)equipData.data.position;
+        arrEquip[index] = equipData;
+
+        Send.SendMsg(SendType.EquipChange, arrEquip);
     }
 }
