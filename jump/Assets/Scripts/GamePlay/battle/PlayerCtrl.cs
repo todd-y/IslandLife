@@ -85,16 +85,16 @@ public class PlayerCtrl : MonoBehaviour {
         }
         //skill
         if (Input.GetKeyDown(KeyCode.Q)) {
-            BattleMgr.Instance.playerInfo.Equip(new EquipData(1000));
+            BattleMgr.Instance.makeInfo.AddItem(2000, 1);
         }
         if (Input.GetKeyDown(KeyCode.W)) {
-            BattleMgr.Instance.playerInfo.Equip(new EquipData(2001));
+            BattleMgr.Instance.makeInfo.AddItem(2000, 3);
         }
         if (Input.GetKeyDown(KeyCode.E)) {
-            BattleMgr.Instance.playerInfo.Equip(new EquipData(3002));
+            BattleMgr.Instance.makeInfo.AddItem(2001, 2);
         }
         if (Input.GetKeyDown(KeyCode.R)) {
-            BattleMgr.Instance.playerInfo.Equip(new EquipData(1003));
+            BattleMgr.Instance.makeInfo.AddItem(2002, 3);
         }
 
         //item

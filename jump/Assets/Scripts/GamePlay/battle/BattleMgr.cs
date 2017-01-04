@@ -3,6 +3,7 @@ using System.Collections;
 
 public class BattleMgr : Singleton<BattleMgr> {
     public PlayerInfo playerInfo;
+    public MakeInfo makeInfo;
     public int totalProgress = 100;
     public int[] arrProgress = { 24, 48, 72 };
     private float m_curProgress;
@@ -29,6 +30,9 @@ public class BattleMgr : Singleton<BattleMgr> {
         playerInfo = new PlayerInfo();
         playerInfo.SetData(RoleType.Warrior);
         CurProgress = 0;
+
+        makeInfo = new MakeInfo();
+        makeInfo.SetData();
 
         WindowMgr.Instance.OpenWindow<BattleWindow>();
     }

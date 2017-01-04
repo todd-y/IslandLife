@@ -18,6 +18,10 @@ public class BattleGrid : MonoBehaviour {
         SetGoPos();
     }
 
+    public void SetData() {
+
+    }
+
     public void SetTargetPos(int _xIndex, int _yIndex) {
         xIndex = _xIndex;
         yIndex = _yIndex;

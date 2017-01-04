@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class PlayerInfo {
-    private const int skillNum = 4;
-    private const int itemNum = 5;
-    private const int equipNum = 3;
+    public int skillNum = 4;
+    public int itemNum = 5;
+    public int equipNum = 3;
 
     private RoleType roleType = RoleType.Warrior;
     private int m_lv;
@@ -20,7 +20,7 @@ public class PlayerInfo {
 
     public List<int> skillList = new List<int>();
     public List<ItemData> itemList = new List<ItemData>();
-    public EquipData[] arrEquip = new EquipData[equipNum];
+    public EquipData[] arrEquip;
 
     public int Lv {
         get { return m_lv; }
@@ -95,6 +95,9 @@ public class PlayerInfo {
 
         if (refRole.Item != 0)
             AddItem(refRole.Item, refRole.ItemNum);
+
+        itemList.Clear();
+        arrEquip = new EquipData[equipNum];
     }
 
     public void AddSkill(int _SkillId) {

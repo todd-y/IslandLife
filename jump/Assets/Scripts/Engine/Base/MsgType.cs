@@ -20,4 +20,6 @@ public enum SendType {
     ItemChange,
     EquipChange,
     ProgressChange,
+    MakeChange,
+    MakeEnough,
 }

@@ -27,3 +27,16 @@ public enum Attribute {
     Hp,
     Mp,
 }
+
+public enum MakeType {
+    Low,
+    Mid,
+    High,
+}
+
+public enum ItemType {
+    Potion,
+    LowMaterial,
+    MidMaterial,
+    HighMaterial,
+}

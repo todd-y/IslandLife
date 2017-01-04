@@ -3,9 +3,6 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class PlayerInfoProxy : MonoBehaviour {
-    private const int skillNum = 4;
-    private const int itemNum = 5;
-    private const int equipNum = 3;
     private Text txtName;
     private Text txtLv;
     private Slider sldExp;
@@ -48,22 +45,22 @@ public class PlayerInfoProxy : MonoBehaviour {
         txtAtk = gameObject.GetChildControl<Text>("Attribute/imgAtkBg/txtValue");
         txtGold = gameObject.GetChildControl<Text>("Attribute/imgGoldBg/txtValue");
 
-        arrSkill = new SkillGrid[skillNum];
-        for (int i = 1; i <= skillNum; i++ ) {
+        arrSkill = new SkillGrid[playerInfo.skillNum];
+        for (int i = 1; i <= playerInfo.skillNum; i++) {
             SkillGrid skillGrid = gameObject.GetChildControl<Transform>("Skill/ImgSkillBg" + i).gameObject.AddMissingComponent<SkillGrid>();
             arrSkill[i - 1] = skillGrid;
             skillGrid.Init(i - 1);
         }
 
-        arrItem = new ItemGrid[itemNum];
-        for (int i = 1; i <= itemNum; i++) {
+        arrItem = new ItemGrid[playerInfo.itemNum];
+        for (int i = 1; i <= playerInfo.itemNum; i++) {
             ItemGrid itemGrid = gameObject.GetChildControl<Transform>("Item/ImgItemBg" + i).gameObject.AddMissingComponent<ItemGrid>();
             arrItem[i - 1] = itemGrid;
             itemGrid.Init(i - 1);
         }
 
-        arrEquip = new EquipGrid[equipNum];
-        for (int i = 1; i <= equipNum; i++) {
+        arrEquip = new EquipGrid[playerInfo.equipNum];
+        for (int i = 1; i <= playerInfo.equipNum; i++) {
             EquipGrid equipGrid = gameObject.GetChildControl<Transform>("Equip/imgEquipBg" + i).gameObject.AddMissingComponent<EquipGrid>();
             arrEquip[i - 1] = equipGrid;
             equipGrid.Init(i - 1);
@@ -128,32 +125,32 @@ public class PlayerInfoProxy : MonoBehaviour {
         txtGold.SetText(playerInfo.Gold);
     }
     private void OnSkillChange(params object[] objs) {
-        int length = Mathf.Min( playerInfo.skillList.Count, skillNum);
+        int length = Mathf.Min(playerInfo.skillList.Count, playerInfo.skillNum);
         for (int i = 0; i < length; i++ ) {
             arrSkill[i].SetData(playerInfo.skillList[i]);
         }
 
-        for (int i = length; i < skillNum; i++ ) {
+        for (int i = length; i < playerInfo.skillNum; i++) {
             arrSkill[i].Clear();
         }
     }
     private void OnItemChange(params object[] objs) {
-        int length = Mathf.Min(playerInfo.itemList.Count, itemNum);
+        int length = Mathf.Min(playerInfo.itemList.Count, playerInfo.itemNum);
         for (int i = 0; i < length; i++) {
             arrItem[i].SetData(playerInfo.itemList[i]);
         }
 
-        for (int i = length; i < itemNum; i++) {
+        for (int i = length; i < playerInfo.itemNum; i++) {
             arrItem[i].Clear();
         }
     }
     private void OnEquipChange(params object[] objs) {
-        int length = Mathf.Min(playerInfo.arrEquip.Length, equipNum);
+        int length = Mathf.Min(playerInfo.arrEquip.Length, playerInfo.equipNum);
         for (int i = 0; i < length; i++) {
             arrEquip[i].SetData(playerInfo.arrEquip[i]);
         }
 
-        for (int i = length; i < equipNum; i++) {
+        for (int i = length; i < playerInfo.equipNum; i++) {
             arrEquip[i].Clear();
         }
     }

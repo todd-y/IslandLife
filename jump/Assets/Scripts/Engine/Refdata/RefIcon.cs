@@ -45,4 +45,14 @@ public class RefIcon : RefBase {
 
         UITool.SetSprite(image, iconData.AtlasName, iconData.SpriteName);
     }
+
+    public static void SetItemSprite(Image img, int itemId) {
+        if (img == null)
+            return;
+        RefItem item = RefItem.GetRef(itemId);
+        if (item == null)
+            return;
+
+        SetSprite(img, item.Icon);
+    }
 }

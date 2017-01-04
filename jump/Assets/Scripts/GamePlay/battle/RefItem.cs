@@ -8,6 +8,7 @@ public class RefItem : RefBase {
     public int Id;
     public string Icon;
     public int MaxNum;
+    public ItemType Type;
 
     public override string GetFirstKeyName() {
         return "Id";
@@ -18,6 +19,7 @@ public class RefItem : RefBase {
         Id = GetInt("Id");
         Icon = GetString("Icon");
         MaxNum = GetInt("MaxNum");
+        Type = (ItemType)GetEnum("Type", typeof(ItemType));
     }
 
     public static RefItem GetRef(int _id) {
