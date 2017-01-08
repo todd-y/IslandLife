@@ -23,7 +23,7 @@ public class BattleGridCtrl : MonoBehaviour {
             for (int yIndex = 0; yIndex < yCount; yIndex++ ) {
                 BattleGrid grid = GetOneGrid();
                 arrY[yIndex] = grid;
-                grid.SetPos( xIndex, yIndex );
+                grid.InitPos( xIndex, yIndex );
             }
         }
     }
@@ -39,9 +39,34 @@ public class BattleGridCtrl : MonoBehaviour {
         if (releaseGrid == null)
             return;
 
-        arrGrid[xIndex][yIndex] = null;
-        ReleaseGrid(releaseGrid);
-        for (int index = yIndex + 1; index < yCount; index++ ) {
+        ShowGrid(xIndex - 1, yIndex);
+        ShowGrid(xIndex + 1, yIndex);
+        ShowGrid(xIndex, yIndex + 1);
+        StartCoroutine(ReleaseHandle(releaseGrid, xIndex, yIndex));
+    }
+
+    private void ShowGrid(int xIndex, int yIndex) {
+        if (xIndex >= 0 && xIndex < xCount && yIndex >= 0 && yIndex < yCount) {
+            if (arrGrid[xIndex][yIndex] != null) {
+                arrGrid[xIndex][yIndex].CurState = BattleGrid.State.Show;
+            }
+        }
+    }
+
+    private IEnumerator ReleaseHandle(BattleGrid releaseGrid, int xIndex, int yIndex) {
+        if (releaseGrid.CurState == BattleGrid.State.Hide) {
+            releaseGrid.CurState = BattleGrid.State.Show;
+            yield return new WaitForSeconds(0.5f);
+            arrGrid[xIndex][yIndex] = null;
+            ReleaseGrid(releaseGrid);
+        }
+        else {
+            arrGrid[xIndex][yIndex] = null;
+            ReleaseGrid(releaseGrid);
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        for (int index = yIndex + 1; index < yCount; index++) {
             BattleGrid grid = arrGrid[xIndex][index];
             if (grid == null)
                 continue;
@@ -53,7 +78,7 @@ public class BattleGridCtrl : MonoBehaviour {
 
         BattleGrid newGrid = GetOneGrid();
         arrGrid[xIndex][yCount - 1] = newGrid;
-        newGrid.SetPos(xIndex, yCount - 1);
+        newGrid.InitPos(xIndex, yCount - 1);
     }
 
     private BattleGrid GetOneGrid() {

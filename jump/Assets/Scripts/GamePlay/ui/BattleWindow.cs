@@ -3,24 +3,35 @@ using System.Collections;
 using UnityEngine.UI;
 
 public class BattleWindow : BaseWindowWrapper<BattleWindow> {
+    private const float areaSpeedY = 15;
+    private const int height = 1080;
+    private const int gridAreaNum = 3;
     private PlayerInfoProxy playerInfoProxy;
     private MakeInfoProxy makeInfoProxy;
     private PlayerCtrl playerCtrl;
-    private BattleGridCtrl battleGridCtrl;
     private BattleProgress battleProgress;
     private Text txtBattleInfo;
+    private GameObject[] arrGridArea;
+    private GameObject downArea;
+    private LimitProxy limitProxy;
+    private int lastIndex = -1;
+    private float curAreaY;
+    private float targetAreaY;
 
     protected override void InitCtrl() {
         playerInfoProxy = gameObject.GetChildControl<Transform>("CvsLeftUI").gameObject.AddMissingComponent<PlayerInfoProxy>();
         makeInfoProxy = gameObject.GetChildControl<Transform>("CvsRightUI/imgMakeTitle/Make").gameObject.AddMissingComponent<MakeInfoProxy>();
-        playerCtrl = gameObject.GetChildControl<Transform>("Player").gameObject.AddMissingComponent<PlayerCtrl>();
-        battleGridCtrl = gameObject.GetChildControl<Transform>("CvsGrid").gameObject.AddMissingComponent<BattleGridCtrl>();
-        battleGridCtrl.gridPrefab = gameObject.GetChildControl<Transform>("CvsGrid/Grid").gameObject;
-        battleGridCtrl.gridPrefab.AddMissingComponent<BattleGrid>();
-        battleGridCtrl.CreatGrid();
-
         battleProgress = gameObject.GetChildControl<Transform>("CvsRightUI/imgProgressBg").gameObject.AddMissingComponent<BattleProgress>();
         txtBattleInfo = gameObject.GetChildControl<Text>("CvsRightUI/imgInfo/txtInfo");
+
+        playerCtrl = gameObject.GetChildControl<Transform>("DownArea/Player").gameObject.AddMissingComponent<PlayerCtrl>();
+        arrGridArea = new GameObject[gridAreaNum];
+        for (int index = 0; index < gridAreaNum; index++ ) {
+            GameObject gridArea = gameObject.GetChildControl<Transform>("DownArea/CvsGridArea" + (index+1)).gameObject;
+            arrGridArea[index] = gridArea;
+        }
+        downArea = gameObject.GetChildControl<Transform>("DownArea").gameObject;
+        limitProxy = gameObject.GetChildControl<Transform>("DownArea/Limit").gameObject.AddMissingComponent<LimitProxy>();
     }
 
     protected override void OnPreOpen() {
@@ -30,15 +41,46 @@ public class BattleWindow : BaseWindowWrapper<BattleWindow> {
     }
 
     protected override void InitMsg() {
-        Send.RegisterMsg(SendType.PlayerHit, OnPlayerHit);
+        Send.RegisterMsg(SendType.PlayerYMove, OnPlayerYMove);
     }
 
     protected override void ClearMsg() {
-        Send.UnregisterMsg(SendType.PlayerHit, OnPlayerHit);
+        Send.UnregisterMsg(SendType.PlayerYMove, OnPlayerYMove);
     }
 
-    private void OnPlayerHit(object[] objs) {
-        int xIndex = (int)objs[0];
-        battleGridCtrl.RemoveGrid(xIndex, 0);
+    void FixedUpdate() {
+        AreaMoveUpdate();
+        playerCtrl.FixedUpdateHandle();
+    }
+
+    void Update() {
+        playerCtrl.UpdateHandle();
+        limitProxy.UpdateHandle();
+    }
+
+    private void AreaMoveUpdate() {
+        curAreaY = Mathf.SmoothStep(curAreaY, targetAreaY, Time.fixedDeltaTime * areaSpeedY);
+        downArea.transform.localPosition = new Vector3(0, curAreaY, 0);
+
+        int index = (int)curAreaY / height % gridAreaNum;
+        if (index != lastIndex) {
+            lastIndex = index;
+            switch (index) {
+                case 0:
+                    arrGridArea[1].transform.localPosition = arrGridArea[0].transform.localPosition + new Vector3(0, -1080, 0);
+                    break;
+                case 1:
+                    arrGridArea[2].transform.localPosition = arrGridArea[1].transform.localPosition + new Vector3(0, -1080, 0);
+                    break;
+                case 2:
+                    arrGridArea[0].transform.localPosition = arrGridArea[2].transform.localPosition + new Vector3(0, -1080, 0);
+                    break;
+            }
+        }
+    }
+
+    private void OnPlayerYMove(object[] objs) {
+        float deltaY = (float)objs[0];
+        targetAreaY = targetAreaY - deltaY;
     }
 }

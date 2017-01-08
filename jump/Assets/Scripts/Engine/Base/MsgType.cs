@@ -9,7 +9,7 @@ public delegate void BroadcastCallBack (params object[] _objs);
 /// </summary>
 public enum SendType {
     TimeUpdate = 1,
-    PlayerHit,
+    PlayerYMove,
     LvChange,
     ExpChange,
     HpChange,
