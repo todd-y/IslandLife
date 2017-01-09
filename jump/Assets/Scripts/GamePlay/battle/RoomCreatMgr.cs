@@ -35,11 +35,22 @@ public class RoomCreatMgr : Singleton<RoomCreatMgr> {
         arrCurData = GetEmptyData();
         AddData(0, arrRemainData);
         ClearRemainData();
-        
-        while(creatY < yCount){
-            GridType[][] arrData = GetLineRandom();
-            AddData(creatY, arrData);
-            creatY += arrData.Length;
+
+        while (creatY < yCount) {
+            int creatType = Random.Range(0, 100);
+            if (creatType < 10) {
+                GridType[][] arrData = GetPlatform(Random.Range(0f, 1f) >= 0.5f);
+                AddData(creatY, arrData);
+                creatY += (arrData.Length  + 1);
+            }
+            else if (creatType < 50) {
+                GridType[][] arrData = GetLine();
+                AddData(creatY, arrData);
+                creatY += arrData.Length;
+            }
+            else {
+                creatY += Random.Range(1, 5);
+            }
         }
 
         creatY -= yCount;
@@ -51,7 +62,6 @@ public class RoomCreatMgr : Singleton<RoomCreatMgr> {
             GridType[] arrLine = arrData[y];
             if (arrLine == null)
                 break;
-            curY++;
             if(curY >= yCount * 2){
                 Debug.LogError("data is error:" + arrData + "/" + arrData.Length);
                 break;
@@ -66,22 +76,65 @@ public class RoomCreatMgr : Singleton<RoomCreatMgr> {
                     }
                 }
             }
+
+            curY++;
         }
     }
 
-    private GridType[][] GetLineRandom(int xMin = 0, int xMax = -1, int numMin = 2, int numMax = 4) {
+    private GridType[][] GetLine(int xMin = 0, int xMax = -1, int numMin = 2, int numMax = 4) {
         if (xMax == -1) {
             xMax = xCount;
         }
         GridType[][] arrLine = new GridType[1][];
         int num = Random.Range(numMin, numMax);
         int startX = Random.Range(xMin, xMax - num + 1);
-        arrLine[0] = new GridType[yCount];
+        arrLine[0] = new GridType[xCount];
         for (int x = 0; x < num; x++) {
             arrLine[0][startX + x] = GridType.Wall;
         }
 
         return arrLine;
+    }
+
+    private GridType[][] GetPlatform(bool leftStart, int minY = 1, int maxY = 6, int minX = 1, int maxX = 8) {
+        int numY = Random.Range(minY, maxY + 1);
+
+        GridType[][] arrData = new GridType[numY][];
+        int longestY = Random.Range(0, numY);
+        int longestX = Random.Range( Mathf.Max(numY, minX), maxX + 1);
+
+        int[] arrNumX = new int[numY];
+        arrNumX[longestY] = longestX;
+        int reduceY = longestY - 1;
+        int reduceMaxX = longestX;
+        while (reduceY >= 0) {
+            reduceMaxX = Random.Range(Mathf.Max(1, reduceMaxX - 3), reduceMaxX + 1);
+            arrNumX[reduceY] = reduceMaxX;
+            reduceY--;
+        }
+
+        reduceY = longestY + 1;
+        reduceMaxX = longestX;
+        while (reduceY < numY) {
+            reduceMaxX = Random.Range(Mathf.Max(1, reduceMaxX - 3), reduceMaxX + 1);
+            arrNumX[reduceY] = reduceMaxX;
+            reduceY++;
+        }
+
+        for (int y = 0; y < numY; y++ ) {
+            int numX = arrNumX[y];
+            arrData[y] = new GridType[xCount];
+            for (int x = 0; x < numX; x++) {
+                if (leftStart) {
+                    arrData[y][x] = GridType.Wall;
+                }
+                else {
+                    arrData[y][xCount - 1 - x] = GridType.Wall;
+                }
+            }
+        }
+
+        return arrData;
     }
 
     private GridType[][] GetEmptyData() {
