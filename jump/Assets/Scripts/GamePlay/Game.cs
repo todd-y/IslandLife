@@ -11,6 +11,7 @@ public class Game : Singleton<Game> {
         ToolMgr.Instance.Init();
         TimeMgr.Instance.Init();
         BattleMgr.Instance.Init();
+        RoomCreatMgr.Instance.Init();
     }
 
     public void Clear() {
@@ -18,5 +19,6 @@ public class Game : Singleton<Game> {
         ToolMgr.Instance.Clear();
         TimeMgr.Instance.Clear();
         BattleMgr.Instance.Clear();
+        RoomCreatMgr.Instance.Clear();
     }
 }

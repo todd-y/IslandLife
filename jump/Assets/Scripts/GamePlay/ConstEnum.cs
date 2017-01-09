@@ -40,3 +40,10 @@ public enum ItemType {
     MidMaterial,
     HighMaterial,
 }
+
+public enum GridType {
+    Empty = 0, 
+    Wall, 
+    Item,
+    Enemy,
+}

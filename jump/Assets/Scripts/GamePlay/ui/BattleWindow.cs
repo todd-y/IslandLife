@@ -11,7 +11,7 @@ public class BattleWindow : BaseWindowWrapper<BattleWindow> {
     private PlayerCtrl playerCtrl;
     private BattleProgress battleProgress;
     private Text txtBattleInfo;
-    private GameObject[] arrGridArea;
+    public RoomProxy[] arrGridArea;
     private GameObject downArea;
     private LimitProxy limitProxy;
     private int lastIndex = -1;
@@ -25,10 +25,13 @@ public class BattleWindow : BaseWindowWrapper<BattleWindow> {
         txtBattleInfo = gameObject.GetChildControl<Text>("CvsRightUI/imgInfo/txtInfo");
 
         playerCtrl = gameObject.GetChildControl<Transform>("DownArea/Player").gameObject.AddMissingComponent<PlayerCtrl>();
-        arrGridArea = new GameObject[gridAreaNum];
+        arrGridArea = new RoomProxy[gridAreaNum];
         for (int index = 0; index < gridAreaNum; index++ ) {
             GameObject gridArea = gameObject.GetChildControl<Transform>("DownArea/CvsGridArea" + (index+1)).gameObject;
-            arrGridArea[index] = gridArea;
+            gridArea.transform.localPosition = new Vector3(0, -height * index, 0);
+            RoomProxy roomProxy = gridArea.AddMissingComponent<RoomProxy>();
+            roomProxy.Init();
+            arrGridArea[index] = roomProxy;
         }
         downArea = gameObject.GetChildControl<Transform>("DownArea").gameObject;
         limitProxy = gameObject.GetChildControl<Transform>("DownArea/Limit").gameObject.AddMissingComponent<LimitProxy>();
@@ -55,7 +58,7 @@ public class BattleWindow : BaseWindowWrapper<BattleWindow> {
 
     void Update() {
         playerCtrl.UpdateHandle();
-        limitProxy.UpdateHandle();
+        //limitProxy.UpdateHandle();
     }
 
     private void AreaMoveUpdate() {
@@ -67,13 +70,16 @@ public class BattleWindow : BaseWindowWrapper<BattleWindow> {
             lastIndex = index;
             switch (index) {
                 case 0:
-                    arrGridArea[1].transform.localPosition = arrGridArea[0].transform.localPosition + new Vector3(0, -1080, 0);
+                    arrGridArea[1].transform.localPosition = arrGridArea[0].transform.localPosition + new Vector3(0, -height, 0);
+                    RoomCreatMgr.Instance.CreatNewRoom(arrGridArea[1]);
                     break;
                 case 1:
-                    arrGridArea[2].transform.localPosition = arrGridArea[1].transform.localPosition + new Vector3(0, -1080, 0);
+                    arrGridArea[2].transform.localPosition = arrGridArea[1].transform.localPosition + new Vector3(0, -height, 0);
+                    RoomCreatMgr.Instance.CreatNewRoom(arrGridArea[2]);
                     break;
                 case 2:
-                    arrGridArea[0].transform.localPosition = arrGridArea[2].transform.localPosition + new Vector3(0, -1080, 0);
+                    arrGridArea[0].transform.localPosition = arrGridArea[2].transform.localPosition + new Vector3(0, -height, 0);
+                    RoomCreatMgr.Instance.CreatNewRoom(arrGridArea[0]);
                     break;
             }
         }

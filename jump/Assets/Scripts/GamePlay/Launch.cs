@@ -7,6 +7,8 @@ using System.Collections;
 public class Launch : MonoBehaviour {
 
     public static Launch Instance = null;
+    [HideInInspector]
+    public GameObject poolGo;
 
     // build in 
     void Awake() {
@@ -23,6 +25,11 @@ public class Launch : MonoBehaviour {
         gameObject.AddMissingComponent<CoDelegator>();
         gameObject.AddMissingComponent<SoundManager>();
         DontDestroyOnLoad(gameObject);
+
+        poolGo = new GameObject();
+        poolGo.name = "Pool";
+        DontDestroyOnLoad(poolGo);
+        poolGo.transform.SetParent(transform, false);
     }
 
 	// Use this for initialization
