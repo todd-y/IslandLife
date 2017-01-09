@@ -43,6 +43,7 @@ public enum ItemType {
 
 public enum GridType {
     Empty = 0, 
+    Gold,
     Wall, 
     Item,
     Enemy,

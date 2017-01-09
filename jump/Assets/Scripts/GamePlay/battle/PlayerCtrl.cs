@@ -3,6 +3,7 @@ using System.Collections;
 
 public class PlayerCtrl : MonoBehaviour {
     private Rigidbody2D body;
+    private const float MoveLimit = 300;
     private float addSpeedX = 2000;
     private float reduceSpeedX = 1000;
     private float maxSpeedX = 300;
@@ -42,7 +43,9 @@ public class PlayerCtrl : MonoBehaviour {
     private void PosXUpdate() {
         if (curSpeedX == 0)
             return;
-        transform.localPosition = transform.localPosition + new Vector3(curSpeedX * Time.fixedDeltaTime, 0, 0);
+        float newX = transform.localPosition.x + curSpeedX * Time.fixedDeltaTime;
+        newX = Mathf.Clamp(newX, -MoveLimit, MoveLimit);
+        transform.localPosition = new Vector3(newX, transform.localPosition.y, transform.localPosition.z);
     }
 
     private void PosYUpdate() {

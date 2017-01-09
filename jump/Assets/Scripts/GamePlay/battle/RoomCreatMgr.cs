@@ -9,6 +9,10 @@ public class RoomCreatMgr : Singleton<RoomCreatMgr> {
     private GameObject poolGo;
     private int xCount;
     private int yCount;
+    private GridType[][] arrCurData;
+    private GridType[][] arrRemainData;
+    private int creatY = 0;
+    private RoomProxy waitRoomProxy;
 
     private Dictionary<string, GameObject> dicPrefab = new Dictionary<string, GameObject>();
     private Dictionary<string, List<GameObject>> dicPool = new Dictionary<string, List<GameObject>>();
@@ -17,6 +21,8 @@ public class RoomCreatMgr : Singleton<RoomCreatMgr> {
         poolGo = Launch.Instance.poolGo;
         xCount = width / size;
         yCount = height / size;
+        arrCurData = new GridType[0][];
+        arrRemainData = new GridType[0][];
     }
 
     public void Clear() {
@@ -24,27 +30,80 @@ public class RoomCreatMgr : Singleton<RoomCreatMgr> {
     }
 
     public void CreatNewRoom(RoomProxy roomProxy) {
-        roomProxy.ClearAllGo();
-        GridType[][] arrData = GetEmptyData();
-        roomProxy.SetData(arrData);
+        waitRoomProxy = roomProxy;
+        waitRoomProxy.ClearAllGo();
+        arrCurData = GetEmptyData();
+        AddData(0, arrRemainData);
+        ClearRemainData();
+        
+        while(creatY < yCount){
+            GridType[][] arrData = GetLineRandom();
+            AddData(creatY, arrData);
+            creatY += arrData.Length;
+        }
+
+        creatY -= yCount;
+        waitRoomProxy.SetData(arrCurData);
+    }
+
+    private void AddData(int curY, GridType[][] arrData) {
+        for (int y = 0; y < arrData.Length; y++ ) {
+            GridType[] arrLine = arrData[y];
+            if (arrLine == null)
+                break;
+            curY++;
+            if(curY >= yCount * 2){
+                Debug.LogError("data is error:" + arrData + "/" + arrData.Length);
+                break;
+            }
+            else if (curY >= yCount) {
+                arrRemainData[curY - yCount] = arrLine;
+            }
+            else {
+                for (int x = 0; x < arrLine.Length; x++) {
+                    if (arrLine[x] != null && arrLine[x] != GridType.Empty) {
+                        arrCurData[curY][x] = arrLine[x];
+                    }
+                }
+            }
+        }
+    }
+
+    private GridType[][] GetLineRandom(int xMin = 0, int xMax = -1, int numMin = 2, int numMax = 4) {
+        if (xMax == -1) {
+            xMax = xCount;
+        }
+        GridType[][] arrLine = new GridType[1][];
+        int num = Random.Range(numMin, numMax);
+        int startX = Random.Range(xMin, xMax - num + 1);
+        arrLine[0] = new GridType[yCount];
+        for (int x = 0; x < num; x++) {
+            arrLine[0][startX + x] = GridType.Wall;
+        }
+
+        return arrLine;
     }
 
     private GridType[][] GetEmptyData() {
-        GridType[][] arrData = new GridType[width / size][];
-        for (int x = 0; x < xCount; x++) {
-            GridType[] arrLine = new GridType[yCount];
-            arrData[x] = arrLine;
-            for (int y = 0; y < yCount; y++) {
-                if (x == 7) {
-                    arrData[x][y] = GridType.Empty;
-                }
-                else {
-                    arrData[x][y] = GridType.Wall;
-                }
+        GridType[][] arrData = new GridType[yCount][];
+        for (int y = 0; y < yCount; y++) {
+            GridType[] arrLine = new GridType[xCount];
+            arrData[y] = arrLine;
+            for (int x = 0; x < xCount; x++) {
+                arrData[y][x] = GridType.Empty;
             }
         }
 
         return arrData;
+    }
+
+    private void ClearRemainData(){
+        GridType[][] arrData = new GridType[yCount][];
+        for (int y = 0; y < yCount; y++) {
+            arrData[y] = null;
+        }
+
+        arrRemainData = arrData;
     }
 
     public GameObject GetGameObject(string prefabName) {

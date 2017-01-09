@@ -21,10 +21,10 @@ public class RoomProxy : MonoBehaviour {
     }
 
     public void CreatRoom() {
-        for (int x = 0; x < arrGridData.Length; x++) {
-            GridType[] arrLineData = arrGridData[x];
-            for (int y = 0; y < arrLineData.Length; y++ ) {
-                GridType gridType = arrLineData[y];
+        for (int y = 0; y < arrGridData.Length; y++) {
+            GridType[] arrLineData = arrGridData[y];
+            for (int x = 0; x < arrLineData.Length; x++ ) {
+                GridType gridType = arrLineData[x];
                 CreatOneGrid(x, y, gridType);
             }
         }
@@ -42,7 +42,7 @@ public class RoomProxy : MonoBehaviour {
         int halfWidth = RoomCreatMgr.width / 2;
         int halfHeight = RoomCreatMgr.height / 2;
         gridGo.transform.SetParent(gridParent, false);
-        gridGo.transform.localPosition = new Vector3(-halfWidth + x * size + size / 2, -halfHeight + y * size + size / 2, 0);
+        gridGo.transform.localPosition = new Vector3( -halfWidth + x * size + size / 2, halfHeight - y * size - size / 2, 0);
         goList.Add(gridGo);
     }
 

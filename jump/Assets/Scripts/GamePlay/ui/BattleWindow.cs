@@ -4,8 +4,9 @@ using UnityEngine.UI;
 
 public class BattleWindow : BaseWindowWrapper<BattleWindow> {
     private const float areaSpeedY = 15;
-    private const int height = 1080;
+    private const int height = 1100;
     private const int gridAreaNum = 3;
+    private const int returnNum = 99;
     private PlayerInfoProxy playerInfoProxy;
     private MakeInfoProxy makeInfoProxy;
     private PlayerCtrl playerCtrl;
@@ -83,10 +84,24 @@ public class BattleWindow : BaseWindowWrapper<BattleWindow> {
                     break;
             }
         }
+        if (curAreaY > returnNum * height) {
+            float returnPosY = returnNum * height;
+            targetAreaY = targetAreaY - returnPosY;
+            curAreaY = curAreaY - returnPosY;
+            downArea.transform.localPosition = new Vector3(0, downArea.transform.localPosition.y - returnPosY, 0);
+            arrGridArea[0].transform.localPosition = new Vector3(0, arrGridArea[0].transform.localPosition.y + returnPosY, 0);
+            arrGridArea[1].transform.localPosition = new Vector3(0, arrGridArea[1].transform.localPosition.y + returnPosY, 0);
+            arrGridArea[2].transform.localPosition = new Vector3(0, arrGridArea[2].transform.localPosition.y + returnPosY, 0);
+            playerCtrl.transform.localPosition = new Vector3(0, playerCtrl.transform.localPosition.y + returnPosY, 0);
+            limitProxy.transform.localPosition = new Vector3(0, limitProxy.transform.localPosition.y + returnPosY, 0);
+        }
     }
 
     private void OnPlayerYMove(object[] objs) {
         float deltaY = (float)objs[0];
+        if (deltaY >= height * (returnNum - 1) ) {
+            deltaY = deltaY - height * returnNum;
+        }
         targetAreaY = targetAreaY - deltaY;
     }
 }
