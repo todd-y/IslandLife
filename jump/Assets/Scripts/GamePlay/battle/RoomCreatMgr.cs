@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class RoomCreatMgr : Singleton<RoomCreatMgr> {
     public const int width = 650;
-    public const int height = 1050;
+    public const int height = 1100;
     public const int size = 50;
     private GameObject poolGo;
     private int xCount;
@@ -35,7 +35,12 @@ public class RoomCreatMgr : Singleton<RoomCreatMgr> {
             GridType[] arrLine = new GridType[yCount];
             arrData[x] = arrLine;
             for (int y = 0; y < yCount; y++) {
-                arrData[x][y] = GridType.Empty;
+                if (x == 7) {
+                    arrData[x][y] = GridType.Empty;
+                }
+                else {
+                    arrData[x][y] = GridType.Wall;
+                }
             }
         }
 
