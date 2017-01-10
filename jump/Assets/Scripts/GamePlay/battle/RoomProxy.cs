@@ -54,4 +54,10 @@ public class RoomProxy : MonoBehaviour {
         goList.Clear();
     }
 
+    public void ClearGo(GameObject go) {
+        if (goList.Contains(go)) {
+            goList.Remove(go);
+        }
+    }
+
 }

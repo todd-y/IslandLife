@@ -16,6 +16,20 @@ public class PlayerCtrl : MonoBehaviour {
         InitCtrl();
     }
 
+    void OnTriggerEnter2D(Collider2D other) {
+        if (other.gameObject.tag == "Gold") {
+            BattleMgr.Instance.playerInfo.Gold++;
+            RoomCreatMgr.Instance.RemoveGameObject(other.gameObject);
+        }
+    }
+
+    //void OnCollisionEnter2D(Collision2D coll) {
+    //    Debug.Log("Collision");
+    //    if (coll.gameObject.tag == "Gold") {
+    //        BattleMgr.Instance.playerInfo.Gold++;
+    //    }
+    //}
+
     public void FixedUpdateHandle() {
         SpeedUpdate();
         PosXUpdate();
@@ -25,6 +39,7 @@ public class PlayerCtrl : MonoBehaviour {
         InputHandle();
         PosYUpdate();
     }
+
 
     private void SpeedUpdate() {
         if (moveFactor != 0) {

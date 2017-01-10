@@ -19,8 +19,8 @@ public class RoomCreatMgr : Singleton<RoomCreatMgr> {
 
     public void Init() {
         poolGo = Launch.Instance.poolGo;
-        xCount = width / size;
-        yCount = height / size;
+        xCount = width / size;//13
+        yCount = height / size;//22
         arrCurData = new GridType[0][];
         arrRemainData = new GridType[0][];
     }
@@ -36,6 +36,7 @@ public class RoomCreatMgr : Singleton<RoomCreatMgr> {
         AddData(0, arrRemainData);
         ClearRemainData();
 
+        //创建地形
         while (creatY < yCount) {
             int creatType = Random.Range(0, 100);
             if (creatType < 5) {
@@ -67,9 +68,77 @@ public class RoomCreatMgr : Singleton<RoomCreatMgr> {
                 creatY += Random.Range(1, 5);
             }
         }
+        //创建金币
+        CreatGold();
+        
 
         creatY -= yCount;
         waitRoomProxy.SetData(arrCurData);
+    }
+
+    private void CreatGold() {
+        int goldNum = Random.Range(5, 10);
+        List<int> batchList = new List<int>();
+        while (goldNum > 0) {
+            int onceRandomNum = Random.Range(1, 5);
+            if (goldNum > onceRandomNum) {
+                batchList.Add(onceRandomNum);
+                goldNum -= onceRandomNum;
+            }
+            else {
+                batchList.Add(goldNum);
+                goldNum = 0;
+            }
+        }
+
+        int[] arrBatch = batchList.ToArray();
+        for (int index = 0; index < arrBatch.Length; index++ ) {
+            int curBatchNum = arrBatch[index];
+            int startX = Random.Range(0, xCount);
+            int startY = Random.Range(0, yCount);
+            Face face = (Face)Random.Range(0, (int)Face.Max);
+            for (int k = 0; k < curBatchNum; k++ ) {
+                int creatX = startX;
+                int creatY = startY;
+                switch (face) {
+                    case Face.Down:
+                        creatY = startY + k;
+                        if (creatY >= yCount) {
+                            creatY = yCount - 1 - k;
+                        }
+                        break;
+                    case Face.Up:
+                        creatY = startY - k;
+                        if (creatY <= 0) {
+                            creatY = k;
+                        }
+                        break;
+                    case Face.Left:
+                        creatX = startX - k;
+                        if (creatX <= 0) {
+                            creatX = k;
+                        }
+                        break;
+                    case Face.Right:
+                        creatX = startX + k;
+                        if (creatX >= xCount) {
+                            creatX = xCount - 1 - k;
+                        }
+                        break;
+                    default:
+                        Debug.LogError("not handle type:" + face);
+                        break;
+                }
+
+                SetGridData(creatX, creatY, GridType.Gold);
+            }
+        }
+    }
+
+    private void SetGridData(int x, int y, GridType _type) {
+        if (arrCurData[y][x] == GridType.Empty) {
+            arrCurData[y][x] = _type;
+        }
     }
 
     private void AddData(int curY, GridType[][] arrData) {
@@ -306,9 +375,24 @@ public class RoomCreatMgr : Singleton<RoomCreatMgr> {
         go.transform.SetParent(poolGo.transform, false);
     }
 
+    public void RemoveGameObject(GameObject go) {
+        for (int index = 0; index < BattleWindow.Instance.arrGridArea.Length; index++ ) {
+            BattleWindow.Instance.arrGridArea[index].ClearGo(go);
+        }
+        RoomCreatMgr.Instance.ReleaseGameObject(go);
+    }
+
     public enum PlatformType {
         Left,
         Right,
         Double,
+    }
+
+    public enum Face {
+        Up = 0,
+        Down,
+        Left,
+        Right,
+        Max,
     }
 }
