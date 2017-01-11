@@ -3,6 +3,8 @@ using System.Collections;
 
 public class PlayerCtrl : MonoBehaviour {
     private Rigidbody2D body;
+    private Collider2D collider;
+    private const float size = 40;
     private const float MoveLimit = 300;
     private float addSpeedX = 2000;
     private float reduceSpeedX = 1000;
@@ -23,16 +25,21 @@ public class PlayerCtrl : MonoBehaviour {
         }
     }
 
-    //void OnCollisionEnter2D(Collision2D coll) {
-    //    Debug.Log("Collision");
-    //    if (coll.gameObject.tag == "Gold") {
-    //        BattleMgr.Instance.playerInfo.Gold++;
-    //    }
-    //}
+    void OnCollisionEnter2D(Collision2D coll) {
+        if (coll.gameObject.tag == "Wall") {
+            return;
+        }
+        Vector3 angle = transform.position - coll.transform.position;
+        angle = angle.normalized;
+        body.AddForce(angle * 300);
+
+        RoomCreatMgr.Instance.RemoveGameObject(coll.gameObject);
+    }
 
     public void FixedUpdateHandle() {
-        SpeedUpdate();
-        PosXUpdate();
+        //HitCheck();
+        //SpeedUpdate();
+        //PosXUpdate();
     }
 
     public void UpdateHandle() {
@@ -40,6 +47,17 @@ public class PlayerCtrl : MonoBehaviour {
         PosYUpdate();
     }
 
+    private void HitCheck() {
+        RaycastHit2D leftHit2D = Physics2D.Raycast(collider.bounds.min + Vector3.down * 0.01f, Vector2.down, 0.01f);
+        RaycastHit2D rightHit2D = Physics2D.Raycast(collider.bounds.min + new Vector3(collider.bounds.size.x, 0, 0) + Vector3.down * 0.01f, Vector2.down, 0.01f);
+        Debug.DrawRay(collider.bounds.min + Vector3.down * 0.01f, Vector2.down * 0.01f, Color.white);
+        Debug.DrawRay(collider.bounds.min + new Vector3(collider.bounds.size.x, 0, 0) + Vector3.down * 0.01f, Vector2.down * 0.01f, Color.white);
+
+        if (leftHit2D.collider != null || rightHit2D.collider != null) {
+            body.AddForce(Vector2.up * 300);
+            //Debug.LogError("hit");
+        }
+    }
 
     private void SpeedUpdate() {
         if (moveFactor != 0) {
@@ -73,17 +91,19 @@ public class PlayerCtrl : MonoBehaviour {
 
     private void InitCtrl() {
         body = gameObject.GetComponent<Rigidbody2D>();
-
+        collider = gameObject.GetComponent<Collider2D>();
         lastPosY = transform.localPosition.y;
     }
 
     private void InputHandle() {
         //move
         moveFactor = 0;
-        if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) {
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow)) {
+            body.velocity = new Vector2(-5, body.velocity.y);
             moveFactor = -1;
         }
-        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) {
+        if (Input.GetKeyDown(KeyCode.D) || Input.GetKey(KeyCode.RightArrow)) {
+            body.velocity = new Vector2(5, body.velocity.y);
             moveFactor = 1;
         }
         if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.Space)) {

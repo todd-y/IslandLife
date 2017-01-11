@@ -6,7 +6,7 @@ public class BattleWindow : BaseWindowWrapper<BattleWindow> {
     private const float areaSpeedY = 15;
     private const int height = 1100;
     private const int gridAreaNum = 3;
-    private const int returnNum = 99;
+    private const int returnNum = 3;
     private PlayerInfoProxy playerInfoProxy;
     private MakeInfoProxy makeInfoProxy;
     private PlayerCtrl playerCtrl;
@@ -16,6 +16,7 @@ public class BattleWindow : BaseWindowWrapper<BattleWindow> {
     private GameObject downArea;
     private LimitProxy limitProxy;
     private int lastIndex = -1;
+    private int maxIndex = 0;
     private float curAreaY;
     private float targetAreaY;
 
@@ -65,8 +66,12 @@ public class BattleWindow : BaseWindowWrapper<BattleWindow> {
     private void AreaMoveUpdate() {
         curAreaY = Mathf.SmoothStep(curAreaY, targetAreaY, Time.fixedDeltaTime * areaSpeedY);
         downArea.transform.localPosition = new Vector3(0, curAreaY, 0);
-
-        int index = (int)curAreaY / height % gridAreaNum;
+        int curIndex = (int)curAreaY / height;
+        maxIndex = Mathf.Max(curIndex, maxIndex);
+        if (maxIndex > curIndex) {
+            return;
+        }
+        int index = (int)curIndex  % gridAreaNum;
         if (index != lastIndex) {
             lastIndex = index;
             switch (index) {
@@ -88,11 +93,12 @@ public class BattleWindow : BaseWindowWrapper<BattleWindow> {
             float returnPosY = returnNum * height;
             targetAreaY = targetAreaY - returnPosY;
             curAreaY = curAreaY - returnPosY;
+            maxIndex = maxIndex - returnNum;
             downArea.transform.localPosition = new Vector3(0, downArea.transform.localPosition.y - returnPosY, 0);
             arrGridArea[0].transform.localPosition = new Vector3(0, arrGridArea[0].transform.localPosition.y + returnPosY, 0);
             arrGridArea[1].transform.localPosition = new Vector3(0, arrGridArea[1].transform.localPosition.y + returnPosY, 0);
             arrGridArea[2].transform.localPosition = new Vector3(0, arrGridArea[2].transform.localPosition.y + returnPosY, 0);
-            playerCtrl.transform.localPosition = new Vector3(0, playerCtrl.transform.localPosition.y + returnPosY, 0);
+            playerCtrl.transform.localPosition = new Vector3(playerCtrl.transform.localPosition.x, playerCtrl.transform.localPosition.y + returnPosY, 0);
             limitProxy.transform.localPosition = new Vector3(0, limitProxy.transform.localPosition.y + returnPosY, 0);
         }
     }
