@@ -38,49 +38,96 @@ public class RoomCreatMgr : Singleton<RoomCreatMgr> {
 
         //创建地形
         while (creatY < yCount) {
-            int creatType = Random.Range(0, 100);
+            int creatType = ToolMgr.RangeWithMax(0, 100);
             if (creatType < 5) {
                 GridType[][] arrData = GetPlatform(PlatformType.Left);
                 AddData(creatY, arrData);
-                creatY += (arrData.Length + Random.Range(1, 4));
+                creatY += (arrData.Length + ToolMgr.RangeWithMax(1, 3));
             }
             else if (creatType < 10) {
                 GridType[][] arrData = GetPlatform(PlatformType.Right);
                 AddData(creatY, arrData);
-                creatY += (arrData.Length + Random.Range(1, 4));
+                creatY += (arrData.Length + ToolMgr.RangeWithMax(1, 3));
             }
             else if (creatType < 15) {
                 GridType[][] arrData = GetRulePlatform(PlatformType.Double);
                 AddData(creatY, arrData);
-                creatY += (arrData.Length + Random.Range(1, 4));
+                creatY += (arrData.Length + ToolMgr.RangeWithMax(1, 3));
             }
             else if (creatType < 30) {
                 GridType[][] arrData = GetSquare();
                 AddData(creatY, arrData);
-                creatY += (arrData.Length + Random.Range(1, 3));
+                creatY += (arrData.Length + ToolMgr.RangeWithMax(1, 2));
             }
             else if (creatType < 70) {
                 GridType[][] arrData = GetLine();
                 AddData(creatY, arrData);
-                creatY += (arrData.Length + Random.Range(1, 3));
+                creatY += (arrData.Length + ToolMgr.RangeWithMax(1, 2));
             }
             else {
-                creatY += Random.Range(1, 5);
+                creatY += ToolMgr.RangeWithMax(1, 4);
             }
         }
         //创建金币
         CreatGold();
-        
+        CreatItemAndEnemy();
 
         creatY -= yCount;
         waitRoomProxy.SetData(arrCurData);
     }
 
+    private void CreatItemAndEnemy(){
+        List<GridInfo> wallUpEmptyList = new List<GridInfo>();
+        List<GridInfo> otherEmptyList = new List<GridInfo>();
+        for (int y = 0; y < yCount; y++) {
+            for (int x = 0; x < xCount; x++) {
+                if (arrCurData[y][x] == GridType.Empty) {
+                    if (y != yCount - 1 && arrCurData[y + 1][x] == GridType.Wall) {
+                        wallUpEmptyList.Add(new GridInfo(x, y));
+                    }
+                    else {
+                        otherEmptyList.Add(new GridInfo(x, y));
+                    }
+                }
+            }
+        }
+
+        int itemNum = ToolMgr.RangeWithMax(0, 2);
+        for (int index = 0; index < itemNum; index++ ) {
+            if (wallUpEmptyList.Count == 0) {
+                break;
+            }
+            GridInfo gridInfo = wallUpEmptyList[ToolMgr.Range(0, wallUpEmptyList.Count)];
+            wallUpEmptyList.Remove(gridInfo);
+            arrCurData[gridInfo.y][gridInfo.x] = GridType.Item;
+        }
+
+        int enemyNum = ToolMgr.RangeWithMax(3, 5);
+        for (int index = 0; index < enemyNum; index++) {
+            if (wallUpEmptyList.Count == 0) {
+                break;
+            }
+            GridInfo gridInfo = wallUpEmptyList[ToolMgr.Range(0, wallUpEmptyList.Count)];
+            wallUpEmptyList.Remove(gridInfo);
+            arrCurData[gridInfo.y][gridInfo.x] = GridType.Enemy;
+        }
+
+        //int flyEnemyNum = ToolMgr.RangeWithMax(1, 3);
+        //for (int index = 0; index < flyEnemyNum; index++) {
+        //    if (otherEmptyList.Count == 0)
+        //        break;
+        //    GridInfo gridInfo = otherEmptyList[ToolMgr.Range(0, otherEmptyList.Count)];
+        //    otherEmptyList.Remove(gridInfo);
+        //    arrCurData[gridInfo.y][gridInfo.x] = GridType.Enemy;
+        //}
+
+    }
+
     private void CreatGold() {
-        int goldNum = Random.Range(5, 10);
+        int goldNum = ToolMgr.RangeWithMax(5, 10);
         List<int> batchList = new List<int>();
         while (goldNum > 0) {
-            int onceRandomNum = Random.Range(1, 5);
+            int onceRandomNum = ToolMgr.RangeWithMax(1, 5);
             if (goldNum > onceRandomNum) {
                 batchList.Add(onceRandomNum);
                 goldNum -= onceRandomNum;
@@ -94,9 +141,9 @@ public class RoomCreatMgr : Singleton<RoomCreatMgr> {
         int[] arrBatch = batchList.ToArray();
         for (int index = 0; index < arrBatch.Length; index++ ) {
             int curBatchNum = arrBatch[index];
-            int startX = Random.Range(0, xCount);
-            int startY = Random.Range(0, yCount);
-            Face face = (Face)Random.Range(0, (int)Face.Max);
+            int startX = ToolMgr.Range(0, xCount);
+            int startY = ToolMgr.Range(0, yCount);
+            Face face = (Face)ToolMgr.Range(0, (int)Face.Max);
             for (int k = 0; k < curBatchNum; k++ ) {
                 int creatX = startX;
                 int creatY = startY;
@@ -165,13 +212,13 @@ public class RoomCreatMgr : Singleton<RoomCreatMgr> {
         }
     }
 
-    private GridType[][] GetLine(int xMinStart = 0, int xMaxStart = -1, int numMin = 1, int numMax = 7) {
+    private GridType[][] GetLine(int xMinStart = 0, int xMaxStart = -1, int numMin = 1, int numMax = 6) {
         if (xMaxStart == -1) {
             xMaxStart = xCount;
         }
         GridType[][] arrLine = new GridType[1][];
-        int num = Random.Range(numMin, numMax);
-        int startX = Random.Range(xMinStart, xMaxStart + 1 - num);
+        int num = ToolMgr.RangeWithMax(numMin, numMax);
+        int startX = ToolMgr.RangeWithMax(xMinStart, xMaxStart - num);
         arrLine[0] = new GridType[xCount];
         for (int x = 0; x < num; x++) {
             arrLine[0][startX + x] = GridType.Wall;
@@ -181,18 +228,18 @@ public class RoomCreatMgr : Singleton<RoomCreatMgr> {
     }
 
     private GridType[][] GetPlatform(PlatformType type, int minX = 1, int maxX = 8, int minY = 2, int maxY = 6) {
-        int numY = Random.Range(minY, maxY + 1);
+        int numY = ToolMgr.RangeWithMax(minY, maxY);
 
         GridType[][] arrData = new GridType[numY][];
-        int longestY = Random.Range(0, numY);
-        int longestX = Random.Range(minX, maxX + 1);
+        int longestY = ToolMgr.Range(0, numY);
+        int longestX = ToolMgr.RangeWithMax(minX, maxX);
 
         int[] arrNumX = new int[numY];
         arrNumX[longestY] = longestX;
         int reduceY = longestY - 1;
         int reduceMaxX = longestX;
         while (reduceY >= 0) {
-            reduceMaxX = Random.Range(Mathf.Max(1, reduceMaxX - 3), reduceMaxX + 1);
+            reduceMaxX = ToolMgr.RangeWithMax(Mathf.Max(1, reduceMaxX - 3), reduceMaxX);
             arrNumX[reduceY] = reduceMaxX;
             reduceY--;
         }
@@ -200,7 +247,7 @@ public class RoomCreatMgr : Singleton<RoomCreatMgr> {
         reduceY = longestY + 1;
         reduceMaxX = longestX;
         while (reduceY < numY) {
-            reduceMaxX = Random.Range(Mathf.Max(1, reduceMaxX - 3), reduceMaxX + 1);
+            reduceMaxX = ToolMgr.RangeWithMax(Mathf.Max(1, reduceMaxX - 3), reduceMaxX);
             arrNumX[reduceY] = reduceMaxX;
             reduceY++;
         }
@@ -228,11 +275,11 @@ public class RoomCreatMgr : Singleton<RoomCreatMgr> {
     }
 
     private GridType[][] GetRulePlatform(PlatformType type, int minX = 3, int maxX = 5, int minY = 3, int maxY = 6) {
-        int numY = Random.Range(minY, maxY + 1);
+        int numY = ToolMgr.RangeWithMax(minY, maxY);
 
         GridType[][] arrData = new GridType[numY][];
-        int longestY = Random.Range(0, numY);
-        int longestX = Random.Range(Mathf.Max(longestY, minY), maxX + 1);
+        int longestY = ToolMgr.Range(0, numY);
+        int longestX = ToolMgr.RangeWithMax(Mathf.Max(longestY, minY), maxX);
 
         for (int y = 0; y < numY; y++) {
             int numX = longestX - Mathf.Abs(longestY - y);
@@ -257,18 +304,18 @@ public class RoomCreatMgr : Singleton<RoomCreatMgr> {
     }
 
     private GridType[][] GetSquare(int startMinX = 1, int startMaxX = 12, int minY = 2, int maxY = 4, int minX = 3, int maxX = 6) {
-        int numY = Random.Range(minY, maxY + 1);
+        int numY = ToolMgr.RangeWithMax(minY, maxY);
 
         GridType[][] arrData = new GridType[numY][];
-        int longestY = Random.Range(0, numY);
-        int longestX = Random.Range(minX, maxX + 1);
+        int longestY = ToolMgr.Range(0, numY);
+        int longestX = ToolMgr.RangeWithMax(minX, maxX);
 
         int[] arrNumX = new int[numY];
         arrNumX[longestY] = longestX;
         int reduceY = longestY - 1;
         int reduceMaxX = longestX;
         while (reduceY >= 0) {
-            reduceMaxX = Random.Range(Mathf.Max(1, reduceMaxX - 3), reduceMaxX + 1);
+            reduceMaxX = ToolMgr.RangeWithMax(Mathf.Max(1, reduceMaxX - 3), reduceMaxX);
             arrNumX[reduceY] = reduceMaxX;
             reduceY--;
         }
@@ -276,17 +323,17 @@ public class RoomCreatMgr : Singleton<RoomCreatMgr> {
         reduceY = longestY + 1;
         reduceMaxX = longestX;
         while (reduceY < numY) {
-            reduceMaxX = Random.Range(Mathf.Max(1, reduceMaxX - 3), reduceMaxX + 1);
+            reduceMaxX = ToolMgr.RangeWithMax(Mathf.Max(1, reduceMaxX - 3), reduceMaxX);
             arrNumX[reduceY] = reduceMaxX;
             reduceY++;
         }
 
-        int startX = Random.Range(startMinX, startMaxX + 1 - longestX);
+        int startX = ToolMgr.RangeWithMax(startMinX, startMaxX - longestX);
         for (int y = 0; y < numY; y++ ) {
             int numX = arrNumX[y];
             arrData[y] = new GridType[xCount];
             int deltaX = longestX - numX;
-            int fixX = deltaX % 2 == 0 ? deltaX / 2 : ((int)deltaX / 2 + Random.Range(0, 2));
+            int fixX = deltaX % 2 == 0 ? deltaX / 2 : ((int)deltaX / 2 + ToolMgr.RangeWithMax(0, 1));
             for (int x = 0; x < numX; x++ ) {
                 arrData[y][startX + fixX + x] = GridType.Wall;
             }
@@ -394,5 +441,14 @@ public class RoomCreatMgr : Singleton<RoomCreatMgr> {
         Left,
         Right,
         Max,
+    }
+
+    public struct GridInfo {
+        public int x;
+        public int y;
+        public GridInfo(int _x, int _y) {
+            x = _x;
+            y = _y;
+        }
     }
 }

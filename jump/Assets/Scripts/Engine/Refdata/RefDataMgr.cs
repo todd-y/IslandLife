@@ -20,6 +20,7 @@ public class RefDataMgr : BaseRefDataMgr<RefDataMgr> {
             Co_LoadGeneric(RefSkill.cacheMap),
             Co_LoadGeneric(RefItem.cacheMap),
             Co_LoadGeneric(RefEquip.cacheMap),
+            Co_LoadGeneric(RefEnemy.cacheMap),
         };
         for (int index = 0, total = co_list.Count; index < total; index++) {
             yield return CoDelegator.Coroutine(co_list[index]);

@@ -18,22 +18,48 @@ public class PlayerCtrl : MonoBehaviour {
         InitCtrl();
     }
 
-    void OnTriggerEnter2D(Collider2D other) {
-        if (other.gameObject.tag == "Gold") {
-            BattleMgr.Instance.playerInfo.Gold++;
-            RoomCreatMgr.Instance.RemoveGameObject(other.gameObject);
+    void OnTriggerEnter2D(Collider2D coll) {
+        switch (coll.gameObject.tag) {
+            case "Gold":
+                BattleMgr.Instance.playerInfo.Gold++;
+                RoomCreatMgr.Instance.RemoveGameObject(coll.gameObject);
+                break;
+            case "Item":
+                ItemProxy itemProxy = coll.gameObject.GetComponent<ItemProxy>();
+                if (itemProxy != null) {
+                    itemProxy.GetItem();
+                }
+                else {
+                    Debug.LogError("itemProxy is null");
+                }
+                break;
+            default:
+                Debug.LogError("dont handle :" + coll.gameObject.tag);
+                break;
         }
     }
 
     void OnCollisionEnter2D(Collision2D coll) {
-        if (coll.gameObject.tag == "Wall") {
-            return;
+        switch(coll.gameObject.tag){
+            case "Ground":
+                RoomCreatMgr.Instance.RemoveGameObject(coll.gameObject);
+                break;
+            case "Enemy":
+                EnemyProxy enemyProxy = coll.gameObject.GetComponent<EnemyProxy>();
+                if(enemyProxy != null){
+                    enemyProxy.DoAtk();
+                }
+                else{
+                    Debug.LogError("enemyProxy is null");
+                }
+                break;
+            case "Wall":
+                // do nothing
+                break;
+            default:
+                Debug.LogError("dont handle :" + coll.gameObject.tag);
+                break;
         }
-        Vector3 angle = transform.position - coll.transform.position;
-        angle = angle.normalized;
-        body.AddForce(angle * 300);
-
-        RoomCreatMgr.Instance.RemoveGameObject(coll.gameObject);
     }
 
     public void FixedUpdateHandle() {

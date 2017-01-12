@@ -12,7 +12,7 @@ public class MakeInfo {
         arrAlchemy[2] = new MakeData(MakeType.High, true);
     }
 
-    public void AddItem(int _itemId, int _num) {
+    public void AddItem(int _itemId, int _num = 1) {
         RefItem refItem = RefItem.GetRef(_itemId);
         if (refItem == null)
             return;

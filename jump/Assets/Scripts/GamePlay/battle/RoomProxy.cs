@@ -38,6 +38,17 @@ public class RoomProxy : MonoBehaviour {
         if (gridGo == null)
             return;
 
+        switch(gridType){
+            case GridType.Item:
+                ItemProxy itemProxy = gridGo.AddMissingComponent<ItemProxy>();
+                itemProxy.Init();
+                break;
+            case GridType.Enemy:
+                EnemyProxy enemyProxy = gridGo.AddMissingComponent<EnemyProxy>();
+                enemyProxy.Init();
+                break;
+        }
+
         int size = RoomCreatMgr.size;
         int halfWidth = RoomCreatMgr.width / 2;
         int halfHeight = RoomCreatMgr.height / 2;

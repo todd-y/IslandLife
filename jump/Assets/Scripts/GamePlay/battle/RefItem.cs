@@ -37,4 +37,15 @@ public class RefItem : RefBase {
     public static bool HasKey(int _id) {
         return cacheMap.ContainsKey(_id);
     }
+
+    public static RefItem GetRandomItem() {
+        List<RefItem> itemList = new List<RefItem>();
+        foreach (RefItem item in cacheMap.Values) {
+            if (item.Type != ItemType.Potion) {
+                itemList.Add(item);
+            }
+        }
+
+        return itemList[Random.Range(0, itemList.Count)];
+    }
 }

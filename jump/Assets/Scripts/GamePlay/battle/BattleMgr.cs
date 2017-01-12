@@ -19,11 +19,9 @@ public class BattleMgr : Singleton<BattleMgr> {
     }
 
 	public void Init(){
-        Send.RegisterMsg(SendType.PlayerYMove, OnPlayerYMove);
 	}
 	
 	public void Clear(){
-        Send.UnregisterMsg(SendType.PlayerYMove, OnPlayerYMove);
 	}
 
     public void StartBattle() {
@@ -35,9 +33,5 @@ public class BattleMgr : Singleton<BattleMgr> {
         makeInfo.SetData();
 
         WindowMgr.Instance.OpenWindow<BattleWindow>();
-    }
-
-    private void OnPlayerYMove(params object[] objs) {
-        //CurProgress++;
     }
 }

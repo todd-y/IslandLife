@@ -85,4 +85,13 @@ public class ToolMgr : Singleton<ToolMgr> {
     public static float DampenFactor(float dampening, float elapsed) {
         return 1.0f - Mathf.Pow((float)System.Math.E, -dampening * elapsed);
     }
+
+    public static int Range(int min, int max) {
+        return Random.Range(min, max);
+    }
+
+    public static int RangeWithMax(int min, int max) {
+        max = max + 1;
+        return Random.Range(min, max);
+    }
 }

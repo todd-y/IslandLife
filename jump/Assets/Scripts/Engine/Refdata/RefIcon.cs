@@ -38,12 +38,12 @@ public class RefIcon : RefBase {
     public static void SetSprite(Image image, string iconId) {
         if(image == null)
             return;
-
-        RefIcon iconData = GetRef(iconId);
-        if (iconData == null)
+        string[] arrName = iconId.Split('_');
+        if (arrName.Length != 2) {
+            Debug.LogError("icon name is error:" + iconId);
             return;
-
-        UITool.SetSprite(image, iconData.AtlasName, iconData.SpriteName);
+        }
+        UITool.SetSprite(image, arrName[0], iconId);
     }
 
     public static void SetItemSprite(Image img, int itemId) {
