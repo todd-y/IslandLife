@@ -1,0 +1,614 @@
+{
+  "ID": "158b115f-070f-4a0f-8398-fa8a91661d56",
+  "Version": "2.2.9.0",
+  "Name": "MusicSet",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 9,
+        "Children": [
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "MusicLayer/MusicSet.png",
+              "Plist": "FixUI.plist"
+            },
+            "BlendFunc": {
+              "Src": 1,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -239.0,
+            "RightMargin": -239.0,
+            "TopMargin": -147.0,
+            "BottomMargin": -147.0,
+            "Tag": 10,
+            "ActionTag": -1386775091,
+            "Size": {
+              "X": 478.0,
+              "Y": 294.0
+            },
+            "Name": "MusicSet",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "CheckedState": true,
+            "NormalBackFileData": {
+              "Type": "MarkedSubImage",
+              "Path": "MusicLayer/MusicCheck_N.png",
+              "Plist": "FixUI.plist"
+            },
+            "PressedBackFileData": {
+              "Type": "MarkedSubImage",
+              "Path": "MusicLayer/MusicCheck_C.png",
+              "Plist": "FixUI.plist"
+            },
+            "DisableBackFileData": {
+              "Type": "MarkedSubImage",
+              "Path": "MusicLayer/MusicCheck_N.png",
+              "Plist": "FixUI.plist"
+            },
+            "NodeNormalFileData": {
+              "Type": "MarkedSubImage",
+              "Path": "MusicLayer/MusicCheck_C.png",
+              "Plist": "FixUI.plist"
+            },
+            "NodeDisableFileData": {
+              "Type": "MarkedSubImage",
+              "Path": "MusicLayer/MusicCheck_N.png",
+              "Plist": "FixUI.plist"
+            },
+            "TouchEnable": true,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 25.0,
+              "Y": 40.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": 6.0,
+            "RightMargin": -44.0,
+            "TopMargin": -59.0,
+            "BottomMargin": 21.0,
+            "Tag": 14,
+            "ActionTag": -1833284277,
+            "Size": {
+              "X": 38.0,
+              "Y": 38.0
+            },
+            "Name": "EffectCheck",
+            "ctype": "CheckBoxObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "MusicLayer/BackGroudText.png",
+              "Plist": "FixUI.plist"
+            },
+            "BlendFunc": {
+              "Src": 1,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": -80.0,
+              "Y": 40.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -143.0,
+            "RightMargin": 17.0,
+            "TopMargin": -50.5,
+            "BottomMargin": 29.5,
+            "Tag": 11,
+            "ActionTag": 1040755125,
+            "Size": {
+              "X": 126.0,
+              "Y": 21.0
+            },
+            "Name": "BackGroudText",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "MusicLayer/EffectText.png",
+              "Plist": "FixUI.plist"
+            },
+            "BlendFunc": {
+              "Src": 1,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 120.0,
+              "Y": 40.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": 57.0,
+            "RightMargin": -183.0,
+            "TopMargin": -50.5,
+            "BottomMargin": 29.5,
+            "Tag": 12,
+            "ActionTag": -931579428,
+            "Size": {
+              "X": 126.0,
+              "Y": 21.0
+            },
+            "Name": "EffectText",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "CheckedState": true,
+            "NormalBackFileData": {
+              "Type": "MarkedSubImage",
+              "Path": "MusicLayer/MusicCheck_N.png",
+              "Plist": "FixUI.plist"
+            },
+            "PressedBackFileData": {
+              "Type": "MarkedSubImage",
+              "Path": "MusicLayer/MusicCheck_C.png",
+              "Plist": "FixUI.plist"
+            },
+            "DisableBackFileData": {
+              "Type": "MarkedSubImage",
+              "Path": "MusicLayer/MusicCheck_N.png",
+              "Plist": "FixUI.plist"
+            },
+            "NodeNormalFileData": {
+              "Type": "MarkedSubImage",
+              "Path": "MusicLayer/MusicCheck_C.png",
+              "Plist": "FixUI.plist"
+            },
+            "NodeDisableFileData": {
+              "Type": "MarkedSubImage",
+              "Path": "MusicLayer/MusicCheck_N.png",
+              "Plist": "FixUI.plist"
+            },
+            "TouchEnable": true,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": -170.0,
+              "Y": 40.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -189.0,
+            "RightMargin": 151.0,
+            "TopMargin": -59.0,
+            "BottomMargin": 21.0,
+            "Tag": 13,
+            "ActionTag": -1034813952,
+            "Size": {
+              "X": 38.0,
+              "Y": 38.0
+            },
+            "Name": "BgCheck",
+            "ctype": "CheckBoxObjectData"
+          },
+          {
+            "FontSize": 14,
+            "ButtonText": "",
+            "TextColor": {
+              "R": 65,
+              "G": 65,
+              "B": 70
+            },
+            "DisabledFileData": {
+              "Type": "MarkedSubImage",
+              "Path": "MusicLayer/Sure_N.png",
+              "Plist": "FixUI.plist"
+            },
+            "PressedFileData": {
+              "Type": "MarkedSubImage",
+              "Path": "MusicLayer/Sure_P.png",
+              "Plist": "FixUI.plist"
+            },
+            "NormalFileData": {
+              "Type": "MarkedSubImage",
+              "Path": "MusicLayer/Sure_N.png",
+              "Plist": "FixUI.plist"
+            },
+            "Scale9OriginX": 15,
+            "Scale9OriginY": 11,
+            "Scale9Width": 115,
+            "Scale9Height": 26,
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "TouchEnable": true,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": -100.0,
+              "Y": -110.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.3033,
+              "Y": 0.1633
+            },
+            "LeftMargin": -172.5,
+            "RightMargin": 27.5,
+            "TopMargin": 86.0,
+            "BottomMargin": -134.0,
+            "Tag": 15,
+            "ActionTag": -275387788,
+            "Size": {
+              "X": 145.0,
+              "Y": 48.0
+            },
+            "Name": "Sure",
+            "ctype": "ButtonObjectData"
+          },
+          {
+            "FontSize": 14,
+            "ButtonText": "",
+            "TextColor": {
+              "R": 65,
+              "G": 65,
+              "B": 70
+            },
+            "DisabledFileData": {
+              "Type": "MarkedSubImage",
+              "Path": "MusicLayer/Cancel_N.png",
+              "Plist": "FixUI.plist"
+            },
+            "PressedFileData": {
+              "Type": "MarkedSubImage",
+              "Path": "MusicLayer/Cancel_P.png",
+              "Plist": "FixUI.plist"
+            },
+            "NormalFileData": {
+              "Type": "MarkedSubImage",
+              "Path": "MusicLayer/Cancel_N.png",
+              "Plist": "FixUI.plist"
+            },
+            "Scale9OriginX": 15,
+            "Scale9OriginY": 11,
+            "Scale9Width": 114,
+            "Scale9Height": 26,
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "TouchEnable": true,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 70.0,
+              "Y": -110.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.3013,
+              "Y": 0.1633
+            },
+            "LeftMargin": -2.0,
+            "RightMargin": -142.0,
+            "TopMargin": 86.0,
+            "BottomMargin": -134.0,
+            "Tag": 16,
+            "ActionTag": 808299702,
+            "Size": {
+              "X": 144.0,
+              "Y": 48.0
+            },
+            "Name": "Cancel",
+            "ctype": "ButtonObjectData"
+          },
+          {
+            "FontSize": 14,
+            "ButtonText": "",
+            "TextColor": {
+              "R": 65,
+              "G": 65,
+              "B": 70
+            },
+            "DisabledFileData": {
+              "Type": "MarkedSubImage",
+              "Path": "MusicLayer/Close_N.png",
+              "Plist": "FixUI.plist"
+            },
+            "PressedFileData": {
+              "Type": "MarkedSubImage",
+              "Path": "MusicLayer/Close_P.png",
+              "Plist": "FixUI.plist"
+            },
+            "NormalFileData": {
+              "Type": "MarkedSubImage",
+              "Path": "MusicLayer/Close_N.png",
+              "Plist": "FixUI.plist"
+            },
+            "Scale9OriginX": 10,
+            "Scale9OriginY": 8,
+            "Scale9Width": 11,
+            "Scale9Height": 11,
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "TouchEnable": true,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 190.0161,
+              "Y": 118.0071
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": 174.5161,
+            "RightMargin": -205.5161,
+            "TopMargin": -131.5071,
+            "BottomMargin": 104.5071,
+            "Tag": 17,
+            "ActionTag": -192977345,
+            "Size": {
+              "X": 31.0,
+              "Y": 27.0
+            },
+            "Name": "Close",
+            "ctype": "ButtonObjectData"
+          },
+          {
+            "BackGroundData": {
+              "Type": "MarkedSubImage",
+              "Path": "MusicLayer/ProcessBK.png",
+              "Plist": "FixUI.plist"
+            },
+            "ProgressBarData": {
+              "Type": "MarkedSubImage",
+              "Path": "MusicLayer/ProcessLight.png",
+              "Plist": "FixUI.plist"
+            },
+            "BallNormalData": {
+              "Type": "MarkedSubImage",
+              "Path": "MusicLayer/Thumb.png",
+              "Plist": "FixUI.plist"
+            },
+            "BallPressedData": {
+              "Type": "MarkedSubImage",
+              "Path": "MusicLayer/Thumb.png",
+              "Plist": "FixUI.plist"
+            },
+            "BallDisabledData": {
+              "Type": "MarkedSubImage",
+              "Path": "MusicLayer/Thumb.png",
+              "Plist": "FixUI.plist"
+            },
+            "PercentInfo": 100,
+            "TouchEnable": true,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 45.0,
+              "Y": -20.0
+            },
+            "Scale": {
+              "ScaleX": 0.9,
+              "ScaleY": 0.9
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.6444,
+              "Y": 0.1667
+            },
+            "LeftMargin": -109.0,
+            "RightMargin": -199.0,
+            "TopMargin": -4.5,
+            "BottomMargin": -44.5,
+            "Tag": 18,
+            "ActionTag": -907142623,
+            "Size": {
+              "X": 308.0,
+              "Y": 49.0
+            },
+            "Name": "MusicSlice",
+            "ctype": "SliderObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "MusicLayer/VolumeText.png",
+              "Plist": "FixUI.plist"
+            },
+            "BlendFunc": {
+              "Src": 1,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": -140.0158,
+              "Y": -20.9245
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -203.0158,
+            "RightMargin": 77.0158,
+            "TopMargin": 10.4245,
+            "BottomMargin": -31.4245,
+            "Tag": 19,
+            "ActionTag": 56551628,
+            "Size": {
+              "X": 126.0,
+              "Y": 21.0
+            },
+            "Name": "VolumeText",
+            "ctype": "SpriteObjectData"
+          }
+        ],
+        "Size": {
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "Name": "Node",
+        "ctype": "SingleNodeObjectData"
+      },
+      "ctype": "GameProjectData"
+    }
+  },
+  "Type": "Node"
+}
